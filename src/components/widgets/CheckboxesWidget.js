@@ -1,5 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
+import {
+  FormControlLabel,
+  FormGroup,
+  Checkbox,
+} from "@carecloud/material-cuil";
 
 function selectValue(value, selected, all) {
   const at = all.indexOf(value);
@@ -14,44 +19,42 @@ function deselectValue(value, selected) {
 }
 
 function CheckboxesWidget(props) {
-  const { id, disabled, options, value, autofocus, readonly, onChange } = props;
-  const { enumOptions, inline } = options;
+  const { id, disabled, options, value, readonly, onChange } = props;
+  const { enumOptions, enumDisabled = [], inline } = options;
+  const groupDisabled = disabled || readonly;
+
   return (
-    <div className="checkboxes" id={id}>
+    <FormGroup id={id} name={id} className="checkboxes" row={inline}>
       {enumOptions.map((option, index) => {
+        const isDisabled =
+          groupDisabled || enumDisabled.indexOf(option.value) !== -1;
         const checked = value.indexOf(option.value) !== -1;
-        const disabledCls = disabled || readonly ? "disabled" : "";
-        const checkbox = (
-          <span>
-            <input
-              type="checkbox"
-              id={`${id}_${index}`}
-              checked={checked}
-              disabled={disabled || readonly}
-              autoFocus={autofocus && index === 0}
-              onChange={event => {
-                const all = enumOptions.map(({ value }) => value);
-                if (event.target.checked) {
-                  onChange(selectValue(option.value, value, all));
-                } else {
-                  onChange(deselectValue(option.value, value));
-                }
-              }}
-            />
-            <span>{option.label}</span>
-          </span>
-        );
-        return inline ? (
-          <label key={index} className={`checkbox-inline ${disabledCls}`}>
-            {checkbox}
-          </label>
-        ) : (
-          <div key={index} className={`checkbox ${disabledCls}`}>
-            <label>{checkbox}</label>
-          </div>
+
+        return (
+          <FormControlLabel
+            key={index}
+            control={
+              <Checkbox
+                id={`${id}_${index}`}
+                checked={checked}
+                onChange={event => {
+                  const all = enumOptions.map(({ value }) => value);
+
+                  if (event.target.checked) {
+                    onChange(selectValue(option.value, value, all));
+                  } else {
+                    onChange(deselectValue(option.value, value));
+                  }
+                }}
+                value={option.value}
+                disabled={isDisabled}
+              />
+            }
+            label={option.label}
+          />
         );
       })}
-    </div>
+    </FormGroup>
   );
 }
 

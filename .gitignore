@@ -4,3 +4,6 @@ build
 dist
 lib
 yarn.lock
+
+# Idea
+.idea

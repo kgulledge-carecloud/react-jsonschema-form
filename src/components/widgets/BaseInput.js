@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { TextField } from "@carecloud/material-cuil";
 
 function BaseInput(props) {
   // Note: since React 15.2.0 we can't forward unknown element attributes, so we
@@ -23,7 +24,7 @@ function BaseInput(props) {
     return props.onChange(value === "" ? options.emptyValue : value);
   };
   return (
-    <input
+    <TextField
       className="form-control"
       readOnly={readonly}
       disabled={disabled}

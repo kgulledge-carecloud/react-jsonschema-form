@@ -1,5 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
+import {
+  FormControl,
+  FormLabel,
+  FormHelperText,
+} from "@carecloud/material-cuil";
 
 import {
   isMultiSelect,
@@ -11,7 +16,6 @@ import {
 } from "../../utils";
 import UnsupportedField from "./UnsupportedField";
 
-const REQUIRED_FIELD_SYMBOL = "*";
 const COMPONENT_TYPES = {
   array: "ArrayField",
   boolean: "BooleanField",
@@ -43,29 +47,13 @@ function getFieldComponent(schema, uiSchema, idSchema, fields) {
       };
 }
 
-function Label(props) {
-  const { label, required, id } = props;
-  if (!label) {
-    // See #312: Ensure compatibility with old versions of React.
-    return <div />;
-  }
-  return (
-    <label className="control-label" htmlFor={id}>
-      {required ? label + REQUIRED_FIELD_SYMBOL : label}
-    </label>
-  );
-}
-
 function Help(props) {
   const { help } = props;
   if (!help) {
     // See #312: Ensure compatibility with old versions of React.
     return <div />;
   }
-  if (typeof help === "string") {
-    return <p className="help-block">{help}</p>;
-  }
-  return <div className="help-block">{help}</div>;
+  return <FormHelperText className="help-block">{help}</FormHelperText>;
 }
 
 function ErrorList(props) {
@@ -74,18 +62,17 @@ function ErrorList(props) {
     return <div />;
   }
   return (
-    <div>
-      <p />
-      <ul className="error-detail bs-callout bs-callout-info">
-        {errors.map((error, index) => {
-          return (
-            <li className="text-danger" key={index}>
-              {error}
-            </li>
-          );
-        })}
-      </ul>
-    </div>
+    <FormHelperText
+      className="error-detail bs-callout bs-callout-info"
+      error={true}>
+      {errors.map((error, index) => {
+        return (
+          <span className="text-danger" key={index}>
+            {error}
+          </span>
+        );
+      })}
+    </FormHelperText>
   );
 }
 
@@ -101,19 +88,30 @@ function DefaultTemplate(props) {
     hidden,
     required,
     displayLabel,
+    disabled,
+    readonly,
   } = props;
   if (hidden) {
     return children;
   }
 
+  const ContainerComp = displayLabel ? FormControl : "div";
+  const containerProps = displayLabel
+    ? {
+        required,
+        error: !!errors,
+        disabled: disabled || readonly,
+      }
+    : {};
+
   return (
-    <div className={classNames}>
-      {displayLabel && <Label label={label} required={required} id={id} />}
+    <ContainerComp className={classNames} {...containerProps}>
+      {displayLabel && <FormLabel htmlFor={id}>{label}</FormLabel>}
       {displayLabel && description ? description : null}
       {children}
       {errors}
       {help}
-    </div>
+    </ContainerComp>
   );
 }
 
@@ -175,17 +173,33 @@ function SchemaFieldRender(props) {
 
   const uiOptions = getUiOptions(uiSchema);
   let { label: displayLabel = true } = uiOptions;
-  if (schema.type === "array") {
-    displayLabel =
-      isMultiSelect(schema, definitions) ||
-      isFilesArray(schema, uiSchema, definitions);
+
+  switch (schema.type) {
+    case "array":
+      displayLabel =
+        isMultiSelect(schema, definitions) ||
+        isFilesArray(schema, uiSchema, definitions);
+
+      break;
+    case "string":
+      displayLabel = uiSchema["ui:widget"] === "radio";
+
+      break;
+    case "date":
+    case "object":
+      displayLabel = false;
+
+      break;
+    case "boolean":
+      if (!uiSchema["ui:widget"]) {
+        displayLabel = false;
+      }
+
+      break;
+    default:
+      break;
   }
-  if (schema.type === "object") {
-    displayLabel = false;
-  }
-  if (schema.type === "boolean" && !uiSchema["ui:widget"]) {
-    displayLabel = false;
-  }
+
   if (uiSchema["ui:field"]) {
     displayLabel = false;
   }
@@ -236,9 +250,9 @@ function SchemaFieldRender(props) {
       />
     ),
     rawDescription: description,
-    help: <Help help={help} />,
+    help: help ? <Help help={help} /> : null,
     rawHelp: typeof help === "string" ? help : undefined,
-    errors: <ErrorList errors={errors} />,
+    errors: errors && errors.length ? <ErrorList errors={errors} /> : null,
     rawErrors: errors,
     id,
     label,
