@@ -1,11 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import {
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-} from "@carecloud/material-cuil";
+import { Input, Select, MenuItem } from "@carecloud/material-cuil";
 
 import { asNumber } from "../../utils";
 
@@ -43,11 +38,10 @@ function getValue(event, multiple) {
 
 function SelectWidget(props) {
   const {
-    schema,
     id,
+    schema,
     options,
     value,
-    label,
     required,
     disabled,
     readonly,
@@ -59,49 +53,52 @@ function SelectWidget(props) {
   const { enumOptions, enumDisabled } = options;
   const emptyValue = multiple ? [] : "";
 
+  const selectProps = {
+    id,
+    multiple,
+    required,
+    disabled: disabled || readonly,
+    value: typeof value === "undefined" ? emptyValue : value,
+  };
+
+  if (readonly) {
+    selectProps.input = <Input readOnly />;
+  }
+
   return (
-    <FormControl disabled={disabled || readonly} required={required}>
-      <InputLabel htmlFor={id}>{label}</InputLabel>
-
-      <Select
-        id={id}
-        value={typeof value === "undefined" ? emptyValue : value}
-        label={label}
-        multiple={multiple}
-        disabled={disabled || readonly}
-        required={required}
-        onBlur={
-          onBlur &&
-          (event => {
-            const newValue = getValue(event, multiple);
-            onBlur(id, processValue(schema, newValue));
-          })
-        }
-        onFocus={
-          onFocus &&
-          (event => {
-            const newValue = getValue(event, multiple);
-            onFocus(id, processValue(schema, newValue));
-          })
-        }
-        onChange={event => {
+    <Select
+      {...selectProps}
+      onBlur={
+        onBlur &&
+        (event => {
           const newValue = getValue(event, multiple);
-          onChange(processValue(schema, newValue));
-        }}>
-        {enumOptions.map(({ value, label }, index) => {
-          const disabled = enumDisabled && enumDisabled.indexOf(value) !== -1;
+          onBlur(id, processValue(schema, newValue));
+        })
+      }
+      onFocus={
+        onFocus &&
+        (event => {
+          const newValue = getValue(event, multiple);
+          onFocus(id, processValue(schema, newValue));
+        })
+      }
+      onChange={event => {
+        const newValue = getValue(event, multiple);
+        onChange(processValue(schema, newValue));
+      }}>
+      {enumOptions.map(({ value, label }, index) => {
+        const disabled = enumDisabled && enumDisabled.indexOf(value) !== -1;
 
-          return (
-            <MenuItem
-              key={index}
-              value={value}
-              className={disabled ? "disabled" : ""}>
-              {label}
-            </MenuItem>
-          );
-        })}
-      </Select>
-    </FormControl>
+        return (
+          <MenuItem
+            key={index}
+            value={value}
+            className={disabled ? "disabled" : ""}>
+            {label}
+          </MenuItem>
+        );
+      })}
+    </Select>
   );
 }
 

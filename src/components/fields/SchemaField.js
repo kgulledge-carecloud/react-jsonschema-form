@@ -4,6 +4,7 @@ import {
   FormControl,
   FormLabel,
   FormHelperText,
+  InputLabel,
 } from "@carecloud/material-cuil";
 
 import {
@@ -90,28 +91,45 @@ function DefaultTemplate(props) {
     displayLabel,
     disabled,
     readonly,
+    schema,
+    uiSchema,
   } = props;
+
   if (hidden) {
     return children;
   }
 
-  const ContainerComp = displayLabel ? FormControl : "div";
-  const containerProps = displayLabel
-    ? {
-        required,
-        error: !!errors,
-        disabled: disabled || readonly,
-      }
-    : {};
+  const containerProps = {
+    required,
+    error: !!errors,
+    disabled: disabled || readonly,
+    margin: "normal",
+    fullWidth: true,
+  };
+
+  // Radio and checkboxes should use a FormLabel instead of an InputLabel
+  const useFormLabel =
+    displayLabel &&
+    ["checkboxes", "radio"].indexOf(uiSchema["ui:widget"]) !== -1;
+
+  const LabelComp = useFormLabel ? FormLabel : InputLabel;
+  const labelProps = {
+    htmlFor: id,
+  };
+
+  // TODO: remove this once a datepikcer is implemented
+  if (schema.format === "date") {
+    labelProps.shrink = true;
+  }
 
   return (
-    <ContainerComp className={classNames} {...containerProps}>
-      {displayLabel && <FormLabel htmlFor={id}>{label}</FormLabel>}
+    <FormControl className={classNames} {...containerProps}>
+      {displayLabel && <LabelComp {...labelProps}>{label}</LabelComp>}
       {displayLabel && description ? description : null}
       {children}
       {errors}
       {help}
-    </ContainerComp>
+    </FormControl>
   );
 }
 
@@ -181,10 +199,6 @@ function SchemaFieldRender(props) {
         isFilesArray(schema, uiSchema, definitions);
 
       break;
-    case "string":
-      displayLabel = uiSchema["ui:widget"] === "radio";
-
-      break;
     case "date":
     case "object":
       displayLabel = false;
@@ -242,13 +256,13 @@ function SchemaFieldRender(props) {
     .trim();
 
   const fieldProps = {
-    description: (
+    description: description ? (
       <DescriptionField
         id={id + "__description"}
         description={description}
         formContext={formContext}
       />
-    ),
+    ) : null,
     rawDescription: description,
     help: help ? <Help help={help} /> : null,
     rawHelp: typeof help === "string" ? help : undefined,
