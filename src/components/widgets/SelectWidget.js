@@ -1,5 +1,11 @@
 import React from "react";
 import PropTypes from "prop-types";
+import {
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+} from "@carecloud/material-cuil";
 
 import { asNumber } from "../../utils";
 
@@ -41,55 +47,61 @@ function SelectWidget(props) {
     id,
     options,
     value,
+    label,
     required,
     disabled,
     readonly,
     multiple,
-    autofocus,
     onChange,
     onBlur,
     onFocus,
-    placeholder,
   } = props;
   const { enumOptions, enumDisabled } = options;
   const emptyValue = multiple ? [] : "";
+
   return (
-    <select
-      id={id}
-      multiple={multiple}
-      className="form-control"
-      value={typeof value === "undefined" ? emptyValue : value}
-      required={required}
-      disabled={disabled || readonly}
-      autoFocus={autofocus}
-      onBlur={
-        onBlur &&
-        (event => {
+    <FormControl disabled={disabled || readonly} required={required}>
+      <InputLabel htmlFor={id}>{label}</InputLabel>
+
+      <Select
+        id={id}
+        value={typeof value === "undefined" ? emptyValue : value}
+        label={label}
+        multiple={multiple}
+        disabled={disabled || readonly}
+        required={required}
+        onBlur={
+          onBlur &&
+          (event => {
+            const newValue = getValue(event, multiple);
+            onBlur(id, processValue(schema, newValue));
+          })
+        }
+        onFocus={
+          onFocus &&
+          (event => {
+            const newValue = getValue(event, multiple);
+            onFocus(id, processValue(schema, newValue));
+          })
+        }
+        onChange={event => {
           const newValue = getValue(event, multiple);
-          onBlur(id, processValue(schema, newValue));
-        })
-      }
-      onFocus={
-        onFocus &&
-        (event => {
-          const newValue = getValue(event, multiple);
-          onFocus(id, processValue(schema, newValue));
-        })
-      }
-      onChange={event => {
-        const newValue = getValue(event, multiple);
-        onChange(processValue(schema, newValue));
-      }}>
-      {!multiple && !schema.default && <option value="">{placeholder}</option>}
-      {enumOptions.map(({ value, label }, i) => {
-        const disabled = enumDisabled && enumDisabled.indexOf(value) != -1;
-        return (
-          <option key={i} value={value} disabled={disabled}>
-            {label}
-          </option>
-        );
-      })}
-    </select>
+          onChange(processValue(schema, newValue));
+        }}>
+        {enumOptions.map(({ value, label }, index) => {
+          const disabled = enumDisabled && enumDisabled.indexOf(value) !== -1;
+
+          return (
+            <MenuItem
+              key={index}
+              value={value}
+              className={disabled ? "disabled" : ""}>
+              {label}
+            </MenuItem>
+          );
+        })}
+      </Select>
+    </FormControl>
   );
 }
 

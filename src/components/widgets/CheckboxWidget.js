@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import DescriptionField from "../fields/DescriptionField.js";
+import { FormControlLabel, Checkbox } from "@carecloud/material-cuil";
 
 function CheckboxWidget(props) {
   const {
@@ -11,7 +12,6 @@ function CheckboxWidget(props) {
     disabled,
     readonly,
     label,
-    autofocus,
     onChange,
   } = props;
   return (
@@ -19,18 +19,20 @@ function CheckboxWidget(props) {
       {schema.description && (
         <DescriptionField description={schema.description} />
       )}
-      <label>
-        <input
-          type="checkbox"
-          id={id}
-          checked={typeof value === "undefined" ? false : value}
-          required={required}
-          disabled={disabled || readonly}
-          autoFocus={autofocus}
-          onChange={event => onChange(event.target.checked)}
-        />
-        <span>{label}</span>
-      </label>
+
+      <FormControlLabel
+        control={
+          <Checkbox
+            id={id}
+            checked={typeof value === "undefined" ? false : value}
+            value={value}
+            required={required}
+            disabled={disabled || readonly}
+            onChange={event => onChange(event.target.checked)}
+          />
+        }
+        label={label}
+      />
     </div>
   );
 }
