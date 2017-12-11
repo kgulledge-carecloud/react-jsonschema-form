@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { TextField } from "@carecloud/material-cuil";
+import { Input } from "@carecloud/material-cuil";
 
 function BaseInput(props) {
   // Note: since React 15.2.0 we can't forward unknown element attributes, so we
@@ -20,17 +20,19 @@ function BaseInput(props) {
   } = props;
 
   inputProps.type = options.inputType || inputProps.type || "text";
+
   const _onChange = ({ target: { value } }) => {
     return props.onChange(value === "" ? options.emptyValue : value);
   };
+
   return (
-    <TextField
+    <Input
       className="form-control"
-      readOnly={readonly}
-      disabled={disabled}
+      disabled={disabled || readonly}
       autoFocus={autofocus}
       value={value == null ? "" : value}
       {...inputProps}
+      placeholder={inputProps.placeholder || inputProps.label}
       onChange={_onChange}
       onBlur={onBlur && (event => onBlur(inputProps.id, event.target.value))}
       onFocus={onFocus && (event => onFocus(inputProps.id, event.target.value))}
