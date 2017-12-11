@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import Alfresco from "../alfresco";
 
 import {
   orderProperties,
@@ -92,7 +93,11 @@ class ObjectField extends Component {
       );
     }
 
-    const Template = registry.ObjectFieldTemplate || DefaultObjectFieldTemplate;
+    let Template = registry.ObjectFieldTemplate || DefaultObjectFieldTemplate;
+
+    if (uiSchema["ui:alfresco"]) {
+      Template = Alfresco;
+    }
 
     const templateProps = {
       title: uiSchema["ui:title"] || title,
