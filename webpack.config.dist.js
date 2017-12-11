@@ -28,10 +28,13 @@ module.exports = {
       amd: "react"
     }
   },
+  resolve: {
+    extensions: ["", ".js", ".jsx", ".css"]
+  },
   module: {
     loaders: [
       {
-        test: /\.js$/,
+        test: /\.(js|jsx)$/,
         loaders: ["babel"],
       },
       {
