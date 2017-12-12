@@ -8,7 +8,7 @@ const style = ({ theme }) => ({
     padding: 20,
     border: '1px solid #CFD8DC',
     boxShadow: '0 1px 3px 0 rgba(0,0,0,0.1)',
-    minHeight: 600
+    minHeight: 300
   },
   fieldColumns: {
     '& .form-group': {
