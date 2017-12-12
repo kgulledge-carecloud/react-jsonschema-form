@@ -13,14 +13,18 @@ module.exports = {
     publicPath: "/static/"
   },
   plugins: [
+    new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoErrorsPlugin()
+    new webpack.NoEmitOnErrorsPlugin()
   ],
+  resolve: {
+    extensions: [".js", ".jsx", ".css"]
+  },
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.jsx?$/,
-        loader: "babel",
+        use: "babel-loader",
         include: [
           path.join(__dirname, "src"),
           path.join(__dirname, "playground"),
@@ -29,7 +33,7 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        loader: "style!css",
+        use: ["style-loader", "css-loader"],
         include: [
           path.join(__dirname, "css"),
           path.join(__dirname, "playground"),
@@ -38,7 +42,7 @@ module.exports = {
       },
       {
         test: /\.json$/,
-        loader:"json-loader",
+        use:"json-loader",
         include: [
           path.join(__dirname, "css"),
           path.join(__dirname, "playground"),

@@ -27,10 +27,7 @@ function processValue({ type, items }, value) {
 
 function getValue(event, multiple) {
   if (multiple) {
-    return [].slice
-      .call(event.target.options)
-      .filter(o => o.selected)
-      .map(o => o.value);
+    return [].slice.call(event.target.value || []);
   } else {
     return event.target.value;
   }

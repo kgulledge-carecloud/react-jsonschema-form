@@ -18,13 +18,13 @@ module.exports = {
     })
   ],
   resolve: {
-    extensions: ["", ".js", ".jsx", ".css"]
+    extensions: [".js", ".jsx", ".css"]
   },
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.jsx?$/,
-        loader: "babel",
+        use: "babel-loader",
         include: [
           path.join(__dirname, "src"),
           path.join(__dirname, "playground"),
@@ -33,7 +33,7 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        loader: ExtractTextPlugin.extract("css-loader"),
+        use: ExtractTextPlugin.extract("css-loader"),
         include: [
           path.join(__dirname, "css"),
           path.join(__dirname, "playground"),
@@ -42,7 +42,7 @@ module.exports = {
       },
       {
         test: /\.json$/,
-        loader:"json-loader",
+        use:"json-loader",
         include: [
           path.join(__dirname, "css"),
           path.join(__dirname, "playground"),

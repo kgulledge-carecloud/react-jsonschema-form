@@ -6,7 +6,7 @@ module.exports = {
   context: __dirname + "/src",
   entry: "./index.js",
   output: {
-    path: "./dist",
+    path: path.join(__dirname, "dist"),
     publicPath: "/dist/",
     filename: "react-jsonschema-form.js",
     library: "JSONSchemaForm",
@@ -29,17 +29,18 @@ module.exports = {
     }
   },
   resolve: {
-    extensions: ["", ".js", ".jsx", ".css"]
+    extensions: [".js", ".jsx", ".css"]
   },
   module: {
-    loaders: [
+    rules: [
       {
-        test: /\.(js|jsx)$/,
-        loaders: ["babel"],
+        test: /\.jsx?$/,
+        use: "babel-loader",
+        exclude: [/node_modules/]
       },
       {
         test: /\.json$/,
-        loader:"json-loader",
+        use:"json-loader",
         include: [
           path.join(__dirname, "css"),
           path.join(__dirname, "playground"),
