@@ -93,19 +93,12 @@ function DefaultTemplate(props) {
     readonly,
     schema,
     uiSchema,
+    useDiv,
   } = props;
 
   if (hidden) {
     return children;
   }
-
-  const containerProps = {
-    required,
-    error: !!errors,
-    disabled: disabled || readonly,
-    margin: "normal",
-    fullWidth: true,
-  };
 
   // Radio and checkboxes should use a FormLabel instead of an InputLabel
   const useFormLabel =
@@ -122,14 +115,25 @@ function DefaultTemplate(props) {
     labelProps.shrink = true;
   }
 
+  const ContainerComp = useDiv ? "div" : FormControl;
+  const containerProps = useDiv
+    ? {}
+    : {
+        required,
+        error: !!errors,
+        disabled: disabled || readonly,
+        margin: "normal",
+        fullWidth: true,
+      };
+
   return (
-    <FormControl className={classNames} {...containerProps}>
+    <ContainerComp className={classNames} {...containerProps}>
       {displayLabel && <LabelComp {...labelProps}>{label}</LabelComp>}
       {displayLabel && description ? description : null}
       {children}
       {errors}
       {help}
-    </FormControl>
+    </ContainerComp>
   );
 }
 
@@ -192,16 +196,23 @@ function SchemaFieldRender(props) {
   const uiOptions = getUiOptions(uiSchema);
   let { label: displayLabel = true } = uiOptions;
 
+  let useDiv = false;
+
   switch (schema.type) {
     case "array":
       displayLabel =
         isMultiSelect(schema, definitions) ||
         isFilesArray(schema, uiSchema, definitions);
+      useDiv = true;
 
       break;
     case "date":
+      displayLabel = false;
+
+      break;
     case "object":
       displayLabel = false;
+      useDiv = true;
 
       break;
     case "boolean":
@@ -279,6 +290,7 @@ function SchemaFieldRender(props) {
     fields,
     schema,
     uiSchema,
+    useDiv,
   };
 
   return <FieldTemplate {...fieldProps}>{field}</FieldTemplate>;
