@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { Button, Icons } from "@carecloud/material-cuil";
+import { range } from "lodash";
 
 import UnsupportedField from "./UnsupportedField";
 import {
@@ -15,6 +17,8 @@ import {
   toIdSchema,
   getDefaultRegistry,
 } from "../../utils";
+
+const { ExpandLess, ExpandMore, Close } = Icons;
 
 function ArrayFieldTitle({ TitleField, idSchema, title, required }) {
   if (!title) {
@@ -34,26 +38,13 @@ function ArrayFieldDescription({ DescriptionField, idSchema, description }) {
   return <DescriptionField id={id} description={description} />;
 }
 
-function IconBtn(props) {
-  const { type = "default", icon, className, ...otherProps } = props;
-  return (
-    <button
-      type="button"
-      className={`btn btn-${type} ${className}`}
-      {...otherProps}>
-      <i className={`glyphicon glyphicon-${icon}`} />
-    </button>
-  );
-}
-
 // Used in the two templates
 function DefaultArrayItem(props) {
   const btnStyle = {
-    flex: 1,
-    paddingLeft: 6,
-    paddingRight: 6,
-    fontWeight: "bold",
+    marginLeft: 6,
+    marginRight: 6,
   };
+
   return (
     <div key={props.index} className={props.className}>
       <div className={props.hasToolbar ? "col-xs-9" : "col-xs-12"}>
@@ -64,41 +55,49 @@ function DefaultArrayItem(props) {
         <div className="col-xs-3 array-item-toolbox">
           <div
             className="btn-group"
-            style={{ display: "flex", justifyContent: "space-around" }}>
+            style={{ display: "flex", justifyContent: "flex-end" }}>
             {(props.hasMoveUp || props.hasMoveDown) && (
-              <IconBtn
-                icon="arrow-up"
-                className="array-item-move-up"
+              <Button
+                fab
+                mini
+                color="primary"
                 tabIndex="-1"
+                className="array-item-move-up"
                 style={btnStyle}
                 disabled={props.disabled || props.readonly || !props.hasMoveUp}
-                onClick={props.onReorderClick(props.index, props.index - 1)}
-              />
+                onClick={props.onReorderClick(props.index, props.index - 1)}>
+                <ExpandLess />
+              </Button>
             )}
 
             {(props.hasMoveUp || props.hasMoveDown) && (
-              <IconBtn
-                icon="arrow-down"
-                className="array-item-move-down"
+              <Button
+                fab
+                mini
+                color="primary"
                 tabIndex="-1"
                 style={btnStyle}
+                className="array-item-move-down"
                 disabled={
                   props.disabled || props.readonly || !props.hasMoveDown
                 }
-                onClick={props.onReorderClick(props.index, props.index + 1)}
-              />
+                onClick={props.onReorderClick(props.index, props.index + 1)}>
+                <ExpandMore />
+              </Button>
             )}
 
             {props.hasRemove && (
-              <IconBtn
-                type="danger"
-                icon="remove"
+              <Button
+                fab
+                mini
+                color="accent"
                 className="array-item-remove"
                 tabIndex="-1"
                 style={btnStyle}
                 disabled={props.disabled || props.readonly}
-                onClick={props.onDropIndexClick(props.index)}
-              />
+                onClick={props.onDropIndexClick(props.index)}>
+                <Close />
+              </Button>
             )}
           </div>
         </div>
@@ -144,7 +143,9 @@ function DefaultFixedArrayFieldTemplate(props) {
 
 function DefaultNormalArrayFieldTemplate(props) {
   return (
-    <fieldset className={props.className}>
+    <fieldset
+      className={props.className}
+      style={{ border: "none", margin: "0", padding: "0" }}>
       <ArrayFieldTitle
         key={`array-field-title-${props.idSchema.$id}`}
         TitleField={props.TitleField}
@@ -546,6 +547,32 @@ class ArrayField extends Component {
     return <Template {...arrayProps} />;
   }
 
+  setAlfrescoSchema = (itemSchema, itemUiSchema) => {
+    if (itemSchema && itemSchema.properties) {
+      // Get number of columns (defaulting to 3)
+      const propKeys = Object.keys(itemSchema.properties);
+      const numberOfCols = Math.min(propKeys.length, 3);
+      const fields = [];
+
+      // Fields should be grouped by columns
+      range(numberOfCols).forEach(() => {
+        fields.push([]);
+      });
+
+      // Default to 3 columns
+      propKeys.forEach((propKey, fieldIndex) => {
+        fields[fieldIndex % numberOfCols].push(propKey);
+      });
+
+      itemUiSchema["ui:array"] = true;
+      itemUiSchema["ui:alfresco"] = {
+        containers: {
+          array: [fields],
+        },
+      };
+    }
+  };
+
   renderArrayFieldItem(props) {
     const {
       index,
@@ -554,7 +581,7 @@ class ArrayField extends Component {
       canMoveDown = true,
       itemSchema,
       itemData,
-      itemUiSchema,
+      itemUiSchema = {},
       itemIdSchema,
       itemErrorSchema,
       autofocus,
@@ -579,6 +606,8 @@ class ArrayField extends Component {
       remove: removable && canRemove,
     };
     has.toolbar = Object.keys(has).some(key => has[key]);
+
+    this.setAlfrescoSchema(itemSchema, itemUiSchema);
 
     return {
       children: (
@@ -614,16 +643,18 @@ class ArrayField extends Component {
 
 function AddButton({ onClick, disabled }) {
   return (
-    <div className="row">
+    <div
+      className="row"
+      style={{ display: "flex", justifyContent: "flex-end" }}>
       <p className="col-xs-3 col-xs-offset-9 array-item-add text-right">
-        <IconBtn
-          type="info"
-          icon="plus"
-          className="btn-add col-xs-12"
+        <Button
+          raised
+          color="primary"
           tabIndex="0"
           onClick={onClick}
-          disabled={disabled}
-        />
+          disabled={disabled}>
+          Add
+        </Button>
       </p>
     </div>
   );

@@ -28,6 +28,10 @@ class AlfrescoForm extends Component {
       const rows = [];
 
       columns.forEach((fields, colIndex) => {
+        if (!Array.isArray(fields)) {
+          return false;
+        }
+
         fields.forEach((field, rowIndex) => {
           let row = rows[rowIndex];
 
@@ -49,8 +53,22 @@ class AlfrescoForm extends Component {
     const { containers } = this.props.uiSchema['ui:alfresco'];
 
     return Object.keys(containers).map((containerKey, containerIndex) => {
+      const containerProperty = this.props.schema.properties[containerKey];
+
+      // Arrays should be passed through
+      if (containerProperty && containerProperty.type === 'array') {
+        const component = this.props.properties.filter(property => property.name === containerKey)[0];
+
+        return (
+          <Grid key={containerIndex} item xs={12}>
+            {component.content}
+          </Grid>
+        );
+      }
+
       const container = this.columnsToRows(containers[containerKey]);
 
+      // Ignore empty containers
       if (!container || !container.length) {
         return null;
       }
@@ -89,6 +107,10 @@ class AlfrescoForm extends Component {
   render = () => {
     const props = this.props;
     const { classes, TitleField, DescriptionField } = props;
+
+    if (props.uiSchema['ui:array']) {
+      return this.renderContainers();
+    }
 
     return (
       <Paper className={classes.formContainer}>
