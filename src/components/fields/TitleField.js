@@ -8,7 +8,7 @@ function TitleField(props) {
   const { id, title, required } = props;
   const legend = required ? title + REQUIRED_FIELD_SYMBOL : title;
   return (
-    <FormLabel id={id} component="legend">
+    <FormLabel id={id} component="legend" className="form-legend">
       {legend}
     </FormLabel>
   );

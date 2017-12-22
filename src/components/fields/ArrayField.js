@@ -567,7 +567,9 @@ class ArrayField extends Component {
       itemUiSchema["ui:array"] = true;
       itemUiSchema["ui:alfresco"] = {
         containers: {
-          array: [fields],
+          array: {
+            fields: [fields],
+          },
         },
       };
     }
