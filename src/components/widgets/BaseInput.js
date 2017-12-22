@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Input } from "@carecloud/material-cuil";
+import { InputWithClear } from "@carecloud/material-cuil";
 
 function BaseInput(props) {
   // Note: since React 15.2.0 we can't forward unknown element attributes, so we
@@ -26,7 +26,7 @@ function BaseInput(props) {
   };
 
   return (
-    <Input
+    <InputWithClear
       className="form-control"
       disabled={disabled || readonly}
       autoFocus={autofocus}
