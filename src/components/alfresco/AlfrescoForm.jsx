@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Grid, Paper, withStyles } from '@carecloud/material-cuil';
 
+import TitleField from '../fields/TitleField';
+
 const style = ({ theme }) => ({
   root: {},
   formContainer: {
@@ -21,13 +23,17 @@ class AlfrescoForm extends Component {
 
   /**
    * Transform column to rows.
-   * @param container
+   * @param columns: array of arrays representing columns
    */
-  columnsToRows = container => {
-    return container.map(columns => {
+  columnsToRows = columns => {
+    if (!columns) {
+      return [];
+    }
+
+    return columns.map(column => {
       const rows = [];
 
-      columns.forEach((fields, colIndex) => {
+      column.forEach((fields, colIndex) => {
         if (!Array.isArray(fields)) {
           return false;
         }
@@ -48,6 +54,14 @@ class AlfrescoForm extends Component {
     });
   };
 
+  renderContainerTitle = ({ id, title }) => {
+    if (!title) {
+      return null;
+    }
+
+    return <TitleField id={`${id}__title`} title={title} />;
+  };
+
   renderContainers = () => {
     const { classes } = this.props;
     const { containers } = this.props.uiSchema['ui:alfresco'];
@@ -66,16 +80,19 @@ class AlfrescoForm extends Component {
         );
       }
 
-      const container = this.columnsToRows(containers[containerKey]);
+      const container = containers[containerKey];
+      const fields = this.columnsToRows(container.fields);
 
       // Ignore empty containers
-      if (!container || !container.length) {
+      if (!fields || !fields.length) {
         return null;
       }
 
       return (
         <Grid key={containerIndex} item xs={12}>
-          {container.map((rows, fieldRowIndex) => {
+          {this.renderContainerTitle(container)}
+
+          {fields.map((rows, fieldRowIndex) => {
             return (
               <Grid key={fieldRowIndex} container spacing={34}>
                 {rows.map((row, rowIndex) => {
