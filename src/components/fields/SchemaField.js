@@ -151,6 +151,7 @@ if (process.env.NODE_ENV !== "production") {
     rawDescription: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
     hidden: PropTypes.bool,
     required: PropTypes.bool,
+    disabled: PropTypes.bool,
     readonly: PropTypes.bool,
     displayLabel: PropTypes.bool,
     fields: PropTypes.object,
@@ -160,6 +161,7 @@ if (process.env.NODE_ENV !== "production") {
 
 DefaultTemplate.defaultProps = {
   hidden: false,
+  disabled: false,
   readonly: false,
   required: false,
   displayLabel: true,
@@ -203,7 +205,6 @@ function SchemaFieldRender(props) {
       displayLabel =
         isMultiSelect(schema, definitions) ||
         isFilesArray(schema, uiSchema, definitions);
-      useDiv = true;
 
       break;
     case "date":
@@ -283,6 +284,7 @@ function SchemaFieldRender(props) {
     label,
     hidden,
     required,
+    disabled,
     readonly,
     displayLabel,
     classNames,
