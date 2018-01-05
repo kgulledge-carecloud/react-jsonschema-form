@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Input, Select, MenuItem } from "@carecloud/material-cuil";
+import { Select } from "@carecloud/material-cuil";
 
 import { asNumber } from "../../utils";
 
@@ -8,30 +8,41 @@ import { asNumber } from "../../utils";
  * This is a silly limitation in the DOM where option change event values are
  * always retrieved as strings.
  */
-function processValue({ type, items }, value) {
+function processValue({ type }, value) {
   if (value === "") {
     return undefined;
-  } else if (
-    type === "array" &&
-    items &&
-    ["number", "integer"].includes(items.type)
-  ) {
-    return value.map(asNumber);
   } else if (type === "boolean") {
-    return value === "true";
+    if (typeof value === "boolean") {
+      return value;
+    }
+
+    return value ? value === "true" : value;
   } else if (type === "number") {
     return asNumber(value);
   }
+
   return value;
 }
 
-function getValue(event, multiple) {
-  if (multiple) {
-    return [].slice.call(event.target.value || []);
-  } else {
-    return event.target.value;
-  }
-}
+/**
+ * Generate an array of options objects from enumOptions and enumDisabled.
+ *
+ * Each option will have a label, a value and the disabled property if it appears in enumDisabled.
+ */
+const getOptions = (enumOptions, enumDisabled) => {
+  return enumOptions.map(({ label, value }) => {
+    const option = {
+      label,
+      value,
+    };
+
+    if (enumDisabled && enumDisabled.indexOf(value) !== -1) {
+      option.disabled = true;
+    }
+
+    return option;
+  });
+};
 
 function SelectWidget(props) {
   const {
@@ -42,60 +53,49 @@ function SelectWidget(props) {
     required,
     disabled,
     readonly,
-    multiple,
+    multiple: multi,
     onChange,
     onBlur,
     onFocus,
+    label,
+    placeholder,
   } = props;
   const { enumOptions, enumDisabled } = options;
-  const emptyValue = multiple ? [] : "";
+  const emptyValue = multi ? [] : "";
 
   const selectProps = {
     id,
-    multiple,
+    multi,
     required,
+    // If no placeholder is provided, use the label to be consistent with other
+    // MUI components
+    placeholder: placeholder || label,
+    name: id,
     disabled: disabled || readonly,
     value: typeof value === "undefined" ? emptyValue : value,
+    options: getOptions(enumOptions, enumDisabled),
   };
-
-  if (readonly) {
-    selectProps.input = <Input readOnly />;
-  }
 
   return (
     <Select
       {...selectProps}
+      simpleValue
       onBlur={
         onBlur &&
-        (event => {
-          const newValue = getValue(event, multiple);
-          onBlur(id, processValue(schema, newValue));
+        (value => {
+          onBlur(id, processValue(schema, value));
         })
       }
       onFocus={
         onFocus &&
-        (event => {
-          const newValue = getValue(event, multiple);
-          onFocus(id, processValue(schema, newValue));
+        (value => {
+          onFocus(id, processValue(schema, value));
         })
       }
-      onChange={event => {
-        const newValue = getValue(event, multiple);
-        onChange(processValue(schema, newValue));
-      }}>
-      {enumOptions.map(({ value, label }, index) => {
-        const disabled = enumDisabled && enumDisabled.indexOf(value) !== -1;
-
-        return (
-          <MenuItem
-            key={index}
-            value={value}
-            className={disabled ? "disabled" : ""}>
-            {label}
-          </MenuItem>
-        );
-      })}
-    </Select>
+      onChange={value => {
+        onChange(processValue(schema, value));
+      }}
+    />
   );
 }
 

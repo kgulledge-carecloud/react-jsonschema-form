@@ -1,5 +1,6 @@
 var path = require("path");
 var webpack = require("webpack");
+var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 module.exports = {
   cache: true,
@@ -13,6 +14,7 @@ module.exports = {
     libraryTarget: "umd"
   },
   plugins: [
+    new ExtractTextPlugin("styles.css", { allChunks: true }),
     new webpack.DefinePlugin({
       "process.env": {
         NODE_ENV: JSON.stringify("production")
@@ -37,6 +39,15 @@ module.exports = {
         test: /\.jsx?$/,
         use: "babel-loader",
         exclude: [/node_modules/]
+      },
+      {
+        test: /\.css$/,
+        use: ExtractTextPlugin.extract("css-loader"),
+        include: [
+          path.join(__dirname, "css"),
+          path.join(__dirname, "playground"),
+          path.join(__dirname, "node_modules"),
+        ],
       },
       {
         test: /\.json$/,

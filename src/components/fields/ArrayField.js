@@ -677,7 +677,7 @@ if (process.env.NODE_ENV !== "production") {
     onChange: PropTypes.func.isRequired,
     onBlur: PropTypes.func,
     onFocus: PropTypes.func,
-    formData: PropTypes.array,
+    formData: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
     required: PropTypes.bool,
     disabled: PropTypes.bool,
     readonly: PropTypes.bool,
