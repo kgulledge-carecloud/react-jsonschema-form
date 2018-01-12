@@ -29,17 +29,14 @@ class SelectWidget extends React.Component {
   constructor(props) {
     super(props);
 
-    const { async } = this.props.options;
+    const { async } = props.options;
     this.async = async;
 
     this.state = { options: null, isLoading: !!async };
   }
 
   componentDidMount = () => {
-    const options = this.props.options;
-    const { async } = options;
-
-    if (async) {
+    if (this.async) {
       this.loadOptions();
     }
   };
