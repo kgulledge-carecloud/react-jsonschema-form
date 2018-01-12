@@ -1,6 +1,6 @@
 {
   "name": "@carecloud/react-jsonschema-form",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "A simple React component capable of building HTML forms out of a JSON schema.",
   "scripts": {
     "build:readme": "toctoc README.md -w",
@@ -46,6 +46,7 @@
     "ajv": "^5.2.3",
     "babel-plugin-transform-react-jsx": "^6.24.1",
     "babel-plugin-transform-runtime": "^6.23.0",
+    "lodash": "^4.17.4",
     "lodash.topath": "^4.5.2",
     "prop-types": "^15.5.8",
     "setimmediate": "^1.0.5"

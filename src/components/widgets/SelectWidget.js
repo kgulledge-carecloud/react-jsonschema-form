@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Select } from "@carecloud/material-cuil";
+import { get } from "lodash";
 
 import { asNumber } from "../../utils";
 
@@ -24,79 +25,121 @@ function processValue({ type }, value) {
   return value;
 }
 
-/**
- * Generate an array of options objects from enumOptions and enumDisabled.
- *
- * Each option will have a label, a value and the disabled property if it appears in enumDisabled.
- */
-const getOptions = (enumOptions, enumDisabled) => {
-  return enumOptions.map(({ label, value }) => {
-    const option = {
-      label,
-      value,
-    };
+class SelectWidget extends React.Component {
+  constructor(props) {
+    super(props);
 
-    if (enumDisabled && enumDisabled.indexOf(value) !== -1) {
-      option.disabled = true;
+    const { async } = this.props.options;
+    this.async = async;
+
+    this.state = { options: null, isLoading: !!async };
+  }
+
+  componentDidMount = () => {
+    const options = this.props.options;
+    const { async } = options;
+
+    if (async) {
+      this.loadOptions();
     }
-
-    return option;
-  });
-};
-
-function SelectWidget(props) {
-  const {
-    id,
-    schema,
-    options,
-    value,
-    required,
-    disabled,
-    readonly,
-    multiple: multi,
-    onChange,
-    onBlur,
-    onFocus,
-    label,
-    placeholder,
-  } = props;
-  const { enumOptions, enumDisabled } = options;
-  const emptyValue = multi ? [] : "";
-
-  const selectProps = {
-    id,
-    multi,
-    required,
-    // If no placeholder is provided, use the label to be consistent with other
-    // MUI components
-    placeholder: placeholder || label,
-    name: id,
-    disabled: disabled || readonly,
-    value: typeof value === "undefined" ? emptyValue : value,
-    options: getOptions(enumOptions, enumDisabled),
   };
 
-  return (
-    <Select
-      {...selectProps}
-      simpleValue
-      onBlur={
-        onBlur &&
-        (value => {
-          onBlur(id, processValue(schema, value));
-        })
+  /**
+   * Generate an array of options objects from enumOptions and enumDisabled.
+   *
+   * Each option will have a label, a value and the disabled property if it appears in enumDisabled.
+   */
+  getOptions = () => {
+    const { enumOptions, enumDisabled } = this.props.options;
+
+    return enumOptions.map(({ label, value }) => {
+      const option = {
+        label,
+        value,
+      };
+
+      if (enumDisabled && enumDisabled.indexOf(value) !== -1) {
+        option.disabled = true;
       }
-      onFocus={
-        onFocus &&
-        (value => {
-          onFocus(id, processValue(schema, value));
-        })
-      }
-      onChange={value => {
-        onChange(processValue(schema, value));
-      }}
-    />
-  );
+
+      return option;
+    });
+  };
+
+  loadOptions = () => {
+    const { url, optionsPath, headers } = this.async;
+
+    return fetch(url, { headers })
+      .then(response => response.json())
+      .then(json => {
+        this.setState({
+          isLoading: false,
+          options: optionsPath ? get(json, optionsPath) : json,
+        });
+      });
+  };
+
+  render = () => {
+    const {
+      id,
+      schema,
+      value,
+      required,
+      disabled,
+      readonly,
+      multiple: multi,
+      onChange,
+      onBlur,
+      onFocus,
+      label,
+      placeholder,
+    } = this.props;
+
+    const selectProps = {
+      id,
+      multi,
+      required,
+      // If no placeholder is provided, use the label to be consistent with other
+      // MUI components
+      placeholder: placeholder || label,
+      name: id,
+      disabled: disabled || readonly,
+      value: typeof value === "undefined" ? "" : value,
+    };
+
+    if (this.async) {
+      const { valueKey, labelKey } = this.async;
+
+      selectProps.valueKey = valueKey;
+      selectProps.labelKey = labelKey;
+      selectProps.options = this.state.options;
+      selectProps.isLoading = this.state.isLoading;
+    } else {
+      selectProps.options = this.getOptions();
+    }
+
+    return (
+      <Select
+        {...selectProps}
+        simpleValue
+        onBlur={
+          onBlur &&
+          (value => {
+            onBlur(id, processValue(schema, value));
+          })
+        }
+        onFocus={
+          onFocus &&
+          (value => {
+            onFocus(id, processValue(schema, value));
+          })
+        }
+        onChange={value => {
+          onChange(processValue(schema, value));
+        }}
+      />
+    );
+  };
 }
 
 SelectWidget.defaultProps = {
@@ -108,7 +151,9 @@ if (process.env.NODE_ENV !== "production") {
     schema: PropTypes.object.isRequired,
     id: PropTypes.string.isRequired,
     options: PropTypes.shape({
+      async: PropTypes.object,
       enumOptions: PropTypes.array,
+      enumDisabled: PropTypes.array,
     }).isRequired,
     value: PropTypes.any,
     required: PropTypes.bool,
