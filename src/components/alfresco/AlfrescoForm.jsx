@@ -94,7 +94,7 @@ class AlfrescoForm extends Component {
 
           {fields.map((rows, fieldRowIndex) => {
             return (
-              <Grid key={fieldRowIndex} container spacing={34}>
+              <Grid key={fieldRowIndex} container spacing={24}>
                 {rows.map((row, rowIndex) => {
                   return (
                     <Grid container key={rowIndex} className={classes.fieldColumns}>
