@@ -1,11 +1,37 @@
 react-jsonschema-form
 =====================
 
-[![Build Status](https://travis-ci.org/mozilla-services/react-jsonschema-form.svg)](https://travis-ci.org/mozilla-services/react-jsonschema-form)
+A simple [React](http://facebook.github.io/react/) component capable of building HTML forms out of a [JSON schema](http://jsonschema.net/) and using [Material CUIL](https://github.com/CareCloud/material-cuil) semantics.
 
-A simple [React](http://facebook.github.io/react/) component capable of building HTML forms out of a [JSON schema](http://jsonschema.net/) and using [Bootstrap](http://getbootstrap.com/) semantics by default.
+## Getting started
 
-A [live playground](https://mozilla-services.github.io/react-jsonschema-form/) is hosted on gh-pages.
+Make sure to install all the dependencies:
+
+```sh
+yarn install
+```
+
+### Development
+
+```sh
+# Build for development
+yarn build:lib
+
+# Or with code changes watcher
+yarn watch
+```
+
+### Dist and publish
+
+```sh
+# With ode changes watcher
+yarn dist
+yarn publish
+```
+
+## Live Playground
+
+A [live playground](https://mozilla-services.github.io/react-jsonschema-form/) from the original repository, is hosted on gh-pages.
 
 ![](http://i.imgur.com/M8ZCES5.gif)
 
