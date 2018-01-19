@@ -1,3 +1,3 @@
-import AlfrescoForm from "./AlfrescoForm";
+import AlfrescoForm from './AlfrescoForm';
 
 export default AlfrescoForm;

@@ -1,11 +1,6 @@
-import React from "react";
-import PropTypes from "prop-types";
-import {
-  FormControl,
-  FormLabel,
-  FormHelperText,
-  InputLabel,
-} from "@carecloud/material-cuil";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { FormControl, FormLabel, FormHelperText, InputLabel } from '@carecloud/material-cuil';
 
 import {
   isMultiSelect,
@@ -14,24 +9,24 @@ import {
   getUiOptions,
   isFilesArray,
   deepEquals,
-} from "../../utils";
-import UnsupportedField from "./UnsupportedField";
+} from '../../utils';
+import UnsupportedField from './UnsupportedField';
 
 const COMPONENT_TYPES = {
-  array: "ArrayField",
-  boolean: "BooleanField",
-  integer: "NumberField",
-  number: "NumberField",
-  object: "ObjectField",
-  string: "StringField",
+  array: 'ArrayField',
+  boolean: 'BooleanField',
+  integer: 'NumberField',
+  number: 'NumberField',
+  object: 'ObjectField',
+  string: 'StringField',
 };
 
 function getFieldComponent(schema, uiSchema, idSchema, fields) {
-  const field = uiSchema["ui:field"];
-  if (typeof field === "function") {
+  const field = uiSchema['ui:field'];
+  if (typeof field === 'function') {
     return field;
   }
-  if (typeof field === "string" && field in fields) {
+  if (typeof field === 'string' && field in fields) {
     return fields[field];
   }
   const componentName = COMPONENT_TYPES[schema.type];
@@ -63,9 +58,7 @@ function ErrorList(props) {
     return <div />;
   }
   return (
-    <FormHelperText
-      className="error-detail bs-callout bs-callout-info"
-      error={true}>
+    <FormHelperText className="error-detail bs-callout bs-callout-info" error={true}>
       {errors.map((error, index) => {
         return (
           <span className="text-danger" key={index}>
@@ -102,8 +95,7 @@ function DefaultTemplate(props) {
 
   // Radio and checkboxes should use a FormLabel instead of an InputLabel
   const useFormLabel =
-    displayLabel &&
-    ["checkboxes", "radio"].indexOf(uiSchema["ui:widget"]) !== -1;
+    displayLabel && ['checkboxes', 'radio'].indexOf(uiSchema['ui:widget']) !== -1;
 
   const LabelComp = useFormLabel ? FormLabel : InputLabel;
   const labelProps = {
@@ -111,18 +103,18 @@ function DefaultTemplate(props) {
   };
 
   // TODO: remove this once a datepikcer is implemented
-  if (schema.format === "date") {
+  if (schema.format === 'date') {
     labelProps.shrink = true;
   }
 
-  const ContainerComp = useDiv ? "div" : FormControl;
+  const ContainerComp = useDiv ? 'div' : FormControl;
   const containerProps = useDiv
     ? {}
     : {
         required,
         error: !!errors,
         disabled: disabled || readonly,
-        margin: "normal",
+        margin: 'normal',
         fullWidth: true,
       };
 
@@ -137,7 +129,7 @@ function DefaultTemplate(props) {
   );
 }
 
-if (process.env.NODE_ENV !== "production") {
+if (process.env.NODE_ENV !== 'production') {
   DefaultTemplate.propTypes = {
     id: PropTypes.string,
     classNames: PropTypes.string,
@@ -177,18 +169,13 @@ function SchemaFieldRender(props) {
     required,
     registry = getDefaultRegistry(),
   } = props;
-  const {
-    definitions,
-    fields,
-    formContext,
-    FieldTemplate = DefaultTemplate,
-  } = registry;
+  const { definitions, fields, formContext, FieldTemplate = DefaultTemplate } = registry;
   const schema = retrieveSchema(props.schema, definitions, formData);
   const FieldComponent = getFieldComponent(schema, uiSchema, idSchema, fields);
   const { DescriptionField } = fields;
-  const disabled = Boolean(props.disabled || uiSchema["ui:disabled"]);
-  const readonly = Boolean(props.readonly || uiSchema["ui:readonly"]);
-  const autofocus = Boolean(props.autofocus || uiSchema["ui:autofocus"]);
+  const disabled = Boolean(props.disabled || uiSchema['ui:disabled']);
+  const readonly = Boolean(props.readonly || uiSchema['ui:readonly']);
+  const autofocus = Boolean(props.autofocus || uiSchema['ui:autofocus']);
 
   if (Object.keys(schema).length === 0) {
     // See #312: Ensure compatibility with old versions of React.
@@ -201,23 +188,22 @@ function SchemaFieldRender(props) {
   let useDiv = false;
 
   switch (schema.type) {
-    case "array":
+    case 'array':
       displayLabel =
-        isMultiSelect(schema, definitions) ||
-        isFilesArray(schema, uiSchema, definitions);
+        isMultiSelect(schema, definitions) || isFilesArray(schema, uiSchema, definitions);
 
       break;
-    case "date":
+    case 'date':
       displayLabel = false;
 
       break;
-    case "object":
+    case 'object':
       displayLabel = false;
       useDiv = true;
 
       break;
-    case "boolean":
-      if (!uiSchema["ui:widget"]) {
+    case 'boolean':
+      if (!uiSchema['ui:widget']) {
         displayLabel = false;
       }
 
@@ -226,7 +212,7 @@ function SchemaFieldRender(props) {
       break;
   }
 
-  if (uiSchema["ui:field"]) {
+  if (uiSchema['ui:field']) {
     displayLabel = false;
   }
 
@@ -248,36 +234,32 @@ function SchemaFieldRender(props) {
 
   const { type } = schema;
   const id = idSchema.$id;
-  const label =
-    uiSchema["ui:title"] || props.schema.title || schema.title || name;
-  const description =
-    uiSchema["ui:description"] ||
-    props.schema.description ||
-    schema.description;
+  const label = uiSchema['ui:title'] || props.schema.title || schema.title || name;
+  const description = uiSchema['ui:description'] || props.schema.description || schema.description;
   const errors = __errors;
-  const help = uiSchema["ui:help"];
-  const hidden = uiSchema["ui:widget"] === "hidden";
+  const help = uiSchema['ui:help'];
+  const hidden = uiSchema['ui:widget'] === 'hidden';
   const classNames = [
-    "form-group",
-    "field",
+    'form-group',
+    'field',
     `field-${type}`,
-    errors && errors.length > 0 ? "field-error has-error has-danger" : "",
+    errors && errors.length > 0 ? 'field-error has-error has-danger' : '',
     uiSchema.classNames,
   ]
-    .join(" ")
+    .join(' ')
     .trim();
 
   const fieldProps = {
     description: description ? (
       <DescriptionField
-        id={id + "__description"}
+        id={id + '__description'}
         description={description}
         formContext={formContext}
       />
     ) : null,
     rawDescription: description,
     help: help ? <Help help={help} /> : null,
-    rawHelp: typeof help === "string" ? help : undefined,
+    rawHelp: typeof help === 'string' ? help : undefined,
     errors: errors && errors.length ? <ErrorList errors={errors} /> : null,
     rawErrors: errors,
     id,
@@ -322,7 +304,7 @@ SchemaField.defaultProps = {
   autofocus: false,
 };
 
-if (process.env.NODE_ENV !== "production") {
+if (process.env.NODE_ENV !== 'production') {
   SchemaField.propTypes = {
     schema: PropTypes.object.isRequired,
     uiSchema: PropTypes.object,
@@ -330,9 +312,8 @@ if (process.env.NODE_ENV !== "production") {
     formData: PropTypes.any,
     errorSchema: PropTypes.object,
     registry: PropTypes.shape({
-      widgets: PropTypes.objectOf(
-        PropTypes.oneOfType([PropTypes.func, PropTypes.object])
-      ).isRequired,
+      widgets: PropTypes.objectOf(PropTypes.oneOfType([PropTypes.func, PropTypes.object]))
+        .isRequired,
       fields: PropTypes.objectOf(PropTypes.func).isRequired,
       definitions: PropTypes.object.isRequired,
       ArrayFieldTemplate: PropTypes.func,

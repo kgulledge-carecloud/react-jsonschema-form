@@ -1,6 +1,6 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { FormControlLabel, RadioGroup, Radio } from "@carecloud/material-cuil";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { FormControlLabel, RadioGroup, Radio } from '@carecloud/material-cuil';
 
 function RadioWidget(props) {
   const { id, options, value, required, disabled, readonly, onChange } = props;
@@ -17,10 +17,10 @@ function RadioWidget(props) {
       onChange={(event, value) => {
         // BooleanField expects a boolean for the value property
         switch (value) {
-          case "true":
+          case 'true':
             value = true;
             break;
-          case "false":
+          case 'false':
             value = false;
             break;
           default:
@@ -31,8 +31,7 @@ function RadioWidget(props) {
       }}>
       {enumOptions.map((option, index) => {
         const optionValue = option.value.toString();
-        const isDisabled =
-          groupDisabled || enumDisabled.indexOf(option.value) !== -1;
+        const isDisabled = groupDisabled || enumDisabled.indexOf(option.value) !== -1;
 
         return (
           <FormControlLabel
@@ -52,7 +51,7 @@ RadioWidget.defaultProps = {
   autofocus: false,
 };
 
-if (process.env.NODE_ENV !== "production") {
+if (process.env.NODE_ENV !== 'production') {
   RadioWidget.propTypes = {
     schema: PropTypes.object.isRequired,
     id: PropTypes.string.isRequired,

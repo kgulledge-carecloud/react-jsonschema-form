@@ -1,10 +1,6 @@
-import React from "react";
-import PropTypes from "prop-types";
-import {
-  FormControlLabel,
-  FormGroup,
-  Checkbox,
-} from "@carecloud/material-cuil";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { FormControlLabel, FormGroup, Checkbox } from '@carecloud/material-cuil';
 
 function selectValue(value, selected, all) {
   const at = all.indexOf(value);
@@ -26,8 +22,7 @@ function CheckboxesWidget(props) {
   return (
     <FormGroup id={id} name={id} className="checkboxes" row={inline}>
       {enumOptions.map((option, index) => {
-        const isDisabled =
-          groupDisabled || enumDisabled.indexOf(option.value) !== -1;
+        const isDisabled = groupDisabled || enumDisabled.indexOf(option.value) !== -1;
         const checked = value.indexOf(option.value) !== -1;
 
         return (
@@ -65,7 +60,7 @@ CheckboxesWidget.defaultProps = {
   },
 };
 
-if (process.env.NODE_ENV !== "production") {
+if (process.env.NODE_ENV !== 'production') {
   CheckboxesWidget.propTypes = {
     schema: PropTypes.object.isRequired,
     id: PropTypes.string.isRequired,

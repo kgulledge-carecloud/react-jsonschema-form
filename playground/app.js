@@ -1,33 +1,33 @@
-import React, { Component } from "react";
-import { render } from "react-dom";
-import CodeMirror from "react-codemirror2";
-import "codemirror/mode/javascript/javascript";
+import React, { Component } from 'react';
+import { render } from 'react-dom';
+import CodeMirror from 'react-codemirror2';
+import 'codemirror/mode/javascript/javascript';
 
-import { shouldRender } from "../src/utils";
-import { samples } from "./samples";
-import Form from "../src";
+import { shouldRender } from '../src/utils';
+import { samples } from './samples';
+import Form from '../src';
 
 // Import a few CodeMirror themes; these are used to match alternative
 // bootstrap ones.
-import "codemirror/lib/codemirror.css";
-import "codemirror/theme/dracula.css";
-import "codemirror/theme/blackboard.css";
-import "codemirror/theme/mbo.css";
-import "codemirror/theme/ttcn.css";
-import "codemirror/theme/solarized.css";
-import "codemirror/theme/monokai.css";
-import "codemirror/theme/eclipse.css";
+import 'codemirror/lib/codemirror.css';
+import 'codemirror/theme/dracula.css';
+import 'codemirror/theme/blackboard.css';
+import 'codemirror/theme/mbo.css';
+import 'codemirror/theme/ttcn.css';
+import 'codemirror/theme/solarized.css';
+import 'codemirror/theme/monokai.css';
+import 'codemirror/theme/eclipse.css';
 
 const log = type => console.log.bind(console, type);
 const fromJson = json => JSON.parse(json);
 const toJson = val => JSON.stringify(val, null, 2);
-const liveValidateSchema = { type: "boolean", title: "Live validation" };
+const liveValidateSchema = { type: 'boolean', title: 'Live validation' };
 const cmOptions = {
-  theme: "default",
-  height: "auto",
+  theme: 'default',
+  height: 'auto',
   viewportMargin: Infinity,
   mode: {
-    name: "javascript",
+    name: 'javascript',
     json: true,
     statementIndent: 2,
   },
@@ -38,90 +38,71 @@ const cmOptions = {
 };
 const themes = {
   default: {
-    stylesheet:
-      "//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css",
+    stylesheet: '//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css',
   },
   cerulean: {
-    stylesheet:
-      "//cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.6/cerulean/bootstrap.min.css",
+    stylesheet: '//cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.6/cerulean/bootstrap.min.css',
   },
   cosmo: {
-    stylesheet:
-      "//cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.6/cosmo/bootstrap.min.css",
+    stylesheet: '//cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.6/cosmo/bootstrap.min.css',
   },
   cyborg: {
-    stylesheet:
-      "//cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.6/cyborg/bootstrap.min.css",
-    editor: "blackboard",
+    stylesheet: '//cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.6/cyborg/bootstrap.min.css',
+    editor: 'blackboard',
   },
   darkly: {
-    stylesheet:
-      "//cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.6/darkly/bootstrap.min.css",
-    editor: "mbo",
+    stylesheet: '//cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.6/darkly/bootstrap.min.css',
+    editor: 'mbo',
   },
   flatly: {
-    stylesheet:
-      "//cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.6/flatly/bootstrap.min.css",
-    editor: "ttcn",
+    stylesheet: '//cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.6/flatly/bootstrap.min.css',
+    editor: 'ttcn',
   },
   journal: {
-    stylesheet:
-      "//cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.6/journal/bootstrap.min.css",
+    stylesheet: '//cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.6/journal/bootstrap.min.css',
   },
   lumen: {
-    stylesheet:
-      "//cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.6/lumen/bootstrap.min.css",
+    stylesheet: '//cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.6/lumen/bootstrap.min.css',
   },
   paper: {
-    stylesheet:
-      "//cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.6/paper/bootstrap.min.css",
+    stylesheet: '//cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.6/paper/bootstrap.min.css',
   },
   readable: {
-    stylesheet:
-      "//cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.6/readable/bootstrap.min.css",
+    stylesheet: '//cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.6/readable/bootstrap.min.css',
   },
   sandstone: {
-    stylesheet:
-      "//cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.6/sandstone/bootstrap.min.css",
-    editor: "solarized",
+    stylesheet: '//cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.6/sandstone/bootstrap.min.css',
+    editor: 'solarized',
   },
   simplex: {
-    stylesheet:
-      "//cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.6/simplex/bootstrap.min.css",
-    editor: "ttcn",
+    stylesheet: '//cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.6/simplex/bootstrap.min.css',
+    editor: 'ttcn',
   },
   slate: {
-    stylesheet:
-      "//cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.6/slate/bootstrap.min.css",
-    editor: "monokai",
+    stylesheet: '//cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.6/slate/bootstrap.min.css',
+    editor: 'monokai',
   },
   spacelab: {
-    stylesheet:
-      "//cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.6/spacelab/bootstrap.min.css",
+    stylesheet: '//cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.6/spacelab/bootstrap.min.css',
   },
-  "solarized-dark": {
-    stylesheet:
-      "//cdn.rawgit.com/aalpern/bootstrap-solarized/master/bootstrap-solarized-dark.css",
-    editor: "dracula",
+  'solarized-dark': {
+    stylesheet: '//cdn.rawgit.com/aalpern/bootstrap-solarized/master/bootstrap-solarized-dark.css',
+    editor: 'dracula',
   },
-  "solarized-light": {
-    stylesheet:
-      "//cdn.rawgit.com/aalpern/bootstrap-solarized/master/bootstrap-solarized-light.css",
-    editor: "solarized",
+  'solarized-light': {
+    stylesheet: '//cdn.rawgit.com/aalpern/bootstrap-solarized/master/bootstrap-solarized-light.css',
+    editor: 'solarized',
   },
   superhero: {
-    stylesheet:
-      "//cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.6/superhero/bootstrap.min.css",
-    editor: "dracula",
+    stylesheet: '//cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.6/superhero/bootstrap.min.css',
+    editor: 'dracula',
   },
   united: {
-    stylesheet:
-      "//cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.6/united/bootstrap.min.css",
+    stylesheet: '//cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.6/united/bootstrap.min.css',
   },
   yeti: {
-    stylesheet:
-      "//cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.6/yeti/bootstrap.min.css",
-    editor: "eclipse",
+    stylesheet: '//cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.6/yeti/bootstrap.min.css',
+    editor: 'eclipse',
   },
 };
 
@@ -145,8 +126,7 @@ class GeoPosition extends Component {
         <h3>Hey, I'm a custom component</h3>
         <p>
           I'm registered as <code>geo</code> and referenced in
-          <code>uiSchema</code> as the <code>ui:field</code> to use for this
-          schema.
+          <code>uiSchema</code> as the <code>ui:field</code> to use for this schema.
         </p>
         <div className="row">
           <div className="col-sm-6">
@@ -156,7 +136,7 @@ class GeoPosition extends Component {
               type="number"
               value={lat}
               step="0.00001"
-              onChange={this.onChange("lat")}
+              onChange={this.onChange('lat')}
             />
           </div>
           <div className="col-sm-6">
@@ -166,7 +146,7 @@ class GeoPosition extends Component {
               type="number"
               value={lon}
               step="0.00001"
-              onChange={this.onChange("lon")}
+              onChange={this.onChange('lon')}
             />
           </div>
         </div>
@@ -202,13 +182,13 @@ class Editor extends Component {
 
   render() {
     const { title, theme } = this.props;
-    const icon = this.state.valid ? "ok" : "remove";
-    const cls = this.state.valid ? "valid" : "invalid";
+    const icon = this.state.valid ? 'ok' : 'remove';
+    const cls = this.state.valid ? 'valid' : 'invalid';
     return (
       <div className="panel panel-default">
         <div className="panel-heading">
           <span className={`${cls} glyphicon glyphicon-${icon}`} />
-          {" " + title}
+          {' ' + title}
         </div>
         <CodeMirror
           value={this.state.code}
@@ -223,7 +203,7 @@ class Editor extends Component {
 class Selector extends Component {
   constructor(props) {
     super(props);
-    this.state = { current: "Simple" };
+    this.state = { current: 'Simple' };
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -246,7 +226,7 @@ class Selector extends Component {
             <li
               key={i}
               role="presentation"
-              className={this.state.current === label ? "active" : ""}>
+              className={this.state.current === label ? 'active' : ''}>
               <a href="#" onClick={this.onLabelClick(label)}>
                 {label}
               </a>
@@ -260,7 +240,7 @@ class Selector extends Component {
 
 function ThemeSelector({ theme, select }) {
   const themeSchema = {
-    type: "string",
+    type: 'string',
     enum: Object.keys(themes),
   };
   return (
@@ -276,7 +256,7 @@ function ThemeSelector({ theme, select }) {
 class CopyLink extends Component {
   onCopyClick = event => {
     this.input.select();
-    document.execCommand("copy");
+    document.execCommand('copy');
   };
 
   render() {
@@ -297,10 +277,7 @@ class CopyLink extends Component {
           defaultValue={shareURL}
         />
         <span className="input-group-btn">
-          <button
-            className="btn btn-default"
-            type="button"
-            onClick={this.onCopyClick}>
+          <button className="btn btn-default" type="button" onClick={this.onCopyClick}>
             <i className="glyphicon glyphicon-copy" />
           </button>
         </span>
@@ -320,8 +297,8 @@ class App extends Component {
       uiSchema,
       formData,
       validate,
-      editor: "default",
-      theme: "default",
+      editor: 'default',
+      theme: 'default',
       liveValidate: true,
       shareURL: null,
     };
@@ -329,11 +306,11 @@ class App extends Component {
 
   componentDidMount() {
     const hash = document.location.hash.match(/#(.*)/);
-    if (hash && typeof hash[1] === "string" && hash[1].length > 0) {
+    if (hash && typeof hash[1] === 'string' && hash[1].length > 0) {
       try {
         this.load(JSON.parse(atob(hash[1])));
       } catch (err) {
-        alert("Unable to load form setup data.");
+        alert('Unable to load form setup data.');
       }
     } else {
       this.load(samples.Simple);
@@ -365,17 +342,16 @@ class App extends Component {
   onFormDataEdited = formData => this.setState({ formData, shareURL: null });
 
   onThemeSelected = (theme, { stylesheet, editor }) => {
-    this.setState({ theme, editor: editor ? editor : "default" });
+    this.setState({ theme, editor: editor ? editor : 'default' });
     setImmediate(() => {
       // Side effect!
-      document.getElementById("theme").setAttribute("href", stylesheet);
+      document.getElementById('theme').setAttribute('href', stylesheet);
     });
   };
 
   setLiveValidate = ({ formData }) => this.setState({ liveValidate: formData });
 
-  onFormDataChange = ({ formData }) =>
-    this.setState({ formData, shareURL: null });
+  onFormDataChange = ({ formData }) => this.setState({ formData, shareURL: null });
 
   onShare = () => {
     const { formData, schema, uiSchema } = this.state;
@@ -459,19 +435,13 @@ class App extends Component {
               uiSchema={uiSchema}
               formData={formData}
               onChange={this.onFormDataChange}
-              onSubmit={({ formData }) =>
-                console.log("submitted formData", formData)
-              }
+              onSubmit={({ formData }) => console.log('submitted formData', formData)}
               fields={{ geo: GeoPosition }}
               validate={validate}
-              onBlur={(id, value) =>
-                console.log(`Touched ${id} with value ${value}`)
-              }
-              onFocus={(id, value) =>
-                console.log(`Focused ${id} with value ${value}`)
-              }
+              onBlur={(id, value) => console.log(`Touched ${id} with value ${value}`)}
+              onFocus={(id, value) => console.log(`Focused ${id} with value ${value}`)}
               transformErrors={transformErrors}
-              onError={log("errors")}>
+              onError={log('errors')}>
               <div className="row">
                 <div className="col-sm-3">
                   <button className="btn btn-primary" type="submit">
@@ -479,10 +449,7 @@ class App extends Component {
                   </button>
                 </div>
                 <div className="col-sm-9 text-right">
-                  <CopyLink
-                    shareURL={this.state.shareURL}
-                    onShare={this.onShare}
-                  />
+                  <CopyLink shareURL={this.state.shareURL} onShare={this.onShare} />
                 </div>
               </div>
             </Form>
@@ -493,4 +460,4 @@ class App extends Component {
   }
 }
 
-render(<App />, document.getElementById("app"));
+render(<App />, document.getElementById('app'));

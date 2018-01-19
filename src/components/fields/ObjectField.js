@@ -1,21 +1,17 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import Alfresco from "../alfresco";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import Alfresco from '../alfresco';
 
-import {
-  orderProperties,
-  retrieveSchema,
-  getDefaultRegistry,
-} from "../../utils";
+import { orderProperties, retrieveSchema, getDefaultRegistry } from '../../utils';
 
 function DefaultObjectFieldTemplate(props) {
   const { TitleField, DescriptionField } = props;
   return (
     <fieldset>
-      {(props.uiSchema["ui:title"] || props.title) && (
+      {(props.uiSchema['ui:title'] || props.title) && (
         <TitleField
           id={`${props.idSchema.$id}__title`}
-          title={props.title || props.uiSchema["ui:title"]}
+          title={props.title || props.uiSchema['ui:title']}
           required={props.required}
           formContext={props.formContext}
         />
@@ -45,9 +41,7 @@ class ObjectField extends Component {
 
   isRequired(name) {
     const schema = this.props.schema;
-    return (
-      Array.isArray(schema.required) && schema.required.indexOf(name) !== -1
-    );
+    return Array.isArray(schema.required) && schema.required.indexOf(name) !== -1;
   }
 
   onPropertyChange = name => {
@@ -75,17 +69,17 @@ class ObjectField extends Component {
     const { SchemaField, TitleField, DescriptionField } = fields;
     const schema = retrieveSchema(this.props.schema, definitions, formData);
     const title = schema.title === undefined ? name : schema.title;
-    const description = uiSchema["ui:description"] || schema.description;
+    const description = uiSchema['ui:description'] || schema.description;
     let orderedProperties;
 
     try {
       const properties = Object.keys(schema.properties);
-      orderedProperties = orderProperties(properties, uiSchema["ui:order"]);
+      orderedProperties = orderProperties(properties, uiSchema['ui:order']);
     } catch (err) {
       return (
         <div>
-          <p className="config-error" style={{ color: "red" }}>
-            Invalid {name || "root"} object field configuration:
+          <p className="config-error" style={{ color: 'red' }}>
+            Invalid {name || 'root'} object field configuration:
             <em>{err.message}</em>.
           </p>
           <pre>{JSON.stringify(schema)}</pre>
@@ -95,12 +89,12 @@ class ObjectField extends Component {
 
     let Template = registry.ObjectFieldTemplate || DefaultObjectFieldTemplate;
 
-    if (uiSchema["ui:alfresco"]) {
+    if (uiSchema['ui:alfresco']) {
       Template = Alfresco;
     }
 
     const templateProps = {
-      title: uiSchema["ui:title"] || title,
+      title: uiSchema['ui:title'] || title,
       description,
       TitleField,
       DescriptionField,
@@ -141,7 +135,7 @@ class ObjectField extends Component {
   }
 }
 
-if (process.env.NODE_ENV !== "production") {
+if (process.env.NODE_ENV !== 'production') {
   ObjectField.propTypes = {
     schema: PropTypes.object.isRequired,
     uiSchema: PropTypes.object,
@@ -153,9 +147,8 @@ if (process.env.NODE_ENV !== "production") {
     disabled: PropTypes.bool,
     readonly: PropTypes.bool,
     registry: PropTypes.shape({
-      widgets: PropTypes.objectOf(
-        PropTypes.oneOfType([PropTypes.func, PropTypes.object])
-      ).isRequired,
+      widgets: PropTypes.objectOf(PropTypes.oneOfType([PropTypes.func, PropTypes.object]))
+        .isRequired,
       fields: PropTypes.objectOf(PropTypes.func).isRequired,
       definitions: PropTypes.object.isRequired,
       formContext: PropTypes.object.isRequired,
