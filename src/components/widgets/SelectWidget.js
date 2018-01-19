@@ -1,28 +1,11 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { Select } from "@carecloud/material-cuil";
-import { get } from "lodash";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Select } from '@carecloud/material-cuil';
+import { get } from 'lodash';
 
-import { asNumber } from "../../utils";
-
-/**
- * This is a silly limitation in the DOM where option change event values are
- * always retrieved as strings.
- */
+// TODO: Maybe this is necessary in the future, further testing is needed
 function processValue({ type }, value) {
-  if (value === "") {
-    return undefined;
-  } else if (type === "boolean") {
-    if (typeof value === "boolean") {
-      return value;
-    }
-
-    return value ? value === "true" : value;
-  } else if (type === "number") {
-    return asNumber(value);
-  }
-
-  return value;
+  return value === '' ? undefined : value;
 }
 
 class SelectWidget extends React.Component {
@@ -101,7 +84,7 @@ class SelectWidget extends React.Component {
       placeholder: placeholder || label,
       name: id,
       disabled: disabled || readonly,
-      value: typeof value === "undefined" ? "" : value,
+      value: typeof value === 'undefined' ? '' : value,
     };
 
     if (this.async) {
@@ -118,7 +101,6 @@ class SelectWidget extends React.Component {
     return (
       <Select
         {...selectProps}
-        simpleValue
         onBlur={
           onBlur &&
           (value => {
@@ -143,7 +125,7 @@ SelectWidget.defaultProps = {
   autofocus: false,
 };
 
-if (process.env.NODE_ENV !== "production") {
+if (process.env.NODE_ENV !== 'production') {
   SelectWidget.propTypes = {
     schema: PropTypes.object.isRequired,
     id: PropTypes.string.isRequired,
