@@ -1,6 +1,6 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { InputWithClear } from "@carecloud/material-cuil";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { InputWithClear } from '@carecloud/material-cuil';
 
 function BaseInput(props) {
   // Note: since React 15.2.0 we can't forward unknown element attributes, so we
@@ -19,10 +19,10 @@ function BaseInput(props) {
     ...inputProps
   } = props;
 
-  inputProps.type = options.inputType || inputProps.type || "text";
+  inputProps.type = options.inputType || inputProps.type || 'text';
 
   const _onChange = ({ target: { value } }) => {
-    return props.onChange(value === "" ? options.emptyValue : value);
+    return props.onChange(value === '' ? options.emptyValue : value);
   };
 
   return (
@@ -30,7 +30,7 @@ function BaseInput(props) {
       className="form-control"
       disabled={disabled || readonly}
       autoFocus={autofocus}
-      value={value == null ? "" : value}
+      value={value == null ? '' : value}
       {...inputProps}
       placeholder={inputProps.placeholder || inputProps.label}
       onChange={_onChange}
@@ -41,14 +41,14 @@ function BaseInput(props) {
 }
 
 BaseInput.defaultProps = {
-  type: "text",
+  type: 'text',
   required: false,
   disabled: false,
   readonly: false,
   autofocus: false,
 };
 
-if (process.env.NODE_ENV !== "production") {
+if (process.env.NODE_ENV !== 'production') {
   BaseInput.propTypes = {
     id: PropTypes.string.isRequired,
     placeholder: PropTypes.string,

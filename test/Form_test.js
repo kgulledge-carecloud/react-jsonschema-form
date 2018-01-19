@@ -1,13 +1,13 @@
-import { expect } from "chai";
-import sinon from "sinon";
-import React from "react";
-import { renderIntoDocument, Simulate } from "react-addons-test-utils";
-import { findDOMNode } from "react-dom";
+import { expect } from 'chai';
+import sinon from 'sinon';
+import React from 'react';
+import { renderIntoDocument, Simulate } from 'react-addons-test-utils';
+import { findDOMNode } from 'react-dom';
 
-import Form from "../src";
-import { createFormComponent, createSandbox } from "./test_utils";
+import Form from '../src';
+import { createFormComponent, createSandbox } from './test_utils';
 
-describe("Form", () => {
+describe('Form', () => {
   let sandbox;
 
   beforeEach(() => {
@@ -18,20 +18,20 @@ describe("Form", () => {
     sandbox.restore();
   });
 
-  describe("Empty schema", () => {
-    it("should render a form tag", () => {
+  describe('Empty schema', () => {
+    it('should render a form tag', () => {
       const { node } = createFormComponent({ schema: {} });
 
-      expect(node.tagName).eql("FORM");
+      expect(node.tagName).eql('FORM');
     });
 
-    it("should render a submit button", () => {
+    it('should render a submit button', () => {
       const { node } = createFormComponent({ schema: {} });
 
-      expect(node.querySelectorAll("button[type=submit]")).to.have.length.of(1);
+      expect(node.querySelectorAll('button[type=submit]')).to.have.length.of(1);
     });
 
-    it("should render children buttons", () => {
+    it('should render children buttons', () => {
       const props = { schema: {} };
       const comp = renderIntoDocument(
         <Form {...props}>
@@ -40,19 +40,19 @@ describe("Form", () => {
         </Form>
       );
       const node = findDOMNode(comp);
-      expect(node.querySelectorAll("button[type=submit]")).to.have.length.of(2);
+      expect(node.querySelectorAll('button[type=submit]')).to.have.length.of(2);
     });
   });
 
-  describe("Custom field template", () => {
+  describe('Custom field template', () => {
     const schema = {
-      type: "object",
-      title: "root object",
-      required: ["foo"],
+      type: 'object',
+      title: 'root object',
+      required: ['foo'],
       properties: {
         foo: {
-          type: "string",
-          description: "this is description",
+          type: 'string',
+          description: 'this is description',
           minLength: 32,
         },
       },
@@ -60,11 +60,11 @@ describe("Form", () => {
 
     const uiSchema = {
       foo: {
-        "ui:help": "this is help",
+        'ui:help': 'this is help',
       },
     };
 
-    const formData = { foo: "invalid" };
+    const formData = { foo: 'invalid' };
 
     function FieldTemplate(props) {
       const {
@@ -81,18 +81,16 @@ describe("Form", () => {
         children,
       } = props;
       return (
-        <div className={"my-template " + classNames}>
+        <div className={'my-template ' + classNames}>
           <label htmlFor={id}>
             {label}
-            {required ? "*" : null}
+            {required ? '*' : null}
           </label>
           {description}
           {children}
           {errors}
           {help}
-          <span className="raw-help">
-            {`${rawHelp} rendered from the raw format`}
-          </span>
+          <span className="raw-help">{`${rawHelp} rendered from the raw format`}</span>
           <span className="raw-description">
             {`${rawDescription} rendered from the raw format`}
           </span>
@@ -121,52 +119,46 @@ describe("Form", () => {
       }).node;
     });
 
-    it("should use the provided field template", () => {
-      expect(node.querySelector(".my-template")).to.exist;
+    it('should use the provided field template', () => {
+      expect(node.querySelector('.my-template')).to.exist;
     });
 
-    it("should use the provided template for labels", () => {
-      expect(node.querySelector(".my-template > label").textContent).eql(
-        "root object"
-      );
-      expect(
-        node.querySelector(".my-template .field-string > label").textContent
-      ).eql("foo*");
+    it('should use the provided template for labels', () => {
+      expect(node.querySelector('.my-template > label').textContent).eql('root object');
+      expect(node.querySelector('.my-template .field-string > label').textContent).eql('foo*');
     });
 
-    it("should pass description as the provided React element", () => {
-      expect(node.querySelector("#root_foo__description").textContent).eql(
-        "this is description"
-      );
+    it('should pass description as the provided React element', () => {
+      expect(node.querySelector('#root_foo__description').textContent).eql('this is description');
     });
 
-    it("should pass rawDescription as a string", () => {
-      expect(node.querySelector(".raw-description").textContent).eql(
-        "this is description rendered from the raw format"
+    it('should pass rawDescription as a string', () => {
+      expect(node.querySelector('.raw-description').textContent).eql(
+        'this is description rendered from the raw format'
       );
     });
 
-    it("should pass errors as the provided React component", () => {
-      expect(node.querySelectorAll(".error-detail li")).to.have.length.of(1);
+    it('should pass errors as the provided React component', () => {
+      expect(node.querySelectorAll('.error-detail li')).to.have.length.of(1);
     });
 
-    it("should pass rawErrors as an array of strings", () => {
-      expect(node.querySelectorAll(".raw-error")).to.have.length.of(1);
+    it('should pass rawErrors as an array of strings', () => {
+      expect(node.querySelectorAll('.raw-error')).to.have.length.of(1);
     });
 
-    it("should pass help as a the provided React element", () => {
-      expect(node.querySelector(".help-block").textContent).eql("this is help");
+    it('should pass help as a the provided React element', () => {
+      expect(node.querySelector('.help-block').textContent).eql('this is help');
     });
 
-    it("should pass rawHelp as a string", () => {
-      expect(node.querySelector(".raw-help").textContent).eql(
-        "this is help rendered from the raw format"
+    it('should pass rawHelp as a string', () => {
+      expect(node.querySelector('.raw-help').textContent).eql(
+        'this is help rendered from the raw format'
       );
     });
   });
 
-  describe("Custom submit buttons", () => {
-    it("should submit the form when clicked", () => {
+  describe('Custom submit buttons', () => {
+    it('should submit the form when clicked', () => {
       const onSubmit = sandbox.spy();
       const comp = renderIntoDocument(
         <Form onSubmit={onSubmit} schema={{}}>
@@ -175,55 +167,55 @@ describe("Form", () => {
         </Form>
       );
       const node = findDOMNode(comp);
-      const buttons = node.querySelectorAll("button[type=submit]");
+      const buttons = node.querySelectorAll('button[type=submit]');
       buttons[0].click();
       buttons[1].click();
       sinon.assert.calledTwice(onSubmit);
     });
   });
 
-  describe("Schema definitions", () => {
-    it("should use a single schema definition reference", () => {
+  describe('Schema definitions', () => {
+    it('should use a single schema definition reference', () => {
       const schema = {
         definitions: {
-          testdef: { type: "string" },
+          testdef: { type: 'string' },
         },
-        $ref: "#/definitions/testdef",
+        $ref: '#/definitions/testdef',
       };
 
       const { node } = createFormComponent({ schema });
 
-      expect(node.querySelectorAll("input[type=text]")).to.have.length.of(1);
+      expect(node.querySelectorAll('input[type=text]')).to.have.length.of(1);
     });
 
-    it("should handle multiple schema definition references", () => {
+    it('should handle multiple schema definition references', () => {
       const schema = {
         definitions: {
-          testdef: { type: "string" },
+          testdef: { type: 'string' },
         },
-        type: "object",
+        type: 'object',
         properties: {
-          foo: { $ref: "#/definitions/testdef" },
-          bar: { $ref: "#/definitions/testdef" },
+          foo: { $ref: '#/definitions/testdef' },
+          bar: { $ref: '#/definitions/testdef' },
         },
       };
 
       const { node } = createFormComponent({ schema });
 
-      expect(node.querySelectorAll("input[type=text]")).to.have.length.of(2);
+      expect(node.querySelectorAll('input[type=text]')).to.have.length.of(2);
     });
 
-    it("should handle deeply referenced schema definitions", () => {
+    it('should handle deeply referenced schema definitions', () => {
       const schema = {
         definitions: {
-          testdef: { type: "string" },
+          testdef: { type: 'string' },
         },
-        type: "object",
+        type: 'object',
         properties: {
           foo: {
-            type: "object",
+            type: 'object',
             properties: {
-              bar: { $ref: "#/definitions/testdef" },
+              bar: { $ref: '#/definitions/testdef' },
             },
           },
         },
@@ -231,40 +223,40 @@ describe("Form", () => {
 
       const { node } = createFormComponent({ schema });
 
-      expect(node.querySelectorAll("input[type=text]")).to.have.length.of(1);
+      expect(node.querySelectorAll('input[type=text]')).to.have.length.of(1);
     });
 
-    it("should handle references to deep schema definitions", () => {
+    it('should handle references to deep schema definitions', () => {
       const schema = {
         definitions: {
           testdef: {
-            type: "object",
+            type: 'object',
             properties: {
-              bar: { type: "string" },
+              bar: { type: 'string' },
             },
           },
         },
-        type: "object",
+        type: 'object',
         properties: {
-          foo: { $ref: "#/definitions/testdef/properties/bar" },
+          foo: { $ref: '#/definitions/testdef/properties/bar' },
         },
       };
 
       const { node } = createFormComponent({ schema });
 
-      expect(node.querySelectorAll("input[type=text]")).to.have.length.of(1);
+      expect(node.querySelectorAll('input[type=text]')).to.have.length.of(1);
     });
 
-    it("should handle referenced definitions for array items", () => {
+    it('should handle referenced definitions for array items', () => {
       const schema = {
         definitions: {
-          testdef: { type: "string" },
+          testdef: { type: 'string' },
         },
-        type: "object",
+        type: 'object',
         properties: {
           foo: {
-            type: "array",
-            items: { $ref: "#/definitions/testdef" },
+            type: 'array',
+            items: { $ref: '#/definitions/testdef' },
           },
         },
       };
@@ -272,86 +264,83 @@ describe("Form", () => {
       const { node } = createFormComponent({
         schema,
         formData: {
-          foo: ["blah"],
+          foo: ['blah'],
         },
       });
 
-      expect(node.querySelectorAll("input[type=text]")).to.have.length.of(1);
+      expect(node.querySelectorAll('input[type=text]')).to.have.length.of(1);
     });
 
-    it("should raise for non-existent definitions referenced", () => {
+    it('should raise for non-existent definitions referenced', () => {
       const schema = {
-        type: "object",
+        type: 'object',
         properties: {
-          foo: { $ref: "#/definitions/nonexistent" },
+          foo: { $ref: '#/definitions/nonexistent' },
         },
       };
 
-      expect(() => createFormComponent({ schema })).to.Throw(
-        Error,
-        /#\/definitions\/nonexistent/
-      );
+      expect(() => createFormComponent({ schema })).to.Throw(Error, /#\/definitions\/nonexistent/);
     });
 
-    it("should propagate referenced definition defaults", () => {
+    it('should propagate referenced definition defaults', () => {
       const schema = {
         definitions: {
-          testdef: { type: "string", default: "hello" },
+          testdef: { type: 'string', default: 'hello' },
         },
-        $ref: "#/definitions/testdef",
+        $ref: '#/definitions/testdef',
       };
 
       const { node } = createFormComponent({ schema });
 
-      expect(node.querySelector("input[type=text]").value).eql("hello");
+      expect(node.querySelector('input[type=text]').value).eql('hello');
     });
 
-    it("should propagate nested referenced definition defaults", () => {
+    it('should propagate nested referenced definition defaults', () => {
       const schema = {
         definitions: {
-          testdef: { type: "string", default: "hello" },
+          testdef: { type: 'string', default: 'hello' },
         },
-        type: "object",
+        type: 'object',
         properties: {
-          foo: { $ref: "#/definitions/testdef" },
+          foo: { $ref: '#/definitions/testdef' },
         },
       };
 
       const { node } = createFormComponent({ schema });
 
-      expect(node.querySelector("input[type=text]").value).eql("hello");
+      expect(node.querySelector('input[type=text]').value).eql('hello');
     });
 
-    it("should propagate referenced definition defaults for array items", () => {
+    it('should propagate referenced definition defaults for array items', () => {
       const schema = {
         definitions: {
-          testdef: { type: "string", default: "hello" },
+          testdef: { type: 'string', default: 'hello' },
         },
-        type: "array",
+        type: 'array',
         items: {
-          $ref: "#/definitions/testdef",
+          $ref: '#/definitions/testdef',
         },
       };
 
       const { node } = createFormComponent({ schema });
 
-      Simulate.click(node.querySelector(".array-item-add button"));
+      Simulate.click(node.querySelector('.array-item-add button'));
 
-      expect(node.querySelector("input[type=text]").value).eql("hello");
+      expect(node.querySelector('input[type=text]').value).eql('hello');
     });
 
-    it("should recursively handle referenced definitions", () => {
+    it('should recursively handle referenced definitions', () => {
       const schema = {
-        $ref: "#/definitions/node",
+        $ref: '#/definitions/node',
         definitions: {
           node: {
-            type: "object",
+            type: 'object',
             properties: {
-              name: { type: "string" },
+              name: { type: 'string' },
               children: {
-                type: "array",
+                type: 'array',
                 items: {
-                  $ref: "#/definitions/node",
+                  $ref: '#/definitions/node',
                 },
               },
             },
@@ -361,29 +350,29 @@ describe("Form", () => {
 
       const { node } = createFormComponent({ schema });
 
-      expect(node.querySelector("#root_children_0_name")).to.not.exist;
+      expect(node.querySelector('#root_children_0_name')).to.not.exist;
 
-      Simulate.click(node.querySelector(".array-item-add button"));
+      Simulate.click(node.querySelector('.array-item-add button'));
 
-      expect(node.querySelector("#root_children_0_name")).to.exist;
+      expect(node.querySelector('#root_children_0_name')).to.exist;
     });
 
-    it("should priorize definition over schema type property", () => {
+    it('should priorize definition over schema type property', () => {
       // Refs bug #140
       const schema = {
-        type: "object",
+        type: 'object',
         properties: {
-          name: { type: "string" },
+          name: { type: 'string' },
           childObj: {
-            type: "object",
-            $ref: "#/definitions/childObj",
+            type: 'object',
+            $ref: '#/definitions/childObj',
           },
         },
         definitions: {
           childObj: {
-            type: "object",
+            type: 'object',
             properties: {
-              otherName: { type: "string" },
+              otherName: { type: 'string' },
             },
           },
         },
@@ -391,25 +380,25 @@ describe("Form", () => {
 
       const { node } = createFormComponent({ schema });
 
-      expect(node.querySelectorAll("input[type=text]")).to.have.length.of(2);
+      expect(node.querySelectorAll('input[type=text]')).to.have.length.of(2);
     });
 
-    it("should priorize local properties over definition ones", () => {
+    it('should priorize local properties over definition ones', () => {
       // Refs bug #140
       const schema = {
-        type: "object",
+        type: 'object',
         properties: {
           foo: {
-            title: "custom title",
-            $ref: "#/definitions/objectDef",
+            title: 'custom title',
+            $ref: '#/definitions/objectDef',
           },
         },
         definitions: {
           objectDef: {
-            type: "object",
-            title: "definition title",
+            type: 'object',
+            title: 'definition title',
             properties: {
-              field: { type: "string" },
+              field: { type: 'string' },
             },
           },
         },
@@ -417,60 +406,60 @@ describe("Form", () => {
 
       const { node } = createFormComponent({ schema });
 
-      expect(node.querySelector("legend").textContent).eql("custom title");
+      expect(node.querySelector('legend').textContent).eql('custom title');
     });
 
-    it("should propagate and handle a resolved schema definition", () => {
+    it('should propagate and handle a resolved schema definition', () => {
       const schema = {
         definitions: {
-          enumDef: { type: "string", enum: ["a", "b"] },
+          enumDef: { type: 'string', enum: ['a', 'b'] },
         },
-        type: "object",
+        type: 'object',
         properties: {
-          name: { $ref: "#/definitions/enumDef" },
+          name: { $ref: '#/definitions/enumDef' },
         },
       };
 
       const { node } = createFormComponent({ schema });
 
-      expect(node.querySelectorAll("option")).to.have.length.of(3);
+      expect(node.querySelectorAll('option')).to.have.length.of(3);
     });
   });
 
-  describe("Default value handling on clear", () => {
+  describe('Default value handling on clear', () => {
     const schema = {
-      type: "string",
-      default: "foo",
+      type: 'string',
+      default: 'foo',
     };
 
-    it("should not set default when a text field is cleared", () => {
-      const { node } = createFormComponent({ schema, formData: "bar" });
+    it('should not set default when a text field is cleared', () => {
+      const { node } = createFormComponent({ schema, formData: 'bar' });
 
-      Simulate.change(node.querySelector("input"), {
-        target: { value: "" },
+      Simulate.change(node.querySelector('input'), {
+        target: { value: '' },
       });
 
-      expect(node.querySelector("input").value).eql("");
+      expect(node.querySelector('input').value).eql('');
     });
   });
 
-  describe("Defaults array items default propagation", () => {
+  describe('Defaults array items default propagation', () => {
     const schema = {
-      type: "object",
-      title: "lvl 1 obj",
+      type: 'object',
+      title: 'lvl 1 obj',
       properties: {
         object: {
-          type: "object",
-          title: "lvl 2 obj",
+          type: 'object',
+          title: 'lvl 2 obj',
           properties: {
             array: {
-              type: "array",
+              type: 'array',
               items: {
-                type: "object",
-                title: "lvl 3 obj",
+                type: 'object',
+                title: 'lvl 3 obj',
                 properties: {
                   bool: {
-                    type: "boolean",
+                    type: 'boolean',
                     default: true,
                   },
                 },
@@ -481,10 +470,10 @@ describe("Form", () => {
       },
     };
 
-    it("should propagate deeply nested defaults to form state", done => {
+    it('should propagate deeply nested defaults to form state', done => {
       const { comp, node } = createFormComponent({ schema });
 
-      Simulate.click(node.querySelector(".array-item-add button"));
+      Simulate.click(node.querySelector('.array-item-add button'));
       Simulate.submit(node);
 
       // For some reason this may take some time to render, hence the safe wait.
@@ -503,16 +492,16 @@ describe("Form", () => {
     });
   });
 
-  describe("Submit handler", () => {
-    it("should call provided submit handler with form state", () => {
+  describe('Submit handler', () => {
+    it('should call provided submit handler with form state', () => {
       const schema = {
-        type: "object",
+        type: 'object',
         properties: {
-          foo: { type: "string" },
+          foo: { type: 'string' },
         },
       };
       const formData = {
-        foo: "bar",
+        foo: 'bar',
       };
       const onSubmit = sandbox.spy();
       const { comp, node } = createFormComponent({
@@ -526,18 +515,18 @@ describe("Form", () => {
       sinon.assert.calledWithMatch(onSubmit, comp.state);
     });
 
-    it("should not call provided submit handler on validation errors", () => {
+    it('should not call provided submit handler on validation errors', () => {
       const schema = {
-        type: "object",
+        type: 'object',
         properties: {
           foo: {
-            type: "string",
+            type: 'string',
             minLength: 1,
           },
         },
       };
       const formData = {
-        foo: "",
+        foo: '',
       };
       const onSubmit = sandbox.spy();
       const onError = sandbox.spy();
@@ -554,96 +543,96 @@ describe("Form", () => {
     });
   });
 
-  describe("Change handler", () => {
-    it("should call provided change handler on form state change", () => {
+  describe('Change handler', () => {
+    it('should call provided change handler on form state change', () => {
       const schema = {
-        type: "object",
+        type: 'object',
         properties: {
           foo: {
-            type: "string",
+            type: 'string',
           },
         },
       };
       const formData = {
-        foo: "",
+        foo: '',
       };
       const onChange = sandbox.spy();
       const { node } = createFormComponent({ schema, formData, onChange });
 
-      Simulate.change(node.querySelector("[type=text]"), {
-        target: { value: "new" },
+      Simulate.change(node.querySelector('[type=text]'), {
+        target: { value: 'new' },
       });
 
       sinon.assert.calledWithMatch(onChange, {
         formData: {
-          foo: "new",
+          foo: 'new',
         },
       });
     });
   });
-  describe("Blur handler", () => {
-    it("should call provided blur handler on form input blur event", () => {
+  describe('Blur handler', () => {
+    it('should call provided blur handler on form input blur event', () => {
       const schema = {
-        type: "object",
+        type: 'object',
         properties: {
           foo: {
-            type: "string",
+            type: 'string',
           },
         },
       };
       const formData = {
-        foo: "",
+        foo: '',
       };
       const onBlur = sandbox.spy();
       const { node } = createFormComponent({ schema, formData, onBlur });
 
-      const input = node.querySelector("[type=text]");
+      const input = node.querySelector('[type=text]');
       Simulate.blur(input, {
-        target: { value: "new" },
+        target: { value: 'new' },
       });
 
-      sinon.assert.calledWithMatch(onBlur, input.id, "new");
+      sinon.assert.calledWithMatch(onBlur, input.id, 'new');
     });
   });
 
-  describe("Focus handler", () => {
-    it("should call provided focus handler on form input focus event", () => {
+  describe('Focus handler', () => {
+    it('should call provided focus handler on form input focus event', () => {
       const schema = {
-        type: "object",
+        type: 'object',
         properties: {
           foo: {
-            type: "string",
+            type: 'string',
           },
         },
       };
       const formData = {
-        foo: "",
+        foo: '',
       };
       const onFocus = sandbox.spy();
       const { node } = createFormComponent({ schema, formData, onFocus });
 
-      const input = node.querySelector("[type=text]");
+      const input = node.querySelector('[type=text]');
       Simulate.focus(input, {
-        target: { value: "new" },
+        target: { value: 'new' },
       });
 
-      sinon.assert.calledWithMatch(onFocus, input.id, "new");
+      sinon.assert.calledWithMatch(onFocus, input.id, 'new');
     });
   });
 
-  describe("Error handler", () => {
-    it("should call provided error handler on validation errors", () => {
+  describe('Error handler', () => {
+    it('should call provided error handler on validation errors', () => {
       const schema = {
-        type: "object",
+        type: 'object',
         properties: {
           foo: {
-            type: "string",
+            type: 'string',
             minLength: 1,
           },
         },
       };
       const formData = {
-        foo: "",
+        foo: '',
       };
       const onError = sandbox.spy();
       const { node } = createFormComponent({ schema, formData, onError });
@@ -654,111 +643,111 @@ describe("Form", () => {
     });
   });
 
-  describe("External formData updates", () => {
-    describe("root level", () => {
+  describe('External formData updates', () => {
+    describe('root level', () => {
       const formProps = {
-        schema: { type: "string" },
+        schema: { type: 'string' },
         liveValidate: true,
       };
 
-      it("should update form state from new formData prop value", () => {
+      it('should update form state from new formData prop value', () => {
         const { comp } = createFormComponent(formProps);
 
-        comp.componentWillReceiveProps({ formData: "yo" });
+        comp.componentWillReceiveProps({ formData: 'yo' });
 
-        expect(comp.state.formData).eql("yo");
+        expect(comp.state.formData).eql('yo');
       });
 
-      it("should validate formData when the schema is updated", () => {
+      it('should validate formData when the schema is updated', () => {
         const { comp } = createFormComponent(formProps);
 
         comp.componentWillReceiveProps({
-          formData: "yo",
-          schema: { type: "number" },
+          formData: 'yo',
+          schema: { type: 'number' },
         });
 
         expect(comp.state.errors).to.have.length.of(1);
-        expect(comp.state.errors[0].stack).to.eql("should be number");
+        expect(comp.state.errors[0].stack).to.eql('should be number');
       });
     });
 
-    describe("object level", () => {
-      it("should update form state from new formData prop value", () => {
+    describe('object level', () => {
+      it('should update form state from new formData prop value', () => {
         const { comp } = createFormComponent({
           schema: {
-            type: "object",
+            type: 'object',
             properties: {
               foo: {
-                type: "string",
+                type: 'string',
               },
             },
           },
         });
 
-        comp.componentWillReceiveProps({ formData: { foo: "yo" } });
+        comp.componentWillReceiveProps({ formData: { foo: 'yo' } });
 
-        expect(comp.state.formData).eql({ foo: "yo" });
+        expect(comp.state.formData).eql({ foo: 'yo' });
       });
     });
 
-    describe("array level", () => {
-      it("should update form state from new formData prop value", () => {
+    describe('array level', () => {
+      it('should update form state from new formData prop value', () => {
         const schema = {
-          type: "array",
+          type: 'array',
           items: {
-            type: "string",
+            type: 'string',
           },
         };
         const { comp } = createFormComponent({ schema });
 
-        comp.componentWillReceiveProps({ formData: ["yo"] });
+        comp.componentWillReceiveProps({ formData: ['yo'] });
 
-        expect(comp.state.formData).eql(["yo"]);
+        expect(comp.state.formData).eql(['yo']);
       });
     });
   });
 
-  describe("Error contextualization", () => {
-    describe("on form state updated", () => {
+  describe('Error contextualization', () => {
+    describe('on form state updated', () => {
       const schema = {
-        type: "string",
+        type: 'string',
         minLength: 8,
       };
 
-      describe("Lazy validation", () => {
-        it("should not update the errorSchema when the formData changes", () => {
+      describe('Lazy validation', () => {
+        it('should not update the errorSchema when the formData changes', () => {
           const { comp, node } = createFormComponent({ schema });
 
-          Simulate.change(node.querySelector("input[type=text]"), {
-            target: { value: "short" },
+          Simulate.change(node.querySelector('input[type=text]'), {
+            target: { value: 'short' },
           });
 
           expect(comp.state.errorSchema).eql({});
         });
 
-        it("should not denote an error in the field", () => {
+        it('should not denote an error in the field', () => {
           const { node } = createFormComponent({ schema });
 
-          Simulate.change(node.querySelector("input[type=text]"), {
-            target: { value: "short" },
+          Simulate.change(node.querySelector('input[type=text]'), {
+            target: { value: 'short' },
           });
 
-          expect(node.querySelectorAll(".field-error")).to.have.length.of(0);
+          expect(node.querySelectorAll('.field-error')).to.have.length.of(0);
         });
 
         it("should clean contextualized errors up when they're fixed", () => {
           const altSchema = {
-            type: "object",
+            type: 'object',
             properties: {
-              field1: { type: "string", minLength: 8 },
-              field2: { type: "string", minLength: 8 },
+              field1: { type: 'string', minLength: 8 },
+              field2: { type: 'string', minLength: 8 },
             },
           };
           const { node } = createFormComponent({
             schema: altSchema,
             formData: {
-              field1: "short",
-              field2: "short",
+              field1: 'short',
+              field2: 'short',
             },
           });
 
@@ -774,81 +763,81 @@ describe("Form", () => {
           submit(node);
 
           // Fix the first field
-          Simulate.change(node.querySelectorAll("input[type=text]")[0], {
-            target: { value: "fixed error" },
+          Simulate.change(node.querySelectorAll('input[type=text]')[0], {
+            target: { value: 'fixed error' },
           });
           submit(node);
 
-          expect(node.querySelectorAll(".field-error")).to.have.length.of(1);
+          expect(node.querySelectorAll('.field-error')).to.have.length.of(1);
 
           // Fix the second field
-          Simulate.change(node.querySelectorAll("input[type=text]")[1], {
-            target: { value: "fixed error too" },
+          Simulate.change(node.querySelectorAll('input[type=text]')[1], {
+            target: { value: 'fixed error too' },
           });
           submit(node);
 
           // No error remaining, shouldn't throw.
           Simulate.submit(node);
 
-          expect(node.querySelectorAll(".field-error")).to.have.length.of(0);
+          expect(node.querySelectorAll('.field-error')).to.have.length.of(0);
         });
       });
 
-      describe("Live validation", () => {
-        it("should update the errorSchema when the formData changes", () => {
+      describe('Live validation', () => {
+        it('should update the errorSchema when the formData changes', () => {
           const { comp, node } = createFormComponent({
             schema,
             liveValidate: true,
           });
 
-          Simulate.change(node.querySelector("input[type=text]"), {
-            target: { value: "short" },
+          Simulate.change(node.querySelector('input[type=text]'), {
+            target: { value: 'short' },
           });
 
           expect(comp.state.errorSchema).eql({
-            __errors: ["should NOT be shorter than 8 characters"],
+            __errors: ['should NOT be shorter than 8 characters'],
           });
         });
 
-        it("should denote the new error in the field", () => {
+        it('should denote the new error in the field', () => {
           const { node } = createFormComponent({ schema, liveValidate: true });
 
-          Simulate.change(node.querySelector("input[type=text]"), {
-            target: { value: "short" },
+          Simulate.change(node.querySelector('input[type=text]'), {
+            target: { value: 'short' },
           });
 
-          expect(node.querySelectorAll(".field-error")).to.have.length.of(1);
-          expect(
-            node.querySelector(".field-string .error-detail").textContent
-          ).eql("should NOT be shorter than 8 characters");
+          expect(node.querySelectorAll('.field-error')).to.have.length.of(1);
+          expect(node.querySelector('.field-string .error-detail').textContent).eql(
+            'should NOT be shorter than 8 characters'
+          );
         });
       });
 
-      describe("Disable validation onChange event", () => {
-        it("should not update errorSchema when the formData changes", () => {
+      describe('Disable validation onChange event', () => {
+        it('should not update errorSchema when the formData changes', () => {
           const { comp, node } = createFormComponent({
             schema,
             noValidate: true,
             liveValidate: true,
           });
 
-          Simulate.change(node.querySelector("input[type=text]"), {
-            target: { value: "short" },
+          Simulate.change(node.querySelector('input[type=text]'), {
+            target: { value: 'short' },
           });
 
           expect(comp.state.errorSchema).eql({});
         });
       });
 
-      describe("Disable validation onSubmit event", () => {
-        it("should not update errorSchema when the formData changes", () => {
+      describe('Disable validation onSubmit event', () => {
+        it('should not update errorSchema when the formData changes', () => {
           const { comp, node } = createFormComponent({
             schema,
             noValidate: true,
           });
 
-          Simulate.change(node.querySelector("input[type=text]"), {
-            target: { value: "short" },
+          Simulate.change(node.querySelector('input[type=text]'), {
+            target: { value: 'short' },
           });
           Simulate.submit(node);
 
@@ -857,34 +846,34 @@ describe("Form", () => {
       });
     });
 
-    describe("on form submitted", () => {
+    describe('on form submitted', () => {
       const schema = {
-        type: "string",
+        type: 'string',
         minLength: 8,
       };
 
-      it("should update the errorSchema on form submission", () => {
+      it('should update the errorSchema on form submission', () => {
         const { comp, node } = createFormComponent({
           schema,
           onError: () => {},
         });
 
-        Simulate.change(node.querySelector("input[type=text]"), {
-          target: { value: "short" },
+        Simulate.change(node.querySelector('input[type=text]'), {
+          target: { value: 'short' },
         });
         Simulate.submit(node);
 
         expect(comp.state.errorSchema).eql({
-          __errors: ["should NOT be shorter than 8 characters"],
+          __errors: ['should NOT be shorter than 8 characters'],
         });
       });
 
-      it("should call the onError handler", () => {
+      it('should call the onError handler', () => {
         const onError = sandbox.spy();
         const { node } = createFormComponent({ schema, onError });
 
-        Simulate.change(node.querySelector("input[type=text]"), {
-          target: { value: "short" },
+        Simulate.change(node.querySelector('input[type=text]'), {
+          target: { value: 'short' },
         });
         Simulate.submit(node);
 
@@ -892,85 +881,81 @@ describe("Form", () => {
           onError,
           sinon.match(value => {
             return (
-              value.length === 1 &&
-              value[0].message === "should NOT be shorter than 8 characters"
+              value.length === 1 && value[0].message === 'should NOT be shorter than 8 characters'
             );
           })
         );
       });
     });
 
-    describe("root level", () => {
+    describe('root level', () => {
       const formProps = {
         liveValidate: true,
         schema: {
-          type: "string",
+          type: 'string',
           minLength: 8,
         },
-        formData: "short",
+        formData: 'short',
       };
 
-      it("should reflect the contextualized error in state", () => {
+      it('should reflect the contextualized error in state', () => {
         const { comp } = createFormComponent(formProps);
 
         expect(comp.state.errorSchema).eql({
-          __errors: ["should NOT be shorter than 8 characters"],
+          __errors: ['should NOT be shorter than 8 characters'],
         });
       });
 
-      it("should denote the error in the field", () => {
+      it('should denote the error in the field', () => {
         const { node } = createFormComponent(formProps);
 
-        expect(node.querySelectorAll(".field-error")).to.have.length.of(1);
-        expect(
-          node.querySelector(".field-string .error-detail").textContent
-        ).eql("should NOT be shorter than 8 characters");
+        expect(node.querySelectorAll('.field-error')).to.have.length.of(1);
+        expect(node.querySelector('.field-string .error-detail').textContent).eql(
+          'should NOT be shorter than 8 characters'
+        );
       });
     });
 
-    describe("root level with multiple errors", () => {
+    describe('root level with multiple errors', () => {
       const formProps = {
         liveValidate: true,
         schema: {
-          type: "string",
+          type: 'string',
           minLength: 8,
-          pattern: "d+",
+          pattern: 'd+',
         },
-        formData: "short",
+        formData: 'short',
       };
 
-      it("should reflect the contextualized error in state", () => {
+      it('should reflect the contextualized error in state', () => {
         const { comp } = createFormComponent(formProps);
         expect(comp.state.errorSchema).eql({
-          __errors: [
-            "should NOT be shorter than 8 characters",
-            'should match pattern "d+"',
-          ],
+          __errors: ['should NOT be shorter than 8 characters', 'should match pattern "d+"'],
         });
       });
 
-      it("should denote the error in the field", () => {
+      it('should denote the error in the field', () => {
         const { node } = createFormComponent(formProps);
 
-        const liNodes = node.querySelectorAll(".field-string .error-detail li");
+        const liNodes = node.querySelectorAll('.field-string .error-detail li');
         const errors = [].map.call(liNodes, li => li.textContent);
 
         expect(errors).eql([
-          "should NOT be shorter than 8 characters",
+          'should NOT be shorter than 8 characters',
           'should match pattern "d+"',
         ]);
       });
     });
 
-    describe("nested field level", () => {
+    describe('nested field level', () => {
       const schema = {
-        type: "object",
+        type: 'object',
         properties: {
           level1: {
-            type: "object",
+            type: 'object',
             properties: {
               level2: {
-                type: "string",
+                type: 'string',
                 minLength: 8,
               },
             },
@@ -983,41 +968,37 @@ describe("Form", () => {
         liveValidate: true,
         formData: {
           level1: {
-            level2: "short",
+            level2: 'short',
           },
         },
       };
 
-      it("should reflect the contextualized error in state", () => {
+      it('should reflect the contextualized error in state', () => {
         const { comp } = createFormComponent(formProps);
 
         expect(comp.state.errorSchema).eql({
           level1: {
             level2: {
-              __errors: ["should NOT be shorter than 8 characters"],
+              __errors: ['should NOT be shorter than 8 characters'],
             },
           },
         });
       });
 
-      it("should denote the error in the field", () => {
+      it('should denote the error in the field', () => {
         const { node } = createFormComponent(formProps);
-        const errorDetail = node.querySelector(
-          ".field-object .field-string .error-detail"
-        );
+        const errorDetail = node.querySelector('.field-object .field-string .error-detail');
 
-        expect(node.querySelectorAll(".field-error")).to.have.length.of(1);
-        expect(errorDetail.textContent).eql(
-          "should NOT be shorter than 8 characters"
-        );
+        expect(node.querySelectorAll('.field-error')).to.have.length.of(1);
+        expect(errorDetail.textContent).eql('should NOT be shorter than 8 characters');
       });
     });
 
-    describe("array indices", () => {
+    describe('array indices', () => {
       const schema = {
-        type: "array",
+        type: 'array',
         items: {
-          type: "string",
+          type: 'string',
           minLength: 4,
         },
       };
@@ -1025,47 +1006,45 @@ describe("Form", () => {
       const formProps = {
         schema,
         liveValidate: true,
-        formData: ["good", "bad", "good"],
+        formData: ['good', 'bad', 'good'],
       };
 
-      it("should contextualize the error for array indices", () => {
+      it('should contextualize the error for array indices', () => {
         const { comp } = createFormComponent(formProps);
 
         expect(comp.state.errorSchema).eql({
-          1: { __errors: ["should NOT be shorter than 4 characters"] },
+          1: { __errors: ['should NOT be shorter than 4 characters'] },
         });
       });
 
-      it("should denote the error in the item field in error", () => {
+      it('should denote the error in the item field in error', () => {
         const { node } = createFormComponent(formProps);
-        const fieldNodes = node.querySelectorAll(".field-string");
+        const fieldNodes = node.querySelectorAll('.field-string');
 
-        const liNodes = fieldNodes[1].querySelectorAll(
-          ".field-string .error-detail li"
-        );
+        const liNodes = fieldNodes[1].querySelectorAll('.field-string .error-detail li');
         const errors = [].map.call(liNodes, li => li.textContent);
 
-        expect(fieldNodes[1].classList.contains("field-error")).eql(true);
-        expect(errors).eql(["should NOT be shorter than 4 characters"]);
+        expect(fieldNodes[1].classList.contains('field-error')).eql(true);
+        expect(errors).eql(['should NOT be shorter than 4 characters']);
       });
 
-      it("should not denote errors on non impacted fields", () => {
+      it('should not denote errors on non impacted fields', () => {
         const { node } = createFormComponent(formProps);
-        const fieldNodes = node.querySelectorAll(".field-string");
+        const fieldNodes = node.querySelectorAll('.field-string');
 
-        expect(fieldNodes[0].classList.contains("field-error")).eql(false);
-        expect(fieldNodes[2].classList.contains("field-error")).eql(false);
+        expect(fieldNodes[0].classList.contains('field-error')).eql(false);
+        expect(fieldNodes[2].classList.contains('field-error')).eql(false);
       });
     });
 
-    describe("nested array indices", () => {
+    describe('nested array indices', () => {
       const schema = {
-        type: "object",
+        type: 'object',
         properties: {
           level1: {
-            type: "array",
+            type: 'array',
             items: {
-              type: "string",
+              type: 'string',
               minLength: 4,
             },
           },
@@ -1074,47 +1053,47 @@ describe("Form", () => {
 
       const formProps = { schema, liveValidate: true };
 
-      it("should contextualize the error for nested array indices", () => {
+      it('should contextualize the error for nested array indices', () => {
         const { comp } = createFormComponent({
           ...formProps,
           formData: {
-            level1: ["good", "bad", "good", "bad"],
+            level1: ['good', 'bad', 'good', 'bad'],
           },
         });
 
         expect(comp.state.errorSchema).eql({
           level1: {
-            1: { __errors: ["should NOT be shorter than 4 characters"] },
-            3: { __errors: ["should NOT be shorter than 4 characters"] },
+            1: { __errors: ['should NOT be shorter than 4 characters'] },
+            3: { __errors: ['should NOT be shorter than 4 characters'] },
           },
         });
       });
 
-      it("should denote the error in the nested item field in error", () => {
+      it('should denote the error in the nested item field in error', () => {
         const { node } = createFormComponent({
           ...formProps,
           formData: {
-            level1: ["good", "bad", "good"],
+            level1: ['good', 'bad', 'good'],
           },
         });
 
-        const liNodes = node.querySelectorAll(".field-string .error-detail li");
+        const liNodes = node.querySelectorAll('.field-string .error-detail li');
         const errors = [].map.call(liNodes, li => li.textContent);
 
-        expect(errors).eql(["should NOT be shorter than 4 characters"]);
+        expect(errors).eql(['should NOT be shorter than 4 characters']);
       });
     });
 
-    describe("nested arrays", () => {
+    describe('nested arrays', () => {
       const schema = {
-        type: "object",
+        type: 'object',
         properties: {
           outer: {
-            type: "array",
+            type: 'array',
             items: {
-              type: "array",
+              type: 'array',
               items: {
-                type: "string",
+                type: 'string',
                 minLength: 4,
               },
             },
@@ -1123,51 +1102,51 @@ describe("Form", () => {
       };
 
       const formData = {
-        outer: [["good", "bad"], ["bad", "good"]],
+        outer: [['good', 'bad'], ['bad', 'good']],
       };
 
       const formProps = { schema, formData, liveValidate: true };
 
-      it("should contextualize the error for nested array indices", () => {
+      it('should contextualize the error for nested array indices', () => {
         const { comp } = createFormComponent(formProps);
 
         expect(comp.state.errorSchema).eql({
           outer: {
             0: {
-              1: { __errors: ["should NOT be shorter than 4 characters"] },
+              1: { __errors: ['should NOT be shorter than 4 characters'] },
             },
             1: {
-              0: { __errors: ["should NOT be shorter than 4 characters"] },
+              0: { __errors: ['should NOT be shorter than 4 characters'] },
             },
           },
         });
       });
 
-      it("should denote the error in the nested item field in error", () => {
+      it('should denote the error in the nested item field in error', () => {
         const { node } = createFormComponent(formProps);
-        const fields = node.querySelectorAll(".field-string");
+        const fields = node.querySelectorAll('.field-string');
         const errors = [].map.call(fields, field => {
-          const li = field.querySelector(".error-detail li");
+          const li = field.querySelector('.error-detail li');
           return li && li.textContent;
         });
 
         expect(errors).eql([
           null,
-          "should NOT be shorter than 4 characters",
-          "should NOT be shorter than 4 characters",
+          'should NOT be shorter than 4 characters',
+          'should NOT be shorter than 4 characters',
           null,
         ]);
       });
     });
 
-    describe("array nested items", () => {
+    describe('array nested items', () => {
       const schema = {
-        type: "array",
+        type: 'array',
         items: {
-          type: "object",
+          type: 'object',
           properties: {
             foo: {
-              type: "string",
+              type: 'string',
               minLength: 4,
             },
           },
@@ -1177,100 +1156,98 @@ describe("Form", () => {
       const formProps = {
         schema,
         liveValidate: true,
-        formData: [{ foo: "good" }, { foo: "bad" }, { foo: "good" }],
+        formData: [{ foo: 'good' }, { foo: 'bad' }, { foo: 'good' }],
       };
 
-      it("should contextualize the error for array nested items", () => {
+      it('should contextualize the error for array nested items', () => {
         const { comp } = createFormComponent(formProps);
 
         expect(comp.state.errorSchema).eql({
           1: {
             foo: {
-              __errors: ["should NOT be shorter than 4 characters"],
+              __errors: ['should NOT be shorter than 4 characters'],
             },
           },
         });
       });
 
-      it("should denote the error in the array nested item", () => {
+      it('should denote the error in the array nested item', () => {
         const { node } = createFormComponent(formProps);
-        const fieldNodes = node.querySelectorAll(".field-string");
+        const fieldNodes = node.querySelectorAll('.field-string');
 
-        const liNodes = fieldNodes[1].querySelectorAll(
-          ".field-string .error-detail li"
-        );
+        const liNodes = fieldNodes[1].querySelectorAll('.field-string .error-detail li');
         const errors = [].map.call(liNodes, li => li.textContent);
 
-        expect(fieldNodes[1].classList.contains("field-error")).eql(true);
-        expect(errors).eql(["should NOT be shorter than 4 characters"]);
+        expect(fieldNodes[1].classList.contains('field-error')).eql(true);
+        expect(errors).eql(['should NOT be shorter than 4 characters']);
       });
     });
   });
 
-  describe("Schema and formData updates", () => {
+  describe('Schema and formData updates', () => {
     // https://github.com/mozilla-services/react-jsonschema-form/issues/231
     const schema = {
-      type: "object",
+      type: 'object',
       properties: {
-        foo: { type: "string" },
-        bar: { type: "string" },
+        foo: { type: 'string' },
+        bar: { type: 'string' },
       },
     };
 
-    it("should replace state when formData have keys removed", () => {
-      const formData = { foo: "foo", bar: "bar" };
+    it('should replace state when formData have keys removed', () => {
+      const formData = { foo: 'foo', bar: 'bar' };
       const { comp, node } = createFormComponent({ schema, formData });
       comp.componentWillReceiveProps({
         schema: {
-          type: "object",
+          type: 'object',
           properties: {
-            bar: { type: "string" },
+            bar: { type: 'string' },
           },
         },
-        formData: { bar: "bar" },
+        formData: { bar: 'bar' },
       });
 
-      Simulate.change(node.querySelector("#root_bar"), {
-        target: { value: "baz" },
+      Simulate.change(node.querySelector('#root_bar'), {
+        target: { value: 'baz' },
       });
 
-      expect(comp.state.formData).eql({ bar: "baz" });
+      expect(comp.state.formData).eql({ bar: 'baz' });
     });
 
-    it("should replace state when formData keys have changed", () => {
-      const formData = { foo: "foo", bar: "bar" };
+    it('should replace state when formData keys have changed', () => {
+      const formData = { foo: 'foo', bar: 'bar' };
       const { comp, node } = createFormComponent({ schema, formData });
       comp.componentWillReceiveProps({
         schema: {
-          type: "object",
+          type: 'object',
           properties: {
-            foo: { type: "string" },
-            baz: { type: "string" },
+            foo: { type: 'string' },
+            baz: { type: 'string' },
           },
         },
-        formData: { foo: "foo", baz: "bar" },
+        formData: { foo: 'foo', baz: 'bar' },
       });
 
-      Simulate.change(node.querySelector("#root_baz"), {
-        target: { value: "baz" },
+      Simulate.change(node.querySelector('#root_baz'), {
+        target: { value: 'baz' },
       });
 
-      expect(comp.state.formData).eql({ foo: "foo", baz: "baz" });
+      expect(comp.state.formData).eql({ foo: 'foo', baz: 'baz' });
     });
   });
 
-  describe("Attributes", () => {
+  describe('Attributes', () => {
     const formProps = {
       schema: {},
-      id: "test-form",
-      className: "test-class other-class",
-      name: "testName",
-      method: "post",
-      target: "_blank",
-      action: "/users/list",
-      autocomplete: "off",
-      enctype: "multipart/form-data",
-      acceptcharset: "ISO-8859-1",
+      id: 'test-form',
+      className: 'test-class other-class',
+      name: 'testName',
+      method: 'post',
+      target: '_blank',
+      action: '/users/list',
+      autocomplete: 'off',
+      enctype: 'multipart/form-data',
+      acceptcharset: 'ISO-8859-1',
       noHtml5Validate: true,
     };
 
@@ -1280,44 +1257,44 @@ describe("Form", () => {
       node = createFormComponent(formProps).node;
     });
 
-    it("should set attr id of form", () => {
-      expect(node.getAttribute("id")).eql(formProps.id);
+    it('should set attr id of form', () => {
+      expect(node.getAttribute('id')).eql(formProps.id);
     });
 
-    it("should set attr class of form", () => {
-      expect(node.getAttribute("class")).eql(formProps.className);
+    it('should set attr class of form', () => {
+      expect(node.getAttribute('class')).eql(formProps.className);
     });
 
-    it("should set attr name of form", () => {
-      expect(node.getAttribute("name")).eql(formProps.name);
+    it('should set attr name of form', () => {
+      expect(node.getAttribute('name')).eql(formProps.name);
     });
 
-    it("should set attr method of form", () => {
-      expect(node.getAttribute("method")).eql(formProps.method);
+    it('should set attr method of form', () => {
+      expect(node.getAttribute('method')).eql(formProps.method);
     });
 
-    it("should set attr target of form", () => {
-      expect(node.getAttribute("target")).eql(formProps.target);
+    it('should set attr target of form', () => {
+      expect(node.getAttribute('target')).eql(formProps.target);
     });
 
-    it("should set attr action of form", () => {
-      expect(node.getAttribute("action")).eql(formProps.action);
+    it('should set attr action of form', () => {
+      expect(node.getAttribute('action')).eql(formProps.action);
     });
 
-    it("should set attr autoComplete of form", () => {
-      expect(node.getAttribute("autocomplete")).eql(formProps.autocomplete);
+    it('should set attr autoComplete of form', () => {
+      expect(node.getAttribute('autocomplete')).eql(formProps.autocomplete);
     });
 
-    it("should set attr enctype of form", () => {
-      expect(node.getAttribute("enctype")).eql(formProps.enctype);
+    it('should set attr enctype of form', () => {
+      expect(node.getAttribute('enctype')).eql(formProps.enctype);
     });
 
-    it("should set attr acceptcharset of form", () => {
-      expect(node.getAttribute("accept-charset")).eql(formProps.acceptcharset);
+    it('should set attr acceptcharset of form', () => {
+      expect(node.getAttribute('accept-charset')).eql(formProps.acceptcharset);
     });
 
-    it("should set attr novalidate of form", () => {
-      expect(node.getAttribute("novalidate")).not.to.be.null;
+    it('should set attr novalidate of form', () => {
+      expect(node.getAttribute('novalidate')).not.to.be.null;
     });
   });
 });

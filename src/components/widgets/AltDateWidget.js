@@ -1,7 +1,7 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
-import { shouldRender, parseDateString, toDateString, pad } from "../../utils";
+import { shouldRender, parseDateString, toDateString, pad } from '../../utils';
 
 function rangeOptions(start, stop) {
   let options = [];
@@ -28,11 +28,11 @@ function DateElement(props) {
     registry,
     onBlur,
   } = props;
-  const id = rootId + "_" + type;
+  const id = rootId + '_' + type;
   const { SelectWidget } = registry.widgets;
   return (
     <SelectWidget
-      schema={{ type: "integer" }}
+      schema={{ type: 'integer' }}
       id={id}
       className="form-control"
       options={{ enumOptions: rangeOptions(range[0], range[1]) }}
@@ -69,15 +69,12 @@ class AltDateWidget extends Component {
   }
 
   onChange = (property, value) => {
-    this.setState(
-      { [property]: typeof value === "undefined" ? -1 : value },
-      () => {
-        // Only propagate to parent state if we have a complete date{time}
-        if (readyForChange(this.state)) {
-          this.props.onChange(toDateString(this.state, this.props.time));
-        }
+    this.setState({ [property]: typeof value === 'undefined' ? -1 : value }, () => {
+      // Only propagate to parent state if we have a complete date{time}
+      if (readyForChange(this.state)) {
+        this.props.onChange(toDateString(this.state, this.props.time));
       }
-    );
+    });
   };
 
   setNow = event => {
@@ -96,22 +93,22 @@ class AltDateWidget extends Component {
     if (disabled || readonly) {
       return;
     }
-    this.setState(parseDateString("", time), () => onChange(undefined));
+    this.setState(parseDateString('', time), () => onChange(undefined));
   };
 
   get dateElementProps() {
     const { time } = this.props;
     const { year, month, day, hour, minute, second } = this.state;
     const data = [
-      { type: "year", range: [1900, 2020], value: year },
-      { type: "month", range: [1, 12], value: month },
-      { type: "day", range: [1, 31], value: day },
+      { type: 'year', range: [1900, 2020], value: year },
+      { type: 'month', range: [1, 12], value: month },
+      { type: 'day', range: [1, 31], value: day },
     ];
     if (time) {
       data.push(
-        { type: "hour", range: [0, 23], value: hour },
-        { type: "minute", range: [0, 59], value: minute },
-        { type: "second", range: [0, 59], value: second }
+        { type: 'hour', range: [0, 23], value: hour },
+        { type: 'minute', range: [0, 59], value: minute },
+        { type: 'second', range: [0, 59], value: second }
       );
     }
     return data;
@@ -141,10 +138,7 @@ class AltDateWidget extends Component {
           </a>
         </li>
         <li>
-          <a
-            href="#"
-            className="btn btn-warning btn-clear"
-            onClick={this.clear}>
+          <a href="#" className="btn btn-warning btn-clear" onClick={this.clear}>
             Clear
           </a>
         </li>
@@ -153,7 +147,7 @@ class AltDateWidget extends Component {
   }
 }
 
-if (process.env.NODE_ENV !== "production") {
+if (process.env.NODE_ENV !== 'production') {
   AltDateWidget.propTypes = {
     schema: PropTypes.object.isRequired,
     id: PropTypes.string.isRequired,

@@ -1,54 +1,54 @@
-import React from "react";
+import React from 'react';
 
 module.exports = {
   schema: {
-    title: "Property dependencies",
-    description: "These samples are best viewed without live validation.",
-    type: "object",
+    title: 'Property dependencies',
+    description: 'These samples are best viewed without live validation.',
+    type: 'object',
     properties: {
       unidirectional: {
-        title: "Unidirectional",
+        title: 'Unidirectional',
         src:
-          "https://spacetelescope.github.io/understanding-json-schema/reference/object.html#dependencies",
-        type: "object",
+          'https://spacetelescope.github.io/understanding-json-schema/reference/object.html#dependencies',
+        type: 'object',
         properties: {
           name: {
-            type: "string",
+            type: 'string',
           },
           credit_card: {
-            type: "number",
+            type: 'number',
           },
           billing_address: {
-            type: "string",
+            type: 'string',
           },
         },
-        required: ["name"],
+        required: ['name'],
         dependencies: {
-          credit_card: ["billing_address"],
+          credit_card: ['billing_address'],
         },
       },
       bidirectional: {
-        title: "Bidirectional",
+        title: 'Bidirectional',
         src:
-          "https://spacetelescope.github.io/understanding-json-schema/reference/object.html#dependencies",
+          'https://spacetelescope.github.io/understanding-json-schema/reference/object.html#dependencies',
         description:
-          "Dependencies are not bidirectional, you can, of course, define the bidirectional dependencies explicitly.",
-        type: "object",
+          'Dependencies are not bidirectional, you can, of course, define the bidirectional dependencies explicitly.',
+        type: 'object',
         properties: {
           name: {
-            type: "string",
+            type: 'string',
           },
           credit_card: {
-            type: "number",
+            type: 'number',
           },
           billing_address: {
-            type: "string",
+            type: 'string',
           },
         },
-        required: ["name"],
+        required: ['name'],
         dependencies: {
-          credit_card: ["billing_address"],
-          billing_address: ["credit_card"],
+          credit_card: ['billing_address'],
+          billing_address: ['credit_card'],
         },
       },
     },
@@ -56,32 +56,28 @@ module.exports = {
   uiSchema: {
     unidirectional: {
       credit_card: {
-        "ui:help": (
+        'ui:help': (
           <p>
-            If you enter anything here then <code>billing_address</code> will
-            become required.
+            If you enter anything here then <code>billing_address</code> will become required.
           </p>
         ),
       },
       billing_address: {
-        "ui:help":
-          "It’s okay to have a billing address without a credit card number.",
+        'ui:help': 'It’s okay to have a billing address without a credit card number.',
       },
     },
     bidirectional: {
       credit_card: {
-        "ui:help": (
+        'ui:help': (
           <p>
-            "If you enter anything here then <code>billing_address</code> will
-            become required.
+            "If you enter anything here then <code>billing_address</code> will become required.
           </p>
         ),
       },
       billing_address: {
-        "ui:help": (
+        'ui:help': (
           <p>
-            If you enter anything here then <code>credit_card</code> will become
-            required.
+            If you enter anything here then <code>credit_card</code> will become required.
           </p>
         ),
       },
@@ -89,10 +85,10 @@ module.exports = {
   },
   formData: {
     unidirectional: {
-      name: "Tim",
+      name: 'Tim',
     },
     bidirectional: {
-      name: "Jill",
+      name: 'Jill',
     },
   },
 };

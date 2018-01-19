@@ -1,4 +1,4 @@
-import { expect } from "chai";
+import { expect } from 'chai';
 
 import {
   asNumber,
@@ -16,118 +16,118 @@ import {
   shouldRender,
   toDateString,
   toIdSchema,
-} from "../src/utils";
+} from '../src/utils';
 
-describe("utils", () => {
-  describe("getDefaultFormState()", () => {
-    describe("root default", () => {
-      it("should map root schema default to form state, if any", () => {
+describe('utils', () => {
+  describe('getDefaultFormState()', () => {
+    describe('root default', () => {
+      it('should map root schema default to form state, if any', () => {
         expect(
           getDefaultFormState({
-            type: "string",
-            default: "foo",
+            type: 'string',
+            default: 'foo',
           })
-        ).to.eql("foo");
+        ).to.eql('foo');
       });
     });
 
-    describe("nested default", () => {
-      it("should map schema object prop default to form state", () => {
+    describe('nested default', () => {
+      it('should map schema object prop default to form state', () => {
         expect(
           getDefaultFormState({
-            type: "object",
+            type: 'object',
             properties: {
               string: {
-                type: "string",
-                default: "foo",
+                type: 'string',
+                default: 'foo',
               },
             },
           })
-        ).to.eql({ string: "foo" });
+        ).to.eql({ string: 'foo' });
       });
 
-      it("should default to empty object if no properties are defined", () => {
+      it('should default to empty object if no properties are defined', () => {
         expect(
           getDefaultFormState({
-            type: "object",
+            type: 'object',
           })
         ).to.eql({});
       });
 
-      it("should recursively map schema object default to form state", () => {
+      it('should recursively map schema object default to form state', () => {
         expect(
           getDefaultFormState({
-            type: "object",
+            type: 'object',
             properties: {
               object: {
-                type: "object",
+                type: 'object',
                 properties: {
                   string: {
-                    type: "string",
-                    default: "foo",
+                    type: 'string',
+                    default: 'foo',
                   },
                 },
               },
             },
           })
-        ).to.eql({ object: { string: "foo" } });
+        ).to.eql({ object: { string: 'foo' } });
       });
 
-      it("should map schema array default to form state", () => {
+      it('should map schema array default to form state', () => {
         expect(
           getDefaultFormState({
-            type: "object",
+            type: 'object',
             properties: {
               array: {
-                type: "array",
-                default: ["foo", "bar"],
+                type: 'array',
+                default: ['foo', 'bar'],
                 items: {
-                  type: "string",
+                  type: 'string',
                 },
               },
             },
           })
-        ).to.eql({ array: ["foo", "bar"] });
+        ).to.eql({ array: ['foo', 'bar'] });
       });
 
-      it("should recursively map schema array default to form state", () => {
+      it('should recursively map schema array default to form state', () => {
         expect(
           getDefaultFormState({
-            type: "object",
+            type: 'object',
             properties: {
               object: {
-                type: "object",
+                type: 'object',
                 properties: {
                   array: {
-                    type: "array",
-                    default: ["foo", "bar"],
+                    type: 'array',
+                    default: ['foo', 'bar'],
                     items: {
-                      type: "string",
+                      type: 'string',
                     },
                   },
                 },
               },
             },
           })
-        ).to.eql({ object: { array: ["foo", "bar"] } });
+        ).to.eql({ object: { array: ['foo', 'bar'] } });
       });
 
-      it("should propagate nested defaults to resulting formData by default", () => {
+      it('should propagate nested defaults to resulting formData by default', () => {
         const schema = {
-          type: "object",
+          type: 'object',
           properties: {
             object: {
-              type: "object",
+              type: 'object',
               properties: {
                 array: {
-                  type: "array",
-                  default: ["foo", "bar"],
+                  type: 'array',
+                  default: ['foo', 'bar'],
                   items: {
-                    type: "string",
+                    type: 'string',
                   },
                 },
                 bool: {
-                  type: "boolean",
+                  type: 'boolean',
                   default: true,
                 },
               },
@@ -135,105 +135,103 @@ describe("utils", () => {
           },
         };
         expect(getDefaultFormState(schema, {})).eql({
-          object: { array: ["foo", "bar"], bool: true },
+          object: { array: ['foo', 'bar'], bool: true },
         });
       });
 
       it("should keep parent defaults if they don't have a node level default", () => {
         const schema = {
-          type: "object",
+          type: 'object',
           properties: {
             level1: {
-              type: "object",
+              type: 'object',
               default: { level2: { leaf1: 1, leaf2: 1, leaf3: 1, leaf4: 1 } },
               properties: {
                 level2: {
-                  type: "object",
+                  type: 'object',
                   default: {
                     // No level2 default for leaf1
                     leaf2: 2,
                     leaf3: 2,
                   },
                   properties: {
-                    leaf1: { type: "number" }, // No level2 default for leaf1
-                    leaf2: { type: "number" }, // No level3 default for leaf2
-                    leaf3: { type: "number", default: 3 },
-                    leaf4: { type: "number" }, // Defined in formData.
+                    leaf1: { type: 'number' }, // No level2 default for leaf1
+                    leaf2: { type: 'number' }, // No level3 default for leaf2
+                    leaf3: { type: 'number', default: 3 },
+                    leaf4: { type: 'number' }, // Defined in formData.
                   },
                 },
               },
             },
           },
         };
-        expect(
-          getDefaultFormState(schema, { level1: { level2: { leaf4: 4 } } })
-        ).eql({
+        expect(getDefaultFormState(schema, { level1: { level2: { leaf4: 4 } } })).eql({
           level1: { level2: { leaf1: 1, leaf2: 2, leaf3: 3, leaf4: 4 } },
         });
       });
 
-      it("should use parent defaults for ArrayFields", () => {
+      it('should use parent defaults for ArrayFields', () => {
         const schema = {
-          type: "object",
+          type: 'object',
           properties: {
             level1: {
-              type: "array",
+              type: 'array',
               default: [1, 2, 3],
-              items: { type: "number" },
+              items: { type: 'number' },
             },
           },
         };
         expect(getDefaultFormState(schema, {})).eql({ level1: [1, 2, 3] });
       });
 
-      it("should use parent defaults for ArrayFields if declared in parent", () => {
+      it('should use parent defaults for ArrayFields if declared in parent', () => {
         const schema = {
-          type: "object",
+          type: 'object',
           default: { level1: [1, 2, 3] },
           properties: {
             level1: {
-              type: "array",
-              items: { type: "number" },
+              type: 'array',
+              items: { type: 'number' },
             },
           },
         };
         expect(getDefaultFormState(schema, {})).eql({ level1: [1, 2, 3] });
       });
 
-      it("should map item defaults to fixed array default", () => {
+      it('should map item defaults to fixed array default', () => {
         const schema = {
-          type: "object",
+          type: 'object',
           properties: {
             array: {
-              type: "array",
+              type: 'array',
               items: [
                 {
-                  type: "string",
-                  default: "foo",
+                  type: 'string',
+                  default: 'foo',
                 },
                 {
-                  type: "number",
+                  type: 'number',
                 },
               ],
             },
           },
         };
         expect(getDefaultFormState(schema, {})).eql({
-          array: ["foo", undefined],
+          array: ['foo', undefined],
         });
       });
 
-      it("should use schema default for referenced definitions", () => {
+      it('should use schema default for referenced definitions', () => {
         const schema = {
           definitions: {
             testdef: {
-              type: "object",
+              type: 'object',
               properties: {
-                foo: { type: "number" },
+                foo: { type: 'number' },
               },
             },
           },
-          $ref: "#/definitions/testdef",
+          $ref: '#/definitions/testdef',
           default: { foo: 42 },
         };
 
@@ -244,100 +242,100 @@ describe("utils", () => {
     });
   });
 
-  describe("asNumber()", () => {
-    it("should return a number out of a string representing a number", () => {
-      expect(asNumber("3")).eql(3);
+  describe('asNumber()', () => {
+    it('should return a number out of a string representing a number', () => {
+      expect(asNumber('3')).eql(3);
     });
 
-    it("should return a float out of a string representing a float", () => {
-      expect(asNumber("3.14")).eql(3.14);
+    it('should return a float out of a string representing a float', () => {
+      expect(asNumber('3.14')).eql(3.14);
     });
 
-    it("should return the raw value if the input ends with a dot", () => {
-      expect(asNumber("3.")).eql("3.");
+    it('should return the raw value if the input ends with a dot', () => {
+      expect(asNumber('3.')).eql('3.');
     });
 
-    it("should not convert the value to an integer if the input ends with a 0", () => {
+    it('should not convert the value to an integer if the input ends with a 0', () => {
       // this is to allow users to input 3.07
-      expect(asNumber("3.0")).eql("3.0");
+      expect(asNumber('3.0')).eql('3.0');
     });
 
-    it("should allow numbers with a 0 in the first decimal place", () => {
-      expect(asNumber("3.07")).eql(3.07);
+    it('should allow numbers with a 0 in the first decimal place', () => {
+      expect(asNumber('3.07')).eql(3.07);
     });
 
-    it("should return undefined if the input is empty", () => {
-      expect(asNumber("")).eql(undefined);
+    it('should return undefined if the input is empty', () => {
+      expect(asNumber('')).eql(undefined);
     });
   });
 
-  describe("isConstant", () => {
-    it("should return false when neither enum nor const is defined", () => {
+  describe('isConstant', () => {
+    it('should return false when neither enum nor const is defined', () => {
       const schema = {};
       expect(isConstant(schema)).to.be.false;
     });
 
-    it("should return true when schema enum is an array of one item", () => {
-      const schema = { enum: ["foo"] };
+    it('should return true when schema enum is an array of one item', () => {
+      const schema = { enum: ['foo'] };
       expect(isConstant(schema)).to.be.true;
     });
 
-    it("should return false when schema enum contains several items", () => {
-      const schema = { enum: ["foo", "bar", "baz"] };
+    it('should return false when schema enum contains several items', () => {
+      const schema = { enum: ['foo', 'bar', 'baz'] };
       expect(isConstant(schema)).to.be.false;
     });
 
-    it("should return true when schema const is defined", () => {
-      const schema = { const: "foo" };
+    it('should return true when schema const is defined', () => {
+      const schema = { const: 'foo' };
       expect(isConstant(schema)).to.be.true;
     });
   });
 
-  describe("toConstant()", () => {
-    describe("schema contains an enum array", () => {
-      it("should return its first value when it contains a unique element", () => {
-        const schema = { enum: ["foo"] };
-        expect(toConstant(schema)).eql("foo");
+  describe('toConstant()', () => {
+    describe('schema contains an enum array', () => {
+      it('should return its first value when it contains a unique element', () => {
+        const schema = { enum: ['foo'] };
+        expect(toConstant(schema)).eql('foo');
       });
 
-      it("should return schema const value when it exists", () => {
-        const schema = { const: "bar" };
-        expect(toConstant(schema)).eql("bar");
+      it('should return schema const value when it exists', () => {
+        const schema = { const: 'bar' };
+        expect(toConstant(schema)).eql('bar');
       });
 
-      it("should throw when it contains more than one element", () => {
-        const schema = { enum: ["foo", "bar"] };
+      it('should throw when it contains more than one element', () => {
+        const schema = { enum: ['foo', 'bar'] };
         expect(() => {
           toConstant(schema);
-        }).to.Throw(Error, "cannot be inferred");
+        }).to.Throw(Error, 'cannot be inferred');
       });
     });
   });
 
-  describe("isMultiSelect()", () => {
-    describe("uniqueItems is true", () => {
-      describe("schema items enum is an array", () => {
-        it("should be true", () => {
-          let schema = { items: { enum: ["foo", "bar"] }, uniqueItems: true };
+  describe('isMultiSelect()', () => {
+    describe('uniqueItems is true', () => {
+      describe('schema items enum is an array', () => {
+        it('should be true', () => {
+          let schema = { items: { enum: ['foo', 'bar'] }, uniqueItems: true };
           expect(isMultiSelect(schema)).to.be.true;
         });
       });
 
-      it("should be false if items is undefined", () => {
+      it('should be false if items is undefined', () => {
         const schema = {};
         expect(isMultiSelect(schema)).to.be.false;
       });
 
-      describe("schema items enum is not an array", () => {
-        const constantSchema = { type: "string", enum: ["Foo"] };
-        const notConstantSchema = { type: "string" };
+      describe('schema items enum is not an array', () => {
+        const constantSchema = { type: 'string', enum: ['Foo'] };
+        const notConstantSchema = { type: 'string' };
 
-        it("should be false if oneOf/anyOf is not in items schema", () => {
+        it('should be false if oneOf/anyOf is not in items schema', () => {
           const schema = { items: {}, uniqueItems: true };
           expect(isMultiSelect(schema)).to.be.false;
         });
 
-        it("should be false if oneOf/anyOf schemas are not all constants", () => {
+        it('should be false if oneOf/anyOf schemas are not all constants', () => {
           const schema = {
             items: { oneOf: [constantSchema, notConstantSchema] },
             uniqueItems: true,
@@ -345,7 +343,7 @@ describe("utils", () => {
           expect(isMultiSelect(schema)).to.be.false;
         });
 
-        it("should be true if oneOf/anyOf schemas are all constants", () => {
+        it('should be true if oneOf/anyOf schemas are all constants', () => {
           const schema = {
             items: { oneOf: [constantSchema, constantSchema] },
             uniqueItems: true,
@@ -354,52 +352,52 @@ describe("utils", () => {
         });
       });
 
-      it("should retrieve reference schema definitions", () => {
+      it('should retrieve reference schema definitions', () => {
         const schema = {
-          items: { $ref: "#/definitions/FooItem" },
+          items: { $ref: '#/definitions/FooItem' },
           uniqueItems: true,
         };
-        const definitions = { FooItem: { type: "string", enum: ["foo"] } };
+        const definitions = { FooItem: { type: 'string', enum: ['foo'] } };
         expect(isMultiSelect(schema, definitions)).to.be.true;
       });
     });
 
-    it("should be false if uniqueItems is false", () => {
-      const schema = { items: { enum: ["foo", "bar"] }, uniqueItems: false };
+    it('should be false if uniqueItems is false', () => {
+      const schema = { items: { enum: ['foo', 'bar'] }, uniqueItems: false };
       expect(isMultiSelect(schema)).to.be.false;
     });
   });
 
-  describe("isFilesArray()", () => {
-    it("should be true if items have data-url format", () => {
-      const schema = { items: { type: "string", format: "data-url" } };
+  describe('isFilesArray()', () => {
+    it('should be true if items have data-url format', () => {
+      const schema = { items: { type: 'string', format: 'data-url' } };
       const uiSchema = {};
       expect(isFilesArray(schema, uiSchema)).to.be.true;
     });
 
-    it("should be false if items is undefined", () => {
+    it('should be false if items is undefined', () => {
       const schema = {};
       const uiSchema = {};
       expect(isFilesArray(schema, uiSchema)).to.be.false;
     });
   });
 
-  describe("mergeObjects()", () => {
+  describe('mergeObjects()', () => {
     it("should't mutate the provided objects", () => {
       const obj1 = { a: 1 };
       mergeObjects(obj1, { b: 2 });
       expect(obj1).eql({ a: 1 });
     });
 
-    it("should merge two one-level deep objects", () => {
+    it('should merge two one-level deep objects', () => {
       expect(mergeObjects({ a: 1 }, { b: 2 })).eql({ a: 1, b: 2 });
     });
 
-    it("should override the first object with the values from the second", () => {
+    it('should override the first object with the values from the second', () => {
       expect(mergeObjects({ a: 1 }, { a: 2 })).eql({ a: 2 });
     });
 
-    it("should recursively merge deeply nested objects", () => {
+    it('should recursively merge deeply nested objects', () => {
       const obj1 = {
         a: 1,
         b: {
@@ -431,22 +429,22 @@ describe("utils", () => {
       expect(mergeObjects(obj1, obj2)).eql(expected);
     });
 
-    describe("concatArrays option", () => {
-      it("should not concat arrays by default", () => {
+    describe('concatArrays option', () => {
+      it('should not concat arrays by default', () => {
         const obj1 = { a: [1] };
         const obj2 = { a: [2] };
 
         expect(mergeObjects(obj1, obj2)).eql({ a: [2] });
       });
 
-      it("should concat arrays when concatArrays is true", () => {
+      it('should concat arrays when concatArrays is true', () => {
         const obj1 = { a: [1] };
         const obj2 = { a: [2] };
 
         expect(mergeObjects(obj1, obj2, true)).eql({ a: [1, 2] });
       });
 
-      it("should concat nested arrays when concatArrays is true", () => {
+      it('should concat nested arrays when concatArrays is true', () => {
         const obj1 = { a: { b: [1] } };
         const obj2 = { a: { b: [2] } };
 
@@ -455,17 +453,17 @@ describe("utils", () => {
     });
   });
 
-  describe("retrieveSchema()", () => {
+  describe('retrieveSchema()', () => {
     it("should 'resolve' a schema which contains definitions", () => {
-      const schema = { $ref: "#/definitions/address" };
+      const schema = { $ref: '#/definitions/address' };
       const address = {
-        type: "object",
+        type: 'object',
         properties: {
-          street_address: { type: "string" },
-          city: { type: "string" },
-          state: { type: "string" },
+          street_address: { type: 'string' },
+          city: { type: 'string' },
+          state: { type: 'string' },
         },
-        required: ["street_address", "city", "state"],
+        required: ['street_address', 'city', 'state'],
       };
       const definitions = { address };
 
@@ -473,124 +471,124 @@ describe("utils", () => {
     });
 
     it("should 'resolve' escaped JSON Pointers", () => {
-      const schema = { $ref: "#/definitions/a~0complex~1name" };
-      const address = { type: "string" };
-      const definitions = { "a~complex/name": address };
+      const schema = { $ref: '#/definitions/a~0complex~1name' };
+      const address = { type: 'string' };
+      const definitions = { 'a~complex/name': address };
 
       expect(retrieveSchema(schema, definitions)).eql(address);
     });
 
-    it("should priorize local definitions over foreign ones", () => {
+    it('should priorize local definitions over foreign ones', () => {
       const schema = {
-        $ref: "#/definitions/address",
-        title: "foo",
+        $ref: '#/definitions/address',
+        title: 'foo',
       };
       const address = {
-        type: "string",
-        title: "bar",
+        type: 'string',
+        title: 'bar',
       };
       const definitions = { address };
 
       expect(retrieveSchema(schema, definitions)).eql({
         ...address,
-        title: "foo",
+        title: 'foo',
       });
     });
 
-    describe("property dependencies", () => {
-      describe("false condition", () => {
-        it("should not add required properties", () => {
+    describe('property dependencies', () => {
+      describe('false condition', () => {
+        it('should not add required properties', () => {
           const schema = {
-            type: "object",
+            type: 'object',
             properties: {
-              a: { type: "string" },
-              b: { type: "integer" },
+              a: { type: 'string' },
+              b: { type: 'integer' },
             },
-            required: ["a"],
+            required: ['a'],
             dependencies: {
-              a: ["b"],
+              a: ['b'],
             },
           };
           const definitions = {};
           const formData = {};
           expect(retrieveSchema(schema, definitions, formData)).eql({
-            type: "object",
+            type: 'object',
             properties: {
-              a: { type: "string" },
-              b: { type: "integer" },
+              a: { type: 'string' },
+              b: { type: 'integer' },
             },
-            required: ["a"],
+            required: ['a'],
           });
         });
       });
 
-      describe("true condition", () => {
-        describe("when required is not defined", () => {
-          it("should define required properties", () => {
+      describe('true condition', () => {
+        describe('when required is not defined', () => {
+          it('should define required properties', () => {
             const schema = {
-              type: "object",
+              type: 'object',
               properties: {
-                a: { type: "string" },
-                b: { type: "integer" },
+                a: { type: 'string' },
+                b: { type: 'integer' },
               },
               dependencies: {
-                a: ["b"],
+                a: ['b'],
               },
             };
             const definitions = {};
-            const formData = { a: "1" };
+            const formData = { a: '1' };
             expect(retrieveSchema(schema, definitions, formData)).eql({
-              type: "object",
+              type: 'object',
               properties: {
-                a: { type: "string" },
-                b: { type: "integer" },
+                a: { type: 'string' },
+                b: { type: 'integer' },
               },
-              required: ["b"],
+              required: ['b'],
             });
           });
         });
 
-        describe("when required is defined", () => {
-          it("should concat required properties", () => {
+        describe('when required is defined', () => {
+          it('should concat required properties', () => {
             const schema = {
-              type: "object",
+              type: 'object',
               properties: {
-                a: { type: "string" },
-                b: { type: "integer" },
+                a: { type: 'string' },
+                b: { type: 'integer' },
               },
-              required: ["a"],
+              required: ['a'],
               dependencies: {
-                a: ["b"],
+                a: ['b'],
               },
             };
             const definitions = {};
-            const formData = { a: "1" };
+            const formData = { a: '1' };
             expect(retrieveSchema(schema, definitions, formData)).eql({
-              type: "object",
+              type: 'object',
               properties: {
-                a: { type: "string" },
-                b: { type: "integer" },
+                a: { type: 'string' },
+                b: { type: 'integer' },
               },
-              required: ["a", "b"],
+              required: ['a', 'b'],
             });
           });
         });
       });
     });
 
-    describe("schema dependencies", () => {
-      describe("conditional", () => {
-        describe("false condition", () => {
-          it("should not modify properties", () => {
+    describe('schema dependencies', () => {
+      describe('conditional', () => {
+        describe('false condition', () => {
+          it('should not modify properties', () => {
             const schema = {
-              type: "object",
+              type: 'object',
               properties: {
-                a: { type: "string" },
+                a: { type: 'string' },
               },
               dependencies: {
                 a: {
                   properties: {
-                    b: { type: "integer" },
+                    b: { type: 'integer' },
                   },
                 },
               },
@@ -598,94 +596,94 @@ describe("utils", () => {
             const definitions = {};
             const formData = {};
             expect(retrieveSchema(schema, definitions, formData)).eql({
-              type: "object",
+              type: 'object',
               properties: {
-                a: { type: "string" },
+                a: { type: 'string' },
               },
             });
           });
         });
 
-        describe("true condition", () => {
-          it("should add properties", () => {
+        describe('true condition', () => {
+          it('should add properties', () => {
             const schema = {
-              type: "object",
+              type: 'object',
               properties: {
-                a: { type: "string" },
+                a: { type: 'string' },
               },
               dependencies: {
                 a: {
                   properties: {
-                    b: { type: "integer" },
+                    b: { type: 'integer' },
                   },
                 },
               },
             };
             const definitions = {};
-            const formData = { a: "1" };
+            const formData = { a: '1' };
             expect(retrieveSchema(schema, definitions, formData)).eql({
-              type: "object",
+              type: 'object',
               properties: {
-                a: { type: "string" },
-                b: { type: "integer" },
+                a: { type: 'string' },
+                b: { type: 'integer' },
               },
             });
           });
         });
 
-        describe("with $ref in dependency", () => {
-          it("should retrieve referenced schema", () => {
+        describe('with $ref in dependency', () => {
+          it('should retrieve referenced schema', () => {
             const schema = {
-              type: "object",
+              type: 'object',
               properties: {
-                a: { type: "string" },
+                a: { type: 'string' },
               },
               dependencies: {
                 a: {
-                  $ref: "#/definitions/needsB",
+                  $ref: '#/definitions/needsB',
                 },
               },
             };
             const definitions = {
               needsB: {
                 properties: {
-                  b: { type: "integer" },
+                  b: { type: 'integer' },
                 },
               },
             };
-            const formData = { a: "1" };
+            const formData = { a: '1' };
             expect(retrieveSchema(schema, definitions, formData)).eql({
-              type: "object",
+              type: 'object',
               properties: {
-                a: { type: "string" },
-                b: { type: "integer" },
+                a: { type: 'string' },
+                b: { type: 'integer' },
               },
             });
           });
         });
       });
 
-      describe("dynamic", () => {
-        describe("false condition", () => {
-          it("should not modify properties", () => {
+      describe('dynamic', () => {
+        describe('false condition', () => {
+          it('should not modify properties', () => {
             const schema = {
-              type: "object",
+              type: 'object',
               properties: {
-                a: { type: "string" },
+                a: { type: 'string' },
               },
               dependencies: {
                 a: {
                   oneOf: [
                     {
                       properties: {
-                        a: { enum: ["int"] },
-                        b: { type: "integer" },
+                        a: { enum: ['int'] },
+                        b: { type: 'integer' },
                       },
                     },
                     {
                       properties: {
-                        a: { enum: ["bool"] },
-                        b: { type: "boolean" },
+                        a: { enum: ['bool'] },
+                        b: { type: 'boolean' },
                       },
                     },
                   ],
@@ -695,34 +693,34 @@ describe("utils", () => {
             const definitions = {};
             const formData = {};
             expect(retrieveSchema(schema, definitions, formData)).eql({
-              type: "object",
+              type: 'object',
               properties: {
-                a: { type: "string" },
+                a: { type: 'string' },
               },
             });
           });
         });
 
-        describe("true condition", () => {
+        describe('true condition', () => {
           it("should add 'first' properties given 'first' data", () => {
             const schema = {
-              type: "object",
+              type: 'object',
               properties: {
-                a: { type: "string", enum: ["int", "bool"] },
+                a: { type: 'string', enum: ['int', 'bool'] },
               },
               dependencies: {
                 a: {
                   oneOf: [
                     {
                       properties: {
-                        a: { enum: ["int"] },
-                        b: { type: "integer" },
+                        a: { enum: ['int'] },
+                        b: { type: 'integer' },
                       },
                     },
                     {
                       properties: {
-                        a: { enum: ["bool"] },
-                        b: { type: "boolean" },
+                        a: { enum: ['bool'] },
+                        b: { type: 'boolean' },
                       },
                     },
                   ],
@@ -730,35 +728,35 @@ describe("utils", () => {
               },
             };
             const definitions = {};
-            const formData = { a: "int" };
+            const formData = { a: 'int' };
             expect(retrieveSchema(schema, definitions, formData)).eql({
-              type: "object",
+              type: 'object',
               properties: {
-                a: { type: "string", enum: ["int", "bool"] },
-                b: { type: "integer" },
+                a: { type: 'string', enum: ['int', 'bool'] },
+                b: { type: 'integer' },
               },
             });
           });
 
           it("should add 'second' properties given 'second' data", () => {
             const schema = {
-              type: "object",
+              type: 'object',
               properties: {
-                a: { type: "string", enum: ["int", "bool"] },
+                a: { type: 'string', enum: ['int', 'bool'] },
               },
               dependencies: {
                 a: {
                   oneOf: [
                     {
                       properties: {
-                        a: { enum: ["int"] },
-                        b: { type: "integer" },
+                        a: { enum: ['int'] },
+                        b: { type: 'integer' },
                       },
                     },
                     {
                       properties: {
-                        a: { enum: ["bool"] },
-                        b: { type: "boolean" },
+                        a: { enum: ['bool'] },
+                        b: { type: 'boolean' },
                       },
                     },
                   ],
@@ -766,27 +764,27 @@ describe("utils", () => {
               },
             };
             const definitions = {};
-            const formData = { a: "bool" };
+            const formData = { a: 'bool' };
             expect(retrieveSchema(schema, definitions, formData)).eql({
-              type: "object",
+              type: 'object',
               properties: {
-                a: { type: "string", enum: ["int", "bool"] },
-                b: { type: "boolean" },
+                a: { type: 'string', enum: ['int', 'bool'] },
+                b: { type: 'boolean' },
               },
             });
           });
         });
 
-        describe("with $ref in dependency", () => {
-          it("should retrieve the referenced schema", () => {
+        describe('with $ref in dependency', () => {
+          it('should retrieve the referenced schema', () => {
             const schema = {
-              type: "object",
+              type: 'object',
               properties: {
-                a: { type: "string", enum: ["int", "bool"] },
+                a: { type: 'string', enum: ['int', 'bool'] },
               },
               dependencies: {
                 a: {
-                  $ref: "#/definitions/typedInput",
+                  $ref: '#/definitions/typedInput',
                 },
               },
             };
@@ -795,25 +793,25 @@ describe("utils", () => {
                 oneOf: [
                   {
                     properties: {
-                      a: { enum: ["int"] },
-                      b: { type: "integer" },
+                      a: { enum: ['int'] },
+                      b: { type: 'integer' },
                     },
                   },
                   {
                     properties: {
-                      a: { enum: ["bool"] },
-                      b: { type: "boolean" },
+                      a: { enum: ['bool'] },
+                      b: { type: 'boolean' },
                     },
                   },
                 ],
               },
             };
-            const formData = { a: "bool" };
+            const formData = { a: 'bool' };
             expect(retrieveSchema(schema, definitions, formData)).eql({
-              type: "object",
+              type: 'object',
               properties: {
-                a: { type: "string", enum: ["int", "bool"] },
-                b: { type: "boolean" },
+                a: { type: 'string', enum: ['int', 'bool'] },
+                b: { type: 'boolean' },
               },
             });
           });
@@ -822,23 +820,23 @@ describe("utils", () => {
     });
   });
 
-  describe("shouldRender", () => {
-    describe("single level comparison checks", () => {
+  describe('shouldRender', () => {
+    describe('single level comparison checks', () => {
       const initial = { props: { myProp: 1 }, state: { myState: 1 } };
 
-      it("should detect equivalent props and state", () => {
+      it('should detect equivalent props and state', () => {
         expect(shouldRender(initial, { myProp: 1 }, { myState: 1 })).eql(false);
       });
 
-      it("should detect diffing props", () => {
+      it('should detect diffing props', () => {
         expect(shouldRender(initial, { myProp: 2 }, { myState: 1 })).eql(true);
       });
 
-      it("should detect diffing state", () => {
+      it('should detect diffing state', () => {
         expect(shouldRender(initial, { myProp: 1 }, { myState: 2 })).eql(true);
       });
 
-      it("should handle equivalent function prop", () => {
+      it('should handle equivalent function prop', () => {
         const fn = () => {};
         expect(
           shouldRender(
@@ -850,43 +848,31 @@ describe("utils", () => {
       });
     });
 
-    describe("nested levels comparison checks", () => {
+    describe('nested levels comparison checks', () => {
       const initial = {
         props: { myProp: { mySubProp: 1 } },
         state: { myState: { mySubState: 1 } },
       };
 
-      it("should detect equivalent props and state", () => {
+      it('should detect equivalent props and state', () => {
         expect(
-          shouldRender(
-            initial,
-            { myProp: { mySubProp: 1 } },
-            { myState: { mySubState: 1 } }
-          )
+          shouldRender(initial, { myProp: { mySubProp: 1 } }, { myState: { mySubState: 1 } })
         ).eql(false);
       });
 
-      it("should detect diffing props", () => {
+      it('should detect diffing props', () => {
         expect(
-          shouldRender(
-            initial,
-            { myProp: { mySubProp: 2 } },
-            { myState: { mySubState: 1 } }
-          )
+          shouldRender(initial, { myProp: { mySubProp: 2 } }, { myState: { mySubState: 1 } })
         ).eql(true);
       });
 
-      it("should detect diffing state", () => {
+      it('should detect diffing state', () => {
         expect(
-          shouldRender(
-            initial,
-            { myProp: { mySubProp: 1 } },
-            { myState: { mySubState: 2 } }
-          )
+          shouldRender(initial, { myProp: { mySubProp: 1 } }, { myState: { mySubState: 2 } })
         ).eql(true);
       });
 
-      it("should handle equivalent function prop", () => {
+      it('should handle equivalent function prop', () => {
         const fn = () => {};
         expect(
           shouldRender(
@@ -902,140 +888,140 @@ describe("utils", () => {
     });
   });
 
-  describe("toIdSchema", () => {
-    it("should return an idSchema for root field", () => {
-      const schema = { type: "string" };
+  describe('toIdSchema', () => {
+    it('should return an idSchema for root field', () => {
+      const schema = { type: 'string' };
 
-      expect(toIdSchema(schema)).eql({ $id: "root" });
+      expect(toIdSchema(schema)).eql({ $id: 'root' });
     });
 
-    it("should return an idSchema for nested objects", () => {
+    it('should return an idSchema for nested objects', () => {
       const schema = {
-        type: "object",
+        type: 'object',
         properties: {
           level1: {
-            type: "object",
+            type: 'object',
             properties: {
-              level2: { type: "string" },
+              level2: { type: 'string' },
             },
           },
         },
       };
 
       expect(toIdSchema(schema)).eql({
-        $id: "root",
+        $id: 'root',
         level1: {
-          $id: "root_level1",
-          level2: { $id: "root_level1_level2" },
+          $id: 'root_level1',
+          level2: { $id: 'root_level1_level2' },
         },
       });
     });
 
-    it("should return an idSchema for multiple nested objects", () => {
+    it('should return an idSchema for multiple nested objects', () => {
       const schema = {
-        type: "object",
+        type: 'object',
         properties: {
           level1a: {
-            type: "object",
+            type: 'object',
             properties: {
-              level1a2a: { type: "string" },
-              level1a2b: { type: "string" },
+              level1a2a: { type: 'string' },
+              level1a2b: { type: 'string' },
             },
           },
           level1b: {
-            type: "object",
+            type: 'object',
             properties: {
-              level1b2a: { type: "string" },
-              level1b2b: { type: "string" },
+              level1b2a: { type: 'string' },
+              level1b2b: { type: 'string' },
             },
           },
         },
       };
 
       expect(toIdSchema(schema)).eql({
-        $id: "root",
+        $id: 'root',
         level1a: {
-          $id: "root_level1a",
-          level1a2a: { $id: "root_level1a_level1a2a" },
-          level1a2b: { $id: "root_level1a_level1a2b" },
+          $id: 'root_level1a',
+          level1a2a: { $id: 'root_level1a_level1a2a' },
+          level1a2b: { $id: 'root_level1a_level1a2b' },
         },
         level1b: {
-          $id: "root_level1b",
-          level1b2a: { $id: "root_level1b_level1b2a" },
-          level1b2b: { $id: "root_level1b_level1b2b" },
+          $id: 'root_level1b',
+          level1b2a: { $id: 'root_level1b_level1b2a' },
+          level1b2b: { $id: 'root_level1b_level1b2b' },
         },
       });
     });
 
-    it("schema with an id property must not corrupt the idSchema", () => {
+    it('schema with an id property must not corrupt the idSchema', () => {
       const schema = {
-        type: "object",
+        type: 'object',
         properties: {
           metadata: {
-            type: "object",
+            type: 'object',
             properties: {
               id: {
-                type: "string",
+                type: 'string',
               },
             },
-            required: ["id"],
+            required: ['id'],
           },
         },
       };
       expect(toIdSchema(schema)).eql({
-        $id: "root",
+        $id: 'root',
         metadata: {
-          $id: "root_metadata",
-          id: { $id: "root_metadata_id" },
+          $id: 'root_metadata',
+          id: { $id: 'root_metadata_id' },
         },
       });
     });
 
-    it("should return an idSchema for array item objects", () => {
+    it('should return an idSchema for array item objects', () => {
       const schema = {
-        type: "array",
+        type: 'array',
         items: {
-          type: "object",
+          type: 'object',
           properties: {
-            foo: { type: "string" },
+            foo: { type: 'string' },
           },
         },
       };
 
       expect(toIdSchema(schema)).eql({
-        $id: "root",
-        foo: { $id: "root_foo" },
+        $id: 'root',
+        foo: { $id: 'root_foo' },
       });
     });
 
-    it("should retrieve referenced schema definitions", () => {
+    it('should retrieve referenced schema definitions', () => {
       const schema = {
         definitions: {
           testdef: {
-            type: "object",
+            type: 'object',
             properties: {
-              foo: { type: "string" },
-              bar: { type: "string" },
+              foo: { type: 'string' },
+              bar: { type: 'string' },
             },
           },
         },
-        $ref: "#/definitions/testdef",
+        $ref: '#/definitions/testdef',
       };
 
       expect(toIdSchema(schema, undefined, schema.definitions)).eql({
-        $id: "root",
-        foo: { $id: "root_foo" },
-        bar: { $id: "root_bar" },
+        $id: 'root',
+        foo: { $id: 'root_foo' },
+        bar: { $id: 'root_bar' },
       });
     });
   });
 
-  describe("parseDateString()", () => {
-    it("should raise on invalid JSON datetime", () => {
-      expect(() => parseDateString("plop")).to.Throw(Error, "Unable to parse");
+  describe('parseDateString()', () => {
+    it('should raise on invalid JSON datetime', () => {
+      expect(() => parseDateString('plop')).to.Throw(Error, 'Unable to parse');
     });
 
-    it("should return a default object when no datetime is passed", () => {
+    it('should return a default object when no datetime is passed', () => {
       expect(parseDateString()).eql({
         year: -1,
         month: -1,
@@ -1046,7 +1032,7 @@ describe("utils", () => {
       });
     });
 
-    it("should return a default object when time should not be included", () => {
+    it('should return a default object when time should not be included', () => {
       expect(parseDateString(undefined, false)).eql({
         year: -1,
         month: -1,
@@ -1057,8 +1043,8 @@ describe("utils", () => {
       });
     });
 
-    it("should parse a valid JSON datetime string", () => {
-      expect(parseDateString("2016-04-05T14:01:30.182Z")).eql({
+    it('should parse a valid JSON datetime string', () => {
+      expect(parseDateString('2016-04-05T14:01:30.182Z')).eql({
         year: 2016,
         month: 4,
         day: 5,
@@ -1068,8 +1054,8 @@ describe("utils", () => {
       });
     });
 
-    it("should exclude time when includeTime is false", () => {
-      expect(parseDateString("2016-04-05T14:01:30.182Z", false)).eql({
+    it('should exclude time when includeTime is false', () => {
+      expect(parseDateString('2016-04-05T14:01:30.182Z', false)).eql({
         year: 2016,
         month: 4,
         day: 5,
@@ -1080,8 +1066,8 @@ describe("utils", () => {
     });
   });
 
-  describe("toDateString()", () => {
-    it("should transform an object to a valid json datetime if time=true", () => {
+  describe('toDateString()', () => {
+    it('should transform an object to a valid json datetime if time=true', () => {
       expect(
         toDateString({
           year: 2016,
@@ -1091,10 +1077,10 @@ describe("utils", () => {
           minute: 1,
           second: 30,
         })
-      ).eql("2016-04-05T14:01:30.000Z");
+      ).eql('2016-04-05T14:01:30.000Z');
     });
 
-    it("should transform an object to a valid date string if time=false", () => {
+    it('should transform an object to a valid date string if time=false', () => {
       expect(
         toDateString(
           {
@@ -1104,67 +1090,61 @@ describe("utils", () => {
           },
           false
         )
-      ).eql("2016-04-05");
+      ).eql('2016-04-05');
     });
   });
 
-  describe("pad()", () => {
-    it("should pad a string with 0s", () => {
-      expect(pad(4, 3)).eql("004");
+  describe('pad()', () => {
+    it('should pad a string with 0s', () => {
+      expect(pad(4, 3)).eql('004');
     });
   });
 
-  describe("dataURItoBlob()", () => {
-    it("should return the name of the file if present", () => {
-      const { blob, name } = dataURItoBlob(
-        "data:image/png;name=test.png;base64,VGVzdC5wbmc="
-      );
-      expect(name).eql("test.png");
+  describe('dataURItoBlob()', () => {
+    it('should return the name of the file if present', () => {
+      const { blob, name } = dataURItoBlob('data:image/png;name=test.png;base64,VGVzdC5wbmc=');
+      expect(name).eql('test.png');
       expect(blob)
-        .to.have.property("size")
+        .to.have.property('size')
         .eql(8);
       expect(blob)
-        .to.have.property("type")
-        .eql("image/png");
+        .to.have.property('type')
+        .eql('image/png');
     });
 
-    it("should return unknown if name is not provided", () => {
-      const { blob, name } = dataURItoBlob(
-        "data:image/png;base64,VGVzdC5wbmc="
-      );
-      expect(name).eql("unknown");
+    it('should return unknown if name is not provided', () => {
+      const { blob, name } = dataURItoBlob('data:image/png;base64,VGVzdC5wbmc=');
+      expect(name).eql('unknown');
       expect(blob)
-        .to.have.property("size")
+        .to.have.property('size')
         .eql(8);
       expect(blob)
-        .to.have.property("type")
-        .eql("image/png");
+        .to.have.property('type')
+        .eql('image/png');
     });
 
-    it("should return ignore unsupported parameters", () => {
+    it('should return ignore unsupported parameters', () => {
       const { blob, name } = dataURItoBlob(
-        "data:image/png;unknown=foobar;name=test.png;base64,VGVzdC5wbmc="
+        'data:image/png;unknown=foobar;name=test.png;base64,VGVzdC5wbmc='
       );
-      expect(name).eql("test.png");
+      expect(name).eql('test.png');
       expect(blob)
-        .to.have.property("size")
+        .to.have.property('size')
         .eql(8);
       expect(blob)
-        .to.have.property("type")
-        .eql("image/png");
+        .to.have.property('type')
+        .eql('image/png');
     });
   });
 
-  describe("deepEquals()", () => {
+  describe('deepEquals()', () => {
     // Note: deepEquals implementation being extracted from node-deeper, it's
     // worthless to reproduce all the tests existing for it; so we focus on the
     // behavioral differences we introduced.
-    it("should assume functions are always equivalent", () => {
+    it('should assume functions are always equivalent', () => {
       expect(deepEquals(() => {}, () => {})).eql(true);
       expect(deepEquals({ foo() {} }, { foo() {} })).eql(true);
-      expect(deepEquals({ foo: { bar() {} } }, { foo: { bar() {} } })).eql(
-        true
-      );
+      expect(deepEquals({ foo: { bar() {} } }, { foo: { bar() {} } })).eql(true);
     });
   });
 });

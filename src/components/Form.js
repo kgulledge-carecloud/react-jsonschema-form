@@ -1,15 +1,15 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
-import { default as DefaultErrorList } from "./ErrorList";
+import { default as DefaultErrorList } from './ErrorList';
 import {
   getDefaultFormState,
   shouldRender,
   toIdSchema,
   setState,
   getDefaultRegistry,
-} from "../utils";
-import validateFormData from "../validate";
+} from '../utils';
+import validateFormData from '../validate';
 
 export default class Form extends Component {
   static defaultProps = {
@@ -32,9 +32,9 @@ export default class Form extends Component {
 
   getStateFromProps(props) {
     const state = this.state || {};
-    const schema = "schema" in props ? props.schema : this.props.schema;
-    const uiSchema = "uiSchema" in props ? props.uiSchema : this.props.uiSchema;
-    const edit = typeof props.formData !== "undefined";
+    const schema = 'schema' in props ? props.schema : this.props.schema;
+    const uiSchema = 'uiSchema' in props ? props.uiSchema : this.props.uiSchema;
+    const edit = typeof props.formData !== 'undefined';
     const liveValidate = props.liveValidate || this.props.liveValidate;
     const mustValidate = edit && !props.noValidate && liveValidate;
     const { definitions } = schema;
@@ -45,12 +45,7 @@ export default class Form extends Component {
           errors: state.errors || [],
           errorSchema: state.errorSchema || {},
         };
-    const idSchema = toIdSchema(
-      schema,
-      uiSchema["ui:rootFieldId"],
-      definitions,
-      formData
-    );
+    const idSchema = toIdSchema(schema, uiSchema['ui:rootFieldId'], definitions, formData);
     return {
       schema,
       uiSchema,
@@ -68,12 +63,7 @@ export default class Form extends Component {
 
   validate(formData, schema) {
     const { validate, transformErrors } = this.props;
-    return validateFormData(
-      formData,
-      schema || this.props.schema,
-      validate,
-      transformErrors
-    );
+    return validateFormData(formData, schema || this.props.schema, validate, transformErrors);
   }
 
   renderErrors() {
@@ -95,8 +85,7 @@ export default class Form extends Component {
   }
 
   onChange = (formData, options = { validate: false }) => {
-    const mustValidate =
-      !this.props.noValidate && (this.props.liveValidate || options.validate);
+    const mustValidate = !this.props.noValidate && (this.props.liveValidate || options.validate);
     let state = { formData };
     if (mustValidate) {
       const { errors, errorSchema } = this.validate(formData);
@@ -131,7 +120,7 @@ export default class Form extends Component {
           if (this.props.onError) {
             this.props.onError(errors);
           } else {
-            console.error("Form validation failed", errors);
+            console.error('Form validation failed', errors);
           }
         });
         return;
@@ -139,7 +128,7 @@ export default class Form extends Component {
     }
 
     if (this.props.onSubmit) {
-      this.props.onSubmit({ ...this.state, status: "submitted" });
+      this.props.onSubmit({ ...this.state, status: 'submitted' });
     }
     this.setState({ errors: [], errorSchema: {} });
   };
@@ -181,7 +170,7 @@ export default class Form extends Component {
 
     return (
       <form
-        className={className ? className : "rjsf"}
+        className={className ? className : 'rjsf'}
         id={id}
         name={name}
         method={method}
@@ -219,14 +208,12 @@ export default class Form extends Component {
   }
 }
 
-if (process.env.NODE_ENV !== "production") {
+if (process.env.NODE_ENV !== 'production') {
   Form.propTypes = {
     schema: PropTypes.object.isRequired,
     uiSchema: PropTypes.object,
     formData: PropTypes.any,
-    widgets: PropTypes.objectOf(
-      PropTypes.oneOfType([PropTypes.func, PropTypes.object])
-    ),
+    widgets: PropTypes.objectOf(PropTypes.oneOfType([PropTypes.func, PropTypes.object])),
     fields: PropTypes.objectOf(PropTypes.func),
     ArrayFieldTemplate: PropTypes.func,
     ObjectFieldTemplate: PropTypes.func,

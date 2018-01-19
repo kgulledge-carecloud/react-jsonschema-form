@@ -20,7 +20,7 @@
   },
   "prettierOptions": "--jsx-bracket-same-line --trailing-comma es5 --semi",
   "lint-staged": {
-    "{playground,src,test}/**/*.js": [
+    "src/**/*.js": [
       "npm run lint",
       "npm run cs-format",
       "npm run build:lib",

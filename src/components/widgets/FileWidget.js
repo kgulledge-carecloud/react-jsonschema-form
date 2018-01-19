@@ -1,10 +1,10 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
-import { dataURItoBlob, shouldRender, setState } from "../../utils";
+import { dataURItoBlob, shouldRender, setState } from '../../utils';
 
 function addNameToDataURL(dataURL, name) {
-  return dataURL.replace(";base64", `;name=${name};base64`);
+  return dataURL.replace(';base64', `;name=${name};base64`);
 }
 
 function processFile(file) {
@@ -47,16 +47,14 @@ function FilesInfo(props) {
 }
 
 function extractFileInfo(dataURLs) {
-  return dataURLs
-    .filter(dataURL => typeof dataURL !== "undefined")
-    .map(dataURL => {
-      const { blob, name } = dataURItoBlob(dataURL);
-      return {
-        name: name,
-        size: blob.size,
-        type: blob.type,
-      };
-    });
+  return dataURLs.filter(dataURL => typeof dataURL !== 'undefined').map(dataURL => {
+    const { blob, name } = dataURItoBlob(dataURL);
+    return {
+      name: name,
+      size: blob.size,
+      type: blob.type,
+    };
+  });
 }
 
 class FileWidget extends Component {
@@ -119,13 +117,10 @@ FileWidget.defaultProps = {
   autofocus: false,
 };
 
-if (process.env.NODE_ENV !== "production") {
+if (process.env.NODE_ENV !== 'production') {
   FileWidget.propTypes = {
     multiple: PropTypes.bool,
-    value: PropTypes.oneOfType([
-      PropTypes.string,
-      PropTypes.arrayOf(PropTypes.string),
-    ]),
+    value: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
     autofocus: PropTypes.bool,
   };
 }

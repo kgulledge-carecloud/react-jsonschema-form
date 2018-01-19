@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 function ArrayFieldTemplate(props) {
   return (
@@ -8,26 +8,14 @@ function ArrayFieldTemplate(props) {
           <div key={element.index}>
             <div>{element.children}</div>
             {element.hasMoveDown && (
-              <button
-                onClick={element.onReorderClick(
-                  element.index,
-                  element.index + 1
-                )}>
+              <button onClick={element.onReorderClick(element.index, element.index + 1)}>
                 Down
               </button>
             )}
             {element.hasMoveUp && (
-              <button
-                onClick={element.onReorderClick(
-                  element.index,
-                  element.index - 1
-                )}>
-                Up
-              </button>
+              <button onClick={element.onReorderClick(element.index, element.index - 1)}>Up</button>
             )}
-            <button onClick={element.onDropIndexClick(element.index)}>
-              Delete
-            </button>
+            <button onClick={element.onDropIndexClick(element.index)}>Delete</button>
             <hr />
           </div>
         ))}
@@ -47,12 +35,12 @@ function ArrayFieldTemplate(props) {
 
 module.exports = {
   schema: {
-    title: "Custom array of strings",
-    type: "array",
+    title: 'Custom array of strings',
+    type: 'array',
     items: {
-      type: "string",
+      type: 'string',
     },
   },
-  formData: ["react", "jsonschema", "form"],
+  formData: ['react', 'jsonschema', 'form'],
   ArrayFieldTemplate,
 };
