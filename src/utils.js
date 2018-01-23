@@ -1,6 +1,7 @@
 import React from 'react';
 import 'setimmediate';
 import validateFormData from './validate';
+import { isObject as _isObject } from 'lodash';
 
 const widgetMap = {
   boolean: {
@@ -199,11 +200,17 @@ export function isObject(thing) {
 }
 
 export function mergeObjects(obj1, obj2, concatArrays = false) {
+  if (!_isObject(obj1)) {
+    return obj2;
+  }
+
   // Recursively merge deeply nested objects.
   var acc = Object.assign({}, obj1); // Prevent mutation of source object.
+
   return Object.keys(obj2).reduce((acc, key) => {
     const left = obj1[key],
       right = obj2[key];
+
     if (obj1.hasOwnProperty(key) && isObject(right)) {
       acc[key] = mergeObjects(left, right, concatArrays);
     } else if (concatArrays && Array.isArray(left) && Array.isArray(right)) {
