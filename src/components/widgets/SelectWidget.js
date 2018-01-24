@@ -46,15 +46,26 @@ class SelectWidget extends React.Component {
     });
   };
 
+  /**
+   * Normalize options coming from an endpoint.
+   * @param data
+   */
+  formatOptions = data => {
+    const { optionsPath, valueKey, labelKey } = this.async;
+    const options = optionsPath ? get(data, optionsPath) : data;
+
+    return options.map(option => ({ value: option[valueKey], label: option[labelKey] }));
+  };
+
   loadOptions = () => {
-    const { url, optionsPath, headers } = this.async;
+    const { url, headers } = this.async;
 
     return fetch(url, { headers })
       .then(response => response.json())
       .then(json => {
         this.setState({
           isLoading: false,
-          options: optionsPath ? get(json, optionsPath) : json,
+          options: this.formatOptions(json),
         });
       });
   };
@@ -88,10 +99,6 @@ class SelectWidget extends React.Component {
     };
 
     if (this.async) {
-      const { valueKey, labelKey } = this.async;
-
-      selectProps.valueKey = valueKey;
-      selectProps.labelKey = labelKey;
       selectProps.options = this.state.options;
       selectProps.isLoading = this.state.isLoading;
     } else {
