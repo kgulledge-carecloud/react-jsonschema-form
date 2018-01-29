@@ -44,7 +44,7 @@
     "react-dom": "^16.2.0"
   },
   "dependencies": {
-    "@carecloud/material-cuil": "0.5.1",
+    "@carecloud/material-cuil": "0.6.0",
     "ajv": "^5.2.3",
     "babel-plugin-transform-react-jsx": "^6.24.1",
     "babel-plugin-transform-runtime": "^6.23.0",
