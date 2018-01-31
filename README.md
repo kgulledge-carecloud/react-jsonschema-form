@@ -24,7 +24,6 @@ yarn watch
 ### Dist and publish
 
 ```sh
-# With ode changes watcher
 yarn dist
 yarn publish
 ```
