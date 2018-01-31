@@ -54,7 +54,9 @@ class SelectWidget extends React.Component {
     const { optionsPath, valueKey, labelKey } = this.async;
     const options = optionsPath ? get(data, optionsPath) : data;
 
-    return options.map(option => ({ value: option[valueKey], label: option[labelKey] }));
+    return Array.isArray(options)
+      ? options.map(option => ({ value: option[valueKey], label: option[labelKey] }))
+      : [];
   };
 
   loadOptions = () => {
@@ -66,6 +68,14 @@ class SelectWidget extends React.Component {
         this.setState({
           isLoading: false,
           options: this.formatOptions(json),
+        });
+      })
+      .catch(error => {
+        console.error(error);
+
+        this.setState({
+          isLoading: false,
+          options: [],
         });
       });
   };
