@@ -63,9 +63,7 @@ class SelectWidget extends React.Component {
     const { url, headers } = this.async;
 
     return fetch(url, { headers })
-      .then(response => {
-        return response.json();
-      })
+      .then(response => response.json())
       .then(json => {
         this.setState({
           isLoading: false,
