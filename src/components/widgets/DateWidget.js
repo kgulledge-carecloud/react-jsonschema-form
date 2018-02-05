@@ -1,15 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-function DateWidget(props) {
-  const { onChange, registry: { widgets: { BaseInput } } } = props;
-  return <BaseInput type="date" {...props} onChange={value => onChange(value || undefined)} />;
-}
+import { DatePicker } from '@carecloud/material-cuil';
 
-if (process.env.NODE_ENV !== 'production') {
-  DateWidget.propTypes = {
-    value: PropTypes.string,
-  };
-}
+const DateWidget = props => {
+  return <DatePicker {...props} />;
+};
+
+DateWidget.propTypes = {
+  value: PropTypes.object,
+};
 
 export default DateWidget;

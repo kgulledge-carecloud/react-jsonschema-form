@@ -84,7 +84,6 @@ function DefaultTemplate(props) {
     displayLabel,
     disabled,
     readonly,
-    schema,
     uiSchema,
     useDiv,
   } = props;
@@ -101,11 +100,6 @@ function DefaultTemplate(props) {
   const labelProps = {
     htmlFor: id,
   };
-
-  // TODO: remove this once a datepikcer is implemented
-  if (schema.format === 'date') {
-    labelProps.shrink = true;
-  }
 
   const ContainerComp = useDiv ? 'div' : FormControl;
   const containerProps = useDiv
@@ -191,10 +185,6 @@ function SchemaFieldRender(props) {
     case 'array':
       displayLabel =
         isMultiSelect(schema, definitions) || isFilesArray(schema, uiSchema, definitions);
-
-      break;
-    case 'date':
-      displayLabel = false;
 
       break;
     case 'object':
