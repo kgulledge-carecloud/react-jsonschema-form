@@ -54,8 +54,8 @@ function DefaultArrayItem(props) {
           <div className="btn-group" style={{ display: 'flex', justifyContent: 'flex-end' }}>
             {(props.hasMoveUp || props.hasMoveDown) && (
               <Button
-                fab
                 mini
+                variant="fab"
                 color="primary"
                 tabIndex="-1"
                 className="array-item-move-up"
@@ -68,8 +68,8 @@ function DefaultArrayItem(props) {
 
             {(props.hasMoveUp || props.hasMoveDown) && (
               <Button
-                fab
                 mini
+                variant="fab"
                 color="primary"
                 tabIndex="-1"
                 style={btnStyle}
@@ -82,9 +82,9 @@ function DefaultArrayItem(props) {
 
             {props.hasRemove && (
               <Button
-                fab
                 mini
-                color="accent"
+                variant="fab"
+                color="secondary"
                 className="array-item-remove"
                 tabIndex="-1"
                 style={btnStyle}
@@ -598,7 +598,7 @@ function AddButton({ onClick, disabled }) {
   return (
     <div className="row" style={{ display: 'flex', justifyContent: 'flex-end' }}>
       <p className="col-xs-3 col-xs-offset-9 array-item-add text-right">
-        <Button raised color="primary" tabIndex="0" onClick={onClick} disabled={disabled}>
+        <Button variant="raised" color="primary" tabIndex="0" onClick={onClick} disabled={disabled}>
           Add
         </Button>
       </p>
