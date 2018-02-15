@@ -94,6 +94,7 @@ class SelectWidget extends React.Component {
       onFocus,
       label,
       placeholder,
+      autofocus,
     } = this.props;
 
     const selectProps = {
@@ -118,6 +119,7 @@ class SelectWidget extends React.Component {
     return (
       <Select
         {...selectProps}
+        autoFocus={autofocus}
         onBlur={
           onBlur &&
           (value => {
