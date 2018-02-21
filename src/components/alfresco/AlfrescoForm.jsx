@@ -101,9 +101,11 @@ class AlfrescoForm extends Component {
                       {
                         row.map((field, fieldIndex) => {
                           const component = this.props.properties.filter(property => property.name === field)[0];
+                          // Whenever there are less fields than columns in a row, set the width for those fields
+                          const cols = row.length < container.numberOfColumns ? 12 / container.numberOfColumns : true;
 
                           return (
-                            <Grid item key={fieldIndex} xs={12} sm>
+                            <Grid item key={fieldIndex} xs={12} sm={cols || true}>
                               {component.content}
                             </Grid>
                           );

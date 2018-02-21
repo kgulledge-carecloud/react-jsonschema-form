@@ -8,7 +8,7 @@ const DateWidget = props => {
 };
 
 DateWidget.propTypes = {
-  value: PropTypes.object,
+  value: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
 };
 
 export default DateWidget;
