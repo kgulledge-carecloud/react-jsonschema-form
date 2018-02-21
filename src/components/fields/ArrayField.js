@@ -503,21 +503,22 @@ class ArrayField extends Component {
     return <Template {...arrayProps} />;
   }
 
-  setAlfrescoSchema = (itemSchema, itemUiSchema) => {
+  setAlfrescoSchema = (itemSchema, itemUiSchema, numberOfColumns) => {
     if (itemSchema && itemSchema.properties) {
-      // Get number of columns (defaulting to 3)
-      const propKeys = Object.keys(itemSchema.properties);
-      const numberOfCols = Math.min(propKeys.length, 3);
       const fields = [];
 
+      // Get number of columns (defaulting to 3)
+      const propKeys = Object.keys(itemSchema.properties);
+      numberOfColumns = numberOfColumns || Math.min(propKeys.length, 3);
+
       // Fields should be grouped by columns
-      range(numberOfCols).forEach(() => {
+      range(numberOfColumns).forEach(() => {
         fields.push([]);
       });
 
       // Default to 3 columns
       propKeys.forEach((propKey, fieldIndex) => {
-        fields[fieldIndex % numberOfCols].push(propKey);
+        fields[fieldIndex % numberOfColumns].push(propKey);
       });
 
       itemUiSchema['ui:array'] = true;
@@ -525,6 +526,7 @@ class ArrayField extends Component {
         containers: {
           array: {
             fields: [fields],
+            numberOfColumns,
           },
         },
       };
@@ -560,7 +562,7 @@ class ArrayField extends Component {
     };
     has.toolbar = Object.keys(has).some(key => has[key]);
 
-    this.setAlfrescoSchema(itemSchema, itemUiSchema);
+    this.setAlfrescoSchema(itemSchema, itemUiSchema, uiSchema.numberOfColumns);
 
     return {
       children: (
