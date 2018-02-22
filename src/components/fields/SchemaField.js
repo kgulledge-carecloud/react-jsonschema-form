@@ -311,6 +311,7 @@ if (process.env.NODE_ENV !== 'production') {
       FieldTemplate: PropTypes.func,
       formContext: PropTypes.object.isRequired,
     }),
+    index: PropTypes.number,
   };
 }
 
