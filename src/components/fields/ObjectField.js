@@ -98,7 +98,12 @@ class ObjectField extends Component {
       description,
       TitleField,
       DescriptionField,
-      properties: orderedProperties.map(name => {
+      properties: orderedProperties.map((name, index) => {
+        const fieldUiSchema = {
+          'ui:index': index,
+          ...(uiSchema[name] || {}),
+        };
+
         return {
           content: (
             <SchemaField
@@ -106,7 +111,7 @@ class ObjectField extends Component {
               name={name}
               required={this.isRequired(name)}
               schema={schema.properties[name]}
-              uiSchema={uiSchema[name]}
+              uiSchema={fieldUiSchema}
               errorSchema={errorSchema[name]}
               idSchema={idSchema[name]}
               formData={formData[name]}
@@ -116,6 +121,7 @@ class ObjectField extends Component {
               registry={registry}
               disabled={disabled}
               readonly={readonly}
+              index={index}
             />
           ),
           name,
