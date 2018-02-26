@@ -2,36 +2,17 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 function TextareaWidget(props) {
-  const {
-    id,
-    options,
-    placeholder,
-    value,
-    required,
-    disabled,
-    readonly,
-    autofocus,
-    onChange,
-    onBlur,
-    onFocus,
-  } = props;
-  const _onChange = ({ target: { value } }) => {
-    return onChange(value === '' ? options.emptyValue : value);
-  };
+  const { BaseInput } = props.registry.widgets;
+  const { options, ...inputProps } = props;
+
   return (
-    <textarea
-      id={id}
-      className="form-control"
-      value={typeof value === 'undefined' ? '' : value}
-      placeholder={placeholder}
-      required={required}
-      disabled={disabled}
-      readOnly={readonly}
-      autoFocus={autofocus}
+    <BaseInput
+      {...inputProps}
+      multiline
       rows={options.rows}
-      onBlur={onBlur && (event => onBlur(id, event.target.value))}
-      onFocus={onFocus && (event => onFocus(id, event.target.value))}
-      onChange={_onChange}
+      // This is necessary to avoid a current bug in material-ui
+      rowsMax={props.value ? options.rowsMax || undefined : undefined}
+      options={options}
     />
   );
 }
@@ -47,7 +28,8 @@ if (process.env.NODE_ENV !== 'production') {
     id: PropTypes.string.isRequired,
     placeholder: PropTypes.string,
     options: PropTypes.shape({
-      rows: PropTypes.number,
+      rows: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+      rowsMax: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     }),
     value: PropTypes.string,
     required: PropTypes.bool,
