@@ -206,6 +206,10 @@ function SchemaFieldRender(props) {
     displayLabel = false;
   }
 
+  if (uiSchema['ui:widget'] === 'color') {
+    displayLabel = false;
+  }
+
   const { __errors, ...fieldErrorSchema } = errorSchema;
 
   // See #439: uiSchema: Don't pass consumed class names to child components
