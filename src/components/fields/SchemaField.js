@@ -202,7 +202,7 @@ function SchemaFieldRender(props) {
       break;
   }
 
-  if (uiSchema['ui:field']) {
+  if (uiSchema['ui:field'] || uiSchema['ui:widget'] === 'color') {
     displayLabel = false;
   }
 
