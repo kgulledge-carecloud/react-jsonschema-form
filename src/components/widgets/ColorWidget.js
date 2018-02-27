@@ -6,6 +6,10 @@ import { ColorPicker } from '@carecloud/material-cuil';
 const ColorWidget = props => {
   const {
     value,
+    disabled,
+    readonly,
+    schema,
+    autofocus,
     /**
      * @description By default, `react-jsonschema-form` is going to disable
      * the alpha value in the picker
@@ -16,7 +20,7 @@ const ColorWidget = props => {
     ...otherProps
   } = props;
 
-  return <ColorPicker color={value} disableAlpha={disableAlpha} {...otherProps} />;
+  return <ColorPicker disabled={disabled || readonly} color={value} disableAlpha={disableAlpha} {...otherProps} />;
 };
 
 ColorWidget.propTypes = {
