@@ -3,7 +3,6 @@ node_modules
 build
 dist
 lib
-yarn.lock
 
 # Idea
 .idea
