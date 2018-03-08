@@ -10,8 +10,7 @@ function TextareaWidget(props) {
       {...inputProps}
       multiline
       rows={options.rows}
-      // This is necessary to avoid a current bug in material-ui
-      rowsMax={props.value ? options.rowsMax || undefined : undefined}
+      rowsMax={options.rowsMax}
       options={options}
     />
   );

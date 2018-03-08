@@ -5,7 +5,7 @@ import { get } from 'lodash';
 
 // TODO: Maybe this is necessary in the future, further testing is needed
 function processValue({ type }, value) {
-  return value === '' ? undefined : value;
+  return value === '' || value === null ? undefined : value;
 }
 
 class SelectWidget extends React.Component {
