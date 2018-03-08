@@ -20,7 +20,14 @@ const ColorWidget = props => {
     ...otherProps
   } = props;
 
-  return <ColorPicker disabled={disabled || readonly} color={value} disableAlpha={disableAlpha} {...otherProps} />;
+  return (
+    <ColorPicker
+      disabled={disabled || readonly}
+      color={value}
+      disableAlpha={disableAlpha}
+      {...otherProps}
+    />
+  );
 };
 
 ColorWidget.propTypes = {
