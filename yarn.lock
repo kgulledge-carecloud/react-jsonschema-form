@@ -71,15 +71,15 @@
     lodash "^4.2.0"
     to-fast-properties "^2.0.0"
 
-"@carecloud/material-cuil@0.11.0":
-  version "0.11.0"
-  resolved "https://npm.carecloud.com/@carecloud%2fmaterial-cuil/-/material-cuil-0.11.0.tgz#8e0e97c43e3886bf4cc7784d370e3c28e131802f"
+"@carecloud/material-cuil@0.12.5":
+  version "0.12.5"
+  resolved "https://npm.carecloud.com/@carecloud%2fmaterial-cuil/-/material-cuil-0.12.5.tgz#284756054887256350e1331b8a35ee3162a9a3de"
   dependencies:
     ag-grid "^15.0.0"
     ag-grid-enterprise "^15.0.0"
     ag-grid-react "^15.0.0"
     classnames "^2.2.5"
-    material-ui "1.0.0-beta.36"
+    material-ui "1.0.0-beta.38"
     material-ui-icons "1.0.0-beta.17"
     moment "^2.20.1"
     prop-types "15.6.0"
@@ -4151,9 +4151,9 @@ material-ui-icons@1.0.0-beta.17:
   dependencies:
     recompose "^0.26.0"
 
-material-ui@1.0.0-beta.36:
-  version "1.0.0-beta.36"
-  resolved "https://registry.yarnpkg.com/material-ui/-/material-ui-1.0.0-beta.36.tgz#e877c570008cb0e4e7784fc69ff0359121a4866a"
+material-ui@1.0.0-beta.38:
+  version "1.0.0-beta.38"
+  resolved "https://registry.yarnpkg.com/material-ui/-/material-ui-1.0.0-beta.38.tgz#213e53c232c3ccf4b5ca3bfe1e1971a3d076d180"
   dependencies:
     "@types/jss" "^9.3.0"
     "@types/react-transition-group" "^2.0.6"
