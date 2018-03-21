@@ -35,7 +35,7 @@ if (process.env.NODE_ENV !== 'production') {
   CheckboxWidget.propTypes = {
     schema: PropTypes.object.isRequired,
     id: PropTypes.string.isRequired,
-    value: PropTypes.oneOf([PropTypes.bool, PropTypes.string]),
+    value: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
     required: PropTypes.bool,
     disabled: PropTypes.bool,
     readonly: PropTypes.bool,
