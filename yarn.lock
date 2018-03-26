@@ -71,9 +71,9 @@
     lodash "^4.2.0"
     to-fast-properties "^2.0.0"
 
-"@carecloud/material-cuil@0.12.6":
-  version "0.12.6"
-  resolved "https://npm.carecloud.com/@carecloud%2fmaterial-cuil/-/material-cuil-0.12.6.tgz#abc6936daa4b6d4fe4a89873ebff43c670dd8275"
+"@carecloud/material-cuil@0.12.7":
+  version "0.12.7"
+  resolved "https://npm.carecloud.com/@carecloud%2fmaterial-cuil/-/material-cuil-0.12.7.tgz#8fe60f1f4f40dea29a9ad4fe18f000da0afe10b0"
   dependencies:
     ag-grid "^15.0.0"
     ag-grid-enterprise "^15.0.0"
