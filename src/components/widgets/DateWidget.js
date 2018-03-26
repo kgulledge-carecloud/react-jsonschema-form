@@ -4,7 +4,9 @@ import PropTypes from 'prop-types';
 import { DatePicker } from '@carecloud/material-cuil';
 
 const DateWidget = props => {
-  return <DatePicker {...props} />;
+  const { dateDisplayFormat } = props.options;
+
+  return <DatePicker {...props} dateDisplayFormat={dateDisplayFormat} />;
 };
 
 DateWidget.propTypes = {
