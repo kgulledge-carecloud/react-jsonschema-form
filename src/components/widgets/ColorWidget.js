@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 
 import { ColorPicker } from '@carecloud/material-cuil';
 
+import { getComponentProps } from '../../utils';
+
 const ColorWidget = props => {
   const {
     value,
@@ -26,6 +28,7 @@ const ColorWidget = props => {
       color={value}
       disableAlpha={disableAlpha}
       {...otherProps}
+      {...getComponentProps(props)}
     />
   );
 };

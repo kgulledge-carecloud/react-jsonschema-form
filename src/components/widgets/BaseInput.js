@@ -1,6 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+
 import { InputWithClear } from '@carecloud/material-cuil';
+
+import { getComponentProps } from '../../utils';
 
 function BaseInput(props) {
   // Note: since React 15.2.0 we can't forward unknown element attributes, so we
@@ -32,6 +35,7 @@ function BaseInput(props) {
       autoFocus={autofocus}
       value={value == null ? '' : value}
       {...inputProps}
+      {...getComponentProps(props)}
       placeholder={inputProps.placeholder || inputProps.label}
       onChange={_onChange}
       onBlur={onBlur && (event => onBlur(inputProps.id, event.target.value))}

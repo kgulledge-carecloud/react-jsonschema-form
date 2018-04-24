@@ -1,7 +1,8 @@
 import React from 'react';
 import 'setimmediate';
+import { get, isObject as _isObject } from 'lodash';
+
 import validateFormData from './validate';
-import { isObject as _isObject } from 'lodash';
 
 const widgetMap = {
   boolean: {
@@ -680,4 +681,8 @@ export function rangeSpec(schema) {
     spec.max = schema.maximum;
   }
   return spec;
+}
+
+export function getComponentProps(props) {
+  return get(props, 'options.componentProps', {}) || {};
 }

@@ -1,6 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FormControlLabel, FormGroup, Checkbox } from '@carecloud/material-cuil';
+
+import { FormGroup } from '@carecloud/material-cuil';
+
+import { FormCheckbox } from './CheckboxWidget';
 
 function selectValue(value, selected, all) {
   const at = all.indexOf(value);
@@ -26,25 +29,21 @@ function CheckboxesWidget(props) {
         const checked = value.indexOf(option.value) !== -1;
 
         return (
-          <FormControlLabel
+          <FormCheckbox
             key={index}
-            control={
-              <Checkbox
-                id={`${id}_${index}`}
-                checked={checked}
-                onChange={event => {
-                  const all = enumOptions.map(({ value }) => value);
+            id={`${id}_${index}`}
+            checked={checked}
+            value={option.value}
+            disabled={isDisabled}
+            onChange={event => {
+              const all = enumOptions.map(({ value }) => value);
 
-                  if (event.target.checked) {
-                    onChange(selectValue(option.value, value, all));
-                  } else {
-                    onChange(deselectValue(option.value, value));
-                  }
-                }}
-                value={option.value}
-                disabled={isDisabled}
-              />
-            }
+              if (event.target.checked) {
+                onChange(selectValue(option.value, value, all));
+              } else {
+                onChange(deselectValue(option.value, value));
+              }
+            }}
             label={option.label}
           />
         );
@@ -74,7 +73,7 @@ if (process.env.NODE_ENV !== 'production') {
     disabled: PropTypes.bool,
     multiple: PropTypes.bool,
     autofocus: PropTypes.bool,
-    onChange: PropTypes.func,
+    onChange: PropTypes.func.isRequired,
   };
 }
 

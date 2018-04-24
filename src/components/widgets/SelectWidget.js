@@ -1,10 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Select } from '@carecloud/material-cuil';
 import { get } from 'lodash';
 
-// TODO: Maybe this is necessary in the future, further testing is needed
-function processValue({ type }, value) {
+import { Select } from '@carecloud/material-cuil';
+
+import { getComponentProps } from '../../utils';
+
+function processValue(value) {
   return value === '' || value === null ? undefined : value;
 }
 
@@ -18,11 +20,11 @@ class SelectWidget extends React.Component {
     this.state = { options: null, isLoading: !!async };
   }
 
-  componentDidMount = () => {
+  componentDidMount() {
     if (this.async) {
       this.loadOptions();
     }
-  };
+  }
 
   /**
    * Generate an array of options objects from enumOptions and enumDisabled.
@@ -92,18 +94,32 @@ class SelectWidget extends React.Component {
     return value === undefined ? '' : value;
   };
 
+  onBlur = value => {
+    if (this.props.onBlur) {
+      this.props.onBlur(this.props.id, processValue(value));
+    }
+  };
+
+  onFocus = value => {
+    if (this.props.onFocus) {
+      this.props.onFocus(this.props.id, processValue(value));
+    }
+  };
+
+  onChange = value => {
+    if (this.props.onChange) {
+      this.props.onChange(processValue(value));
+    }
+  };
+
   render = () => {
     const {
       id,
-      schema,
       value,
       required,
       disabled,
       readonly,
       multiple: multi,
-      onChange,
-      onBlur,
-      onFocus,
       label,
       placeholder,
       autofocus,
@@ -131,22 +147,11 @@ class SelectWidget extends React.Component {
     return (
       <Select
         {...selectProps}
+        {...getComponentProps(this.props)}
         autoFocus={autofocus}
-        onBlur={
-          onBlur &&
-          (value => {
-            onBlur(id, processValue(schema, value));
-          })
-        }
-        onFocus={
-          onFocus &&
-          (value => {
-            onFocus(id, processValue(schema, value));
-          })
-        }
-        onChange={value => {
-          onChange(processValue(schema, value));
-        }}
+        onBlur={this.onBlur}
+        onFocus={this.onFocus}
+        onChange={this.onChange}
       />
     );
   };
