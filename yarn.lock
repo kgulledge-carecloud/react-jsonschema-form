@@ -71,23 +71,23 @@
     lodash "^4.2.0"
     to-fast-properties "^2.0.0"
 
-"@carecloud/material-cuil@0.17.0":
-  version "0.17.0"
-  resolved "https://npm.carecloud.com/@carecloud%2fmaterial-cuil/-/material-cuil-0.17.0.tgz#8d5cc338f5be9677bf713e9846b24d18e4adbc24"
+"@carecloud/material-cuil@0.18.0":
+  version "0.18.0"
+  resolved "https://npm.carecloud.com/@carecloud%2fmaterial-cuil/-/material-cuil-0.18.0.tgz#e13e80d5fdd69e5c5c2611023e3f4175ba28fd26"
   dependencies:
     "@material-ui/icons" "1.0.0-beta.42"
     ag-grid "^15.0.0"
     ag-grid-enterprise "^15.0.0"
     ag-grid-react "^15.0.0"
     classnames "^2.2.5"
-    material-ui "1.0.0-beta.42"
+    material-ui "1.0.0-beta.43"
     moment "^2.20.1"
     prop-types "15.6.0"
     react-color "^2.13.8"
     react-datepicker "1.4.1"
     react-dom-factories "^1.0.2"
     react-highlight-words "0.9.0"
-    react-select "^1.1.0"
+    react-select "1.2.1"
 
 "@material-ui/icons@1.0.0-beta.42":
   version "1.0.0-beta.42"
@@ -4151,9 +4151,9 @@ material-colors@^1.2.1:
   version "1.2.5"
   resolved "https://registry.yarnpkg.com/material-colors/-/material-colors-1.2.5.tgz#5292593e6754cb1bcc2b98030e4e0d6a3afc9ea1"
 
-material-ui@1.0.0-beta.42:
-  version "1.0.0-beta.42"
-  resolved "https://registry.yarnpkg.com/material-ui/-/material-ui-1.0.0-beta.42.tgz#a0dea15fd433d521b41912802041eee8b3f30589"
+material-ui@1.0.0-beta.43:
+  version "1.0.0-beta.43"
+  resolved "https://registry.yarnpkg.com/material-ui/-/material-ui-1.0.0-beta.43.tgz#21074fd0ef5f1735a54060dbfd060e6d46fd5ef5"
   dependencies:
     "@types/jss" "^9.3.0"
     "@types/react-transition-group" "^2.0.8"
@@ -5380,7 +5380,7 @@ react-scrollbar-size@^2.0.2:
     react-event-listener "^0.5.1"
     stifle "^1.0.2"
 
-react-select@^1.1.0:
+react-select@1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/react-select/-/react-select-1.2.1.tgz#a2fe58a569eb14dcaa6543816260b97e538120d1"
   dependencies:

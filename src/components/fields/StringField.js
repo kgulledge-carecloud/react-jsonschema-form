@@ -55,7 +55,12 @@ if (process.env.NODE_ENV !== 'production') {
     onChange: PropTypes.func.isRequired,
     onBlur: PropTypes.func,
     onFocus: PropTypes.func,
-    formData: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    formData: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number,
+      // SelectWidget is sending an object instead of a string
+      PropTypes.object,
+    ]),
     registry: PropTypes.shape({
       widgets: PropTypes.objectOf(PropTypes.oneOfType([PropTypes.func, PropTypes.object]))
         .isRequired,

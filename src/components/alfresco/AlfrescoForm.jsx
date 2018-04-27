@@ -7,7 +7,7 @@ const style = ({ theme }) => ({
   root: {},
   formContainer: {
     borderRadius: 6,
-    padding: 20,
+    padding: '30px 24px',
     border: '1px solid #CFD8DC',
     boxShadow: '0 1px 3px 0 rgba(0,0,0,0.1)',
     minHeight: 75
@@ -16,6 +16,12 @@ const style = ({ theme }) => ({
     '& .form-group': {
       margin: '10px 0px',
     }
+  },
+  objectContainer: {
+    marginBottom: 14,
+  },
+  arrayContainer: {
+    marginBottom: 24,
   },
 });
 
@@ -74,7 +80,7 @@ class AlfrescoForm extends Component {
         const component = this.props.properties.filter(property => property.name === containerKey)[0];
 
         return (
-          <Grid key={containerIndex} item xs={12}>
+          <Grid item key={containerIndex} xs={12} className={classes.arrayContainer}>
             {component.content}
           </Grid>
         );
@@ -89,12 +95,12 @@ class AlfrescoForm extends Component {
       }
 
       return (
-        <Grid key={containerIndex} item xs={12}>
+        <Grid item key={containerIndex} xs={12} className={classes.objectContainer}>
           {this.renderContainerTitle(container)}
 
           {fields.map((rows, fieldRowIndex) => {
             return (
-              <Grid key={fieldRowIndex} container spacing={24}>
+              <Grid container key={fieldRowIndex}>
                 {rows.map((row, rowIndex) => {
                   return (
                     <Grid container spacing={16} key={rowIndex} className={classes.fieldColumns}>
@@ -105,6 +111,7 @@ class AlfrescoForm extends Component {
                           const cols = row.length < container.numberOfColumns ? 12 / container.numberOfColumns : true;
 
                           return (
+
                             <Grid item key={fieldIndex} xs={12} sm={cols || true}>
                               {component.content}
                             </Grid>
