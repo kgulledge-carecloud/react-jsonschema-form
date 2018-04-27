@@ -98,7 +98,9 @@ function DefaultTemplate(props) {
 
   const LabelComp = useFormLabel ? FormLabel : InputLabel;
   const labelProps = {
+    required,
     htmlFor: id,
+    disabled: disabled || readonly,
   };
 
   const ContainerComp = useDiv ? 'div' : FormControl;
@@ -185,6 +187,9 @@ function SchemaFieldRender(props) {
     case 'array':
       displayLabel =
         isMultiSelect(schema, definitions) || isFilesArray(schema, uiSchema, definitions);
+
+      // If it's an array of objects, use a div element
+      useDiv = !!schema.items && schema.items.type === 'object';
 
       break;
     case 'object':

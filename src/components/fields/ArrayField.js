@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Icons } from '@carecloud/material-cuil';
 import { range } from 'lodash';
+
+import { Button, Icons } from '@carecloud/material-cuil';
 
 import UnsupportedField from './UnsupportedField';
 import {
@@ -17,6 +18,7 @@ import {
   toIdSchema,
   getDefaultRegistry,
 } from '../../utils';
+import AddButton from './array/AddButton';
 
 const { ExpandLess, ExpandMore, Close } = Icons;
 
@@ -43,6 +45,9 @@ function DefaultArrayItem(props) {
   const btnStyle = {
     marginLeft: 6,
     marginRight: 6,
+    width: 30,
+    height: 30,
+    minHeight: 30,
   };
 
   return (
@@ -50,8 +55,8 @@ function DefaultArrayItem(props) {
       <div className={props.hasToolbar ? 'col-xs-9' : 'col-xs-12'}>{props.children}</div>
 
       {props.hasToolbar && (
-        <div className="col-xs-3 array-item-toolbox">
-          <div className="btn-group" style={{ display: 'flex', justifyContent: 'flex-end' }}>
+        <div className="col-xs-3 array-item-toolbox" style={{ marginBottom: '10px' }}>
+          <div className="btn-group" style={{ display: 'flex', justifyContent: 'flex-start' }}>
             {(props.hasMoveUp || props.hasMoveDown) && (
               <Button
                 mini
@@ -122,7 +127,11 @@ function DefaultFixedArrayFieldTemplate(props) {
       </div>
 
       {props.canAdd && (
-        <AddButton onClick={props.onAddClick} disabled={props.disabled || props.readonly} />
+        <AddButton
+          // numberOfItems={props.items ? props.items.length : 0}
+          onClick={props.onAddClick}
+          disabled={props.disabled || props.readonly}
+        />
       )}
     </fieldset>
   );
@@ -153,7 +162,11 @@ function DefaultNormalArrayFieldTemplate(props) {
       </div>
 
       {props.canAdd && (
-        <AddButton onClick={props.onAddClick} disabled={props.disabled || props.readonly} />
+        <AddButton
+          // numberOfItems={props.items ? props.items.length : 0}
+          onClick={props.onAddClick}
+          disabled={props.disabled || props.readonly}
+        />
       )}
     </fieldset>
   );
@@ -594,18 +607,6 @@ class ArrayField extends Component {
       readonly,
     };
   }
-}
-
-function AddButton({ onClick, disabled }) {
-  return (
-    <div className="row" style={{ display: 'flex', justifyContent: 'flex-end' }}>
-      <p className="col-xs-3 col-xs-offset-9 array-item-add text-right">
-        <Button variant="raised" color="primary" tabIndex="0" onClick={onClick} disabled={disabled}>
-          Add
-        </Button>
-      </p>
-    </div>
-  );
 }
 
 if (process.env.NODE_ENV !== 'production') {
