@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { range } from 'lodash';
 
 import { Button, Icons } from '@carecloud/material-cuil';
 
@@ -516,32 +515,19 @@ class ArrayField extends Component {
     return <Template {...arrayProps} />;
   }
 
-  setAlfrescoSchema = (itemSchema, itemUiSchema, numberOfColumns) => {
+  setAlfrescoSchema = (itemSchema, itemUiSchema, uiSchema) => {
     if (itemSchema && itemSchema.properties) {
-      const fields = [];
-
-      // Get number of columns (defaulting to 3)
-      const propKeys = Object.keys(itemSchema.properties);
-      numberOfColumns = numberOfColumns || Math.min(propKeys.length, 3);
-
-      // Fields should be grouped by columns
-      range(numberOfColumns).forEach(() => {
-        fields.push([]);
-      });
-
-      // Default to 3 columns
-      propKeys.forEach((propKey, fieldIndex) => {
-        fields[fieldIndex % numberOfColumns].push(propKey);
-      });
+      const { numberOfColumns, rows } = uiSchema;
 
       itemUiSchema['ui:array'] = true;
       itemUiSchema['ui:alfresco'] = {
-        containers: {
-          array: {
-            fields: [fields],
+        containers: [
+          {
+            id: 'array',
+            fields: [rows],
             numberOfColumns,
           },
-        },
+        ],
       };
     }
   };
@@ -575,7 +561,7 @@ class ArrayField extends Component {
     };
     has.toolbar = Object.keys(has).some(key => has[key]);
 
-    this.setAlfrescoSchema(itemSchema, itemUiSchema, uiSchema.numberOfColumns);
+    this.setAlfrescoSchema(itemSchema, itemUiSchema, uiSchema);
 
     return {
       children: (
