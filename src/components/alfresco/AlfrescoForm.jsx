@@ -27,39 +27,6 @@ const style = ({ theme }) => ({
 
 class AlfrescoForm extends Component {
 
-  /**
-   * Transform column to rows.
-   * @param columns: array of arrays representing columns
-   */
-  columnsToRows = columns => {
-    if (!columns) {
-      return [];
-    }
-
-    return columns.map(column => {
-      const rows = [];
-
-      column.forEach((fields, colIndex) => {
-        if (!Array.isArray(fields)) {
-          return false;
-        }
-
-        fields.forEach((field, rowIndex) => {
-          let row = rows[rowIndex];
-
-          if (!row) {
-            row = [];
-            rows.push(row);
-          }
-
-          row.splice(colIndex, 0, field);
-        });
-      });
-
-      return rows;
-    });
-  };
-
   renderContainerTitle = ({ id, title }) => {
     if (!title) {
       return null;
@@ -72,12 +39,12 @@ class AlfrescoForm extends Component {
     const { classes } = this.props;
     const { containers } = this.props.uiSchema['ui:alfresco'];
 
-    return Object.keys(containers).map((containerKey, containerIndex) => {
-      const containerProperty = this.props.schema.properties[containerKey];
+    return containers.map((container, containerIndex) => {
+      const containerProperty = this.props.schema.properties[container.id];
 
       // Arrays should be passed through
       if (containerProperty && containerProperty.type === 'array') {
-        const component = this.props.properties.filter(property => property.name === containerKey)[0];
+        const component = this.props.properties.filter(property => property.name === container.id)[0];
 
         return (
           <Grid item key={containerIndex} xs={12} className={classes.arrayContainer}>
@@ -86,8 +53,7 @@ class AlfrescoForm extends Component {
         );
       }
 
-      const container = containers[containerKey];
-      const fields = this.columnsToRows(container.fields);
+      const fields = container.fields;
 
       // Ignore empty containers
       if (!fields || !fields.length) {
