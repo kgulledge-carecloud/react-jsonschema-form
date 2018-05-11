@@ -15,17 +15,16 @@ yarn install
 
 ```sh
 # Build for development
-yarn build:lib
+yarn dev
 
 # Or with code changes watcher
-yarn watch
+yarn dev:watch
 ```
 
 ### Dist and publish
 
 ```sh
-yarn dist
-yarn publish
+yarn build
 ```
 
 ## Live Playground
