@@ -1,8 +1,7 @@
 {
   "name": "@carecloud/react-jsonschema-form",
-  "version": "0.24.0",
+  "version": "0.24.1",
   "description": "A simple React component capable of building HTML forms out of a JSON schema.",
-
   "scripts": {
     "dev": "rimraf lib && cross-env NODE_ENV=production babel -d lib/ src/",
     "dev:watch": "yarn dev -- -w",
@@ -40,7 +39,7 @@
     "react-dom": "^16.2.0"
   },
   "dependencies": {
-    "@carecloud/material-cuil": "0.20.0",
+    "@carecloud/material-cuil": "0.20.1",
     "ajv": "^5.2.3",
     "babel-plugin-transform-react-jsx": "^6.24.1",
     "babel-plugin-transform-runtime": "^6.23.0",
