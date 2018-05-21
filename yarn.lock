@@ -78,9 +78,9 @@
     lodash "^4.2.0"
     to-fast-properties "^2.0.0"
 
-"@carecloud/material-cuil@0.20.1":
-  version "0.20.1"
-  resolved "https://npm.carecloud.com/@carecloud%2fmaterial-cuil/-/material-cuil-0.20.1.tgz#a858c1cde276ff390fc217d33fb317eb48f3f010"
+"@carecloud/material-cuil@0.20.2":
+  version "0.20.2"
+  resolved "https://npm.carecloud.com/@carecloud%2fmaterial-cuil/-/material-cuil-0.20.2.tgz#2b12e7307f07d4c8c27288952d7bce3c2e3fb99e"
   dependencies:
     "@material-ui/icons" "1.0.0-beta.43"
     ag-grid "^15.0.0"
