@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Grid, Paper, withStyles } from '@carecloud/material-cuil';
+import get from 'lodash/get';
 
 import TitleField from '../fields/TitleField';
 
@@ -10,12 +11,12 @@ const style = ({ theme }) => ({
     padding: '30px 24px',
     border: '1px solid #CFD8DC',
     boxShadow: '0 1px 3px 0 rgba(0,0,0,0.1)',
-    minHeight: 75
+    minHeight: 75,
   },
   fieldColumns: {
     '& .form-group': {
       margin: '10px 0px',
-    }
+    },
   },
   objectContainer: {
     marginBottom: 14,
@@ -26,13 +27,40 @@ const style = ({ theme }) => ({
 });
 
 class AlfrescoForm extends Component {
-
   renderContainerTitle = ({ id, title }) => {
     if (!title) {
       return null;
     }
 
     return <TitleField id={`${id}__title`} title={title} />;
+  };
+
+  getFieldCols = (container, row, component) => {
+    // Grid default rules.
+    //
+    // - xs: defaults to 12.
+    // - sm: minimum possible value is 2, meaning there can't be more than 6 fields per row.
+    // - md: use `true` to fit all fields in the best possible way for this row.
+    // - sm/md: if a row has less fields than columns, then hard set the width for those fields, so they don't fit
+    // the entire width.
+    const gridWidth = 12 / container.numberOfColumns;
+    const sm = container.numberOfColumns > 6 && row.length === container.numberOfColumns ? 2 : gridWidth;
+    const md = row.length < container.numberOfColumns ? gridWidth : true;
+    const defaultCols = { xs: 12, sm, md };
+
+    let cols = get(component, 'content.props.uiSchema[\'ui:cols\']', defaultCols) || defaultCols;
+
+    if (typeof cols === 'string' || typeof cols === 'number') {
+      cols = {
+        md: cols,
+      };
+    }
+
+    // Override defaults with user defined cols
+    return {
+      ...defaultCols,
+      ...cols,
+    };
   };
 
   renderContainers = () => {
@@ -70,20 +98,16 @@ class AlfrescoForm extends Component {
                 {rows.map((row, rowIndex) => {
                   return (
                     <Grid container spacing={16} key={rowIndex} className={classes.fieldColumns}>
-                      {
-                        row.map((field, fieldIndex) => {
-                          const component = this.props.properties.filter(property => property.name === field)[0];
-                          // Whenever there are less fields than columns in a row, set the width for those fields
-                          const cols = row.length < container.numberOfColumns ? 12 / container.numberOfColumns : true;
+                      {row.map((field, fieldIndex) => {
+                        const component = this.props.properties.filter(property => property.name === field)[0];
+                        const cols = this.getFieldCols(container, row, component);
 
-                          return (
-
-                            <Grid item key={fieldIndex} xs={12} sm={cols || true}>
-                              {component.content}
-                            </Grid>
-                          );
-                        })
-                      }
+                        return (
+                          <Grid item key={fieldIndex} {...cols}>
+                            {component.content}
+                          </Grid>
+                        );
+                      })}
                     </Grid>
                   );
                 })}
@@ -93,7 +117,6 @@ class AlfrescoForm extends Component {
         </Grid>
       );
     });
-
   };
 
   render = () => {
@@ -127,7 +150,6 @@ class AlfrescoForm extends Component {
       </Paper>
     );
   };
-
 }
 
 export default withStyles(style)(AlfrescoForm);
