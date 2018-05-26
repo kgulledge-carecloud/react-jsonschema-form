@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import { Button, Icons } from '@carecloud/material-cuil';
+import { Button } from '@carecloud/material-cuil';
+import { ExpandLess, ExpandMore, Close } from '@carecloud/material-cuil/icons';
 
 import UnsupportedField from './UnsupportedField';
 import {
@@ -18,8 +19,6 @@ import {
   getDefaultRegistry,
 } from '../../utils';
 import AddButton from './array/AddButton';
-
-const { ExpandLess, ExpandMore, Close } = Icons;
 
 function ArrayFieldTitle({ TitleField, idSchema, title, required }) {
   if (!title) {
@@ -65,7 +64,8 @@ function DefaultArrayItem(props) {
                 className="array-item-move-up"
                 style={btnStyle}
                 disabled={props.disabled || props.readonly || !props.hasMoveUp}
-                onClick={props.onReorderClick(props.index, props.index - 1)}>
+                onClick={props.onReorderClick(props.index, props.index - 1)}
+              >
                 <ExpandLess />
               </Button>
             )}
@@ -79,7 +79,8 @@ function DefaultArrayItem(props) {
                 style={btnStyle}
                 className="array-item-move-down"
                 disabled={props.disabled || props.readonly || !props.hasMoveDown}
-                onClick={props.onReorderClick(props.index, props.index + 1)}>
+                onClick={props.onReorderClick(props.index, props.index + 1)}
+              >
                 <ExpandMore />
               </Button>
             )}
@@ -93,7 +94,8 @@ function DefaultArrayItem(props) {
                 tabIndex="-1"
                 style={btnStyle}
                 disabled={props.disabled || props.readonly}
-                onClick={props.onDropIndexClick(props.index)}>
+                onClick={props.onDropIndexClick(props.index)}
+              >
                 <Close />
               </Button>
             )}

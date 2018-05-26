@@ -78,9 +78,9 @@
     lodash "^4.2.0"
     to-fast-properties "^2.0.0"
 
-"@carecloud/material-cuil@1.0.0":
-  version "1.0.0"
-  resolved "https://npm.carecloud.com/@carecloud%2fmaterial-cuil/-/material-cuil-1.0.0.tgz#aef6067855a10caf73da183920912e603706f984"
+"@carecloud/material-cuil@1.1.0":
+  version "1.1.0"
+  resolved "https://npm.carecloud.com/@carecloud%2fmaterial-cuil/-/material-cuil-1.1.0.tgz#a861e256ff61bb29228181e58e6d250bb6b7c7f7"
   dependencies:
     "@material-ui/core" "1.0.0"
     "@material-ui/icons" "1.0.0"
@@ -93,7 +93,7 @@
     react-color "^2.13.8"
     react-datepicker "1.4.1"
     react-dom-factories "^1.0.2"
-    react-highlight-words "0.9.0"
+    react-highlight-words "0.11.0"
     react-select "1.2.1"
 
 "@material-ui/core@1.0.0":
@@ -3204,7 +3204,7 @@ hawk@~6.0.2:
     hoek "4.x.x"
     sntp "2.x.x"
 
-highlight-words-core@^1.0.2:
+highlight-words-core@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/highlight-words-core/-/highlight-words-core-1.2.0.tgz#232bec301cbf2a4943d335dc748ce70e9024f3b1"
 
@@ -5332,11 +5332,11 @@ react-event-listener@^0.5.1:
     prop-types "^15.6.0"
     warning "^3.0.0"
 
-react-highlight-words@0.9.0:
-  version "0.9.0"
-  resolved "https://registry.yarnpkg.com/react-highlight-words/-/react-highlight-words-0.9.0.tgz#aea72a9f28637fc6a77bc2a99efa08e638af43d7"
+react-highlight-words@0.11.0:
+  version "0.11.0"
+  resolved "https://registry.yarnpkg.com/react-highlight-words/-/react-highlight-words-0.11.0.tgz#4f3c2039a8fd275f3ab795e59946b0324d8e6bee"
   dependencies:
-    highlight-words-core "^1.0.2"
+    highlight-words-core "^1.2.0"
     prop-types "^15.5.8"
 
 react-input-autosize@^2.1.2:
