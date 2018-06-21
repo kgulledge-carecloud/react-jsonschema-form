@@ -28,12 +28,15 @@ function BaseInput(props) {
     return props.onChange(value === '' ? options.emptyValue : value);
   };
 
+  const { format } = options;
+
   return (
     <InputWithClear
       className="form-control"
       disabled={disabled || readonly}
       autoFocus={autofocus}
       value={value == null ? '' : value}
+      format={format}
       {...inputProps}
       {...getComponentProps(props)}
       placeholder={inputProps.placeholder || inputProps.label}
