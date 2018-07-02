@@ -58,10 +58,6 @@ function extractFileInfo(dataURLs) {
 }
 
 class FileWidget extends Component {
-  defaultProps = {
-    multiple: false,
-  };
-
   constructor(props) {
     super(props);
     const { value } = props;

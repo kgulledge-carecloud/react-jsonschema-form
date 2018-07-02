@@ -49,7 +49,9 @@ describe('NumberField', () => {
     });
 
     it('should default state value to undefined', () => {
-      const { comp } = createFormComponent({ schema: { type: 'number' } });
+      const { comp } = createFormComponent({
+        schema: { type: 'number' },
+      });
 
       expect(comp.state.formData).eql(undefined);
     });

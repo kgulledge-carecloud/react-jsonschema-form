@@ -199,7 +199,11 @@ describe('uiSchema', () => {
       });
 
       it('should render merged ui:widget options for widget referenced as function', () => {
-        const { node } = createFormComponent({ schema, uiSchema, widgets });
+        const { node } = createFormComponent({
+          schema,
+          uiSchema,
+          widgets,
+        });
         const widget = node.querySelector('#funcAll');
 
         expect(widget.style.background).to.equal('purple');
@@ -209,7 +213,11 @@ describe('uiSchema', () => {
       });
 
       it('should render ui:widget default options for widget referenced as function', () => {
-        const { node } = createFormComponent({ schema, uiSchema, widgets });
+        const { node } = createFormComponent({
+          schema,
+          uiSchema,
+          widgets,
+        });
         const widget = node.querySelector('#funcNone');
 
         expect(widget.style.background).to.equal('yellow');
@@ -219,7 +227,11 @@ describe('uiSchema', () => {
       });
 
       it('should render merged ui:widget options for widget referenced as string', () => {
-        const { node } = createFormComponent({ schema, uiSchema, widgets });
+        const { node } = createFormComponent({
+          schema,
+          uiSchema,
+          widgets,
+        });
         const widget = node.querySelector('#stringAll');
 
         expect(widget.style.background).to.equal('blue');
@@ -229,7 +241,11 @@ describe('uiSchema', () => {
       });
 
       it('should render ui:widget default options for widget referenced as string', () => {
-        const { node } = createFormComponent({ schema, uiSchema, widgets });
+        const { node } = createFormComponent({
+          schema,
+          uiSchema,
+          widgets,
+        });
         const widget = node.querySelector('#stringNone');
 
         expect(widget.style.background).to.equal('yellow');
@@ -239,7 +255,11 @@ describe('uiSchema', () => {
       });
 
       it('should ui:option inputType for html5 input types', () => {
-        const { node } = createFormComponent({ schema, uiSchema, widgets });
+        const { node } = createFormComponent({
+          schema,
+          uiSchema,
+          widgets,
+        });
         const widget = node.querySelector("input[type='tel']");
         expect(widget).to.not.be.null;
       });
@@ -279,7 +299,11 @@ describe('uiSchema', () => {
       };
 
       it('should render a nested custom widget', () => {
-        const { node } = createFormComponent({ schema, uiSchema, widgets });
+        const { node } = createFormComponent({
+          schema,
+          uiSchema,
+          widgets,
+        });
 
         expect(node.querySelectorAll('.custom')).to.have.length.of(1);
       });
@@ -332,7 +356,11 @@ describe('uiSchema', () => {
         };
 
         it('should render a custom widget with options', () => {
-          const { node } = createFormComponent({ schema, uiSchema, widgets });
+          const { node } = createFormComponent({
+            schema,
+            uiSchema,
+            widgets,
+          });
 
           expect(node.querySelectorAll('.custom')).to.have.length.of(1);
         });
@@ -1745,7 +1773,11 @@ describe('uiSchema', () => {
           };
           const formData = ['a', 'b'];
 
-          let rendered = createFormComponent({ schema, uiSchema, formData });
+          let rendered = createFormComponent({
+            schema,
+            uiSchema,
+            formData,
+          });
           node = rendered.node;
         });
 
@@ -2013,7 +2045,11 @@ describe('uiSchema', () => {
           };
           const formData = ['a', 'b'];
 
-          let rendered = createFormComponent({ schema, uiSchema, formData });
+          let rendered = createFormComponent({
+            schema,
+            uiSchema,
+            formData,
+          });
           node = rendered.node;
         });
 

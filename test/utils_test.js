@@ -145,7 +145,14 @@ describe('utils', () => {
           properties: {
             level1: {
               type: 'object',
-              default: { level2: { leaf1: 1, leaf2: 1, leaf3: 1, leaf4: 1 } },
+              default: {
+                level2: {
+                  leaf1: 1,
+                  leaf2: 1,
+                  leaf3: 1,
+                  leaf4: 1,
+                },
+              },
               properties: {
                 level2: {
                   type: 'object',
@@ -165,8 +172,14 @@ describe('utils', () => {
             },
           },
         };
-        expect(getDefaultFormState(schema, { level1: { level2: { leaf4: 4 } } })).eql({
-          level1: { level2: { leaf1: 1, leaf2: 2, leaf3: 3, leaf4: 4 } },
+        expect(
+          getDefaultFormState(schema, {
+            level1: { level2: { leaf4: 4 } },
+          })
+        ).eql({
+          level1: {
+            level2: { leaf1: 1, leaf2: 2, leaf3: 3, leaf4: 4 },
+          },
         });
       });
 
@@ -181,7 +194,9 @@ describe('utils', () => {
             },
           },
         };
-        expect(getDefaultFormState(schema, {})).eql({ level1: [1, 2, 3] });
+        expect(getDefaultFormState(schema, {})).eql({
+          level1: [1, 2, 3],
+        });
       });
 
       it('should use parent defaults for ArrayFields if declared in parent', () => {
@@ -195,7 +210,9 @@ describe('utils', () => {
             },
           },
         };
-        expect(getDefaultFormState(schema, {})).eql({ level1: [1, 2, 3] });
+        expect(getDefaultFormState(schema, {})).eql({
+          level1: [1, 2, 3],
+        });
       });
 
       it('should map item defaults to fixed array default', () => {
@@ -316,7 +333,10 @@ describe('utils', () => {
     describe('uniqueItems is true', () => {
       describe('schema items enum is an array', () => {
         it('should be true', () => {
-          let schema = { items: { enum: ['foo', 'bar'] }, uniqueItems: true };
+          let schema = {
+            items: { enum: ['foo', 'bar'] },
+            uniqueItems: true,
+          };
           expect(isMultiSelect(schema)).to.be.true;
         });
       });
@@ -357,13 +377,18 @@ describe('utils', () => {
           items: { $ref: '#/definitions/FooItem' },
           uniqueItems: true,
         };
-        const definitions = { FooItem: { type: 'string', enum: ['foo'] } };
+        const definitions = {
+          FooItem: { type: 'string', enum: ['foo'] },
+        };
         expect(isMultiSelect(schema, definitions)).to.be.true;
       });
     });
 
     it('should be false if uniqueItems is false', () => {
-      const schema = { items: { enum: ['foo', 'bar'] }, uniqueItems: false };
+      const schema = {
+        items: { enum: ['foo', 'bar'] },
+        uniqueItems: false,
+      };
       expect(isMultiSelect(schema)).to.be.false;
     });
   });
@@ -448,7 +473,9 @@ describe('utils', () => {
         const obj1 = { a: { b: [1] } };
         const obj2 = { a: { b: [2] } };
 
-        expect(mergeObjects(obj1, obj2, true)).eql({ a: { b: [1, 2] } });
+        expect(mergeObjects(obj1, obj2, true)).eql({
+          a: { b: [1, 2] },
+        });
       });
     });
   });
@@ -1012,6 +1039,27 @@ describe('utils', () => {
         $id: 'root',
         foo: { $id: 'root_foo' },
         bar: { $id: 'root_bar' },
+      });
+    });
+
+    it('should handle idPrefix parameter', () => {
+      const schema = {
+        definitions: {
+          testdef: {
+            type: 'object',
+            properties: {
+              foo: { type: 'string' },
+              bar: { type: 'string' },
+            },
+          },
+        },
+        $ref: '#/definitions/testdef',
+      };
+
+      expect(toIdSchema(schema, undefined, schema.definitions, {}, 'rjsf')).eql({
+        $id: 'rjsf',
+        foo: { $id: 'rjsf_foo' },
+        bar: { $id: 'rjsf_bar' },
       });
     });
   });

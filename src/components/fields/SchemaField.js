@@ -5,10 +5,13 @@ import { FormControl, FormLabel, FormHelperText, InputLabel } from '@carecloud/m
 import {
   isMultiSelect,
   retrieveSchema,
+  toIdSchema,
   getDefaultRegistry,
+  mergeObjects,
   getUiOptions,
   isFilesArray,
   deepEquals,
+  getSchemaType,
 } from '../../utils';
 import UnsupportedField from './UnsupportedField';
 
@@ -29,7 +32,8 @@ function getFieldComponent(schema, uiSchema, idSchema, fields) {
   if (typeof field === 'string' && field in fields) {
     return fields[field];
   }
-  const componentName = COMPONENT_TYPES[schema.type];
+
+  const componentName = COMPONENT_TYPES[getSchemaType(schema)];
   return componentName in fields
     ? fields[componentName]
     : () => {
@@ -101,6 +105,7 @@ function DefaultTemplate(props) {
     required,
     htmlFor: id,
     disabled: disabled || readonly,
+    className: 'control-label',
   };
 
   const ContainerComp = useDiv ? 'div' : FormControl;
@@ -160,13 +165,15 @@ function SchemaFieldRender(props) {
     uiSchema,
     formData,
     errorSchema,
-    idSchema,
+    idPrefix,
     name,
     required,
     registry = getDefaultRegistry(),
   } = props;
   const { definitions, fields, formContext, FieldTemplate = DefaultTemplate } = registry;
+  let idSchema = props.idSchema;
   const schema = retrieveSchema(props.schema, definitions, formData);
+  idSchema = mergeObjects(toIdSchema(schema, null, definitions, formData, idPrefix), idSchema);
   const FieldComponent = getFieldComponent(schema, uiSchema, idSchema, fields);
   const { DescriptionField } = fields;
   const disabled = Boolean(props.disabled || uiSchema['ui:disabled']);
@@ -217,6 +224,7 @@ function SchemaFieldRender(props) {
   const field = (
     <FieldComponent
       {...props}
+      idSchema={idSchema}
       schema={schema}
       uiSchema={{ ...uiSchema, classNames: undefined }}
       disabled={disabled}
@@ -224,6 +232,7 @@ function SchemaFieldRender(props) {
       autofocus={autofocus}
       errorSchema={fieldErrorSchema}
       formContext={formContext}
+      rawErrors={__errors}
     />
   );
 
