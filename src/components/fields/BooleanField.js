@@ -16,6 +16,7 @@ function BooleanField(props) {
     readonly,
     autofocus,
     onChange,
+    rawErrors,
   } = props;
   const { title } = schema;
   const { widgets, formContext } = registry;
@@ -39,6 +40,7 @@ function BooleanField(props) {
       registry={registry}
       formContext={formContext}
       autofocus={autofocus}
+      rawErrors={rawErrors}
     />
   );
 }
@@ -61,6 +63,7 @@ if (process.env.NODE_ENV !== 'production') {
       definitions: PropTypes.object.isRequired,
       formContext: PropTypes.object.isRequired,
     }),
+    rawErrors: PropTypes.arrayOf(PropTypes.string),
   };
 }
 

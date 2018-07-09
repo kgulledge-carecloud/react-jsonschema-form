@@ -145,7 +145,12 @@ function transformAjvErrors(errors = []) {
  * will be used to add custom validation errors for each field.
  */
 export default function validateFormData(formData, schema, customValidate, transformErrors) {
-  ajv.validate(schema, formData);
+  try {
+    ajv.validate(schema, formData);
+  } catch (e) {
+    // swallow errors thrown in ajv due to invalid schemas, these
+    // still get displayed
+  }
 
   let errors = transformAjvErrors(ajv.errors);
 
