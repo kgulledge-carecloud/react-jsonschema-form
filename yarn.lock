@@ -78,17 +78,21 @@
     lodash "^4.2.0"
     to-fast-properties "^2.0.0"
 
-"@carecloud/material-cuil@1.4.5":
-  version "1.4.5"
-  resolved "https://npm.carecloud.com/@carecloud%2fmaterial-cuil/-/material-cuil-1.4.5.tgz#7838b56cf324bb42692bcbf56dd88f524f2f976d"
+"@carecloud/cleave.js@^1.4.1":
+  version "1.4.1"
+  resolved "https://npm.carecloud.com/@carecloud%2fcleave.js/-/cleave.js-1.4.1.tgz#1b355bda1a8e99ba43acdb89c399db952a56ba56"
+
+"@carecloud/material-cuil@1.4.6":
+  version "1.4.6"
+  resolved "https://npm.carecloud.com/@carecloud%2fmaterial-cuil/-/material-cuil-1.4.6.tgz#c1f6222f8df6de7789de3d29c38e5b0c4aa1c3a6"
   dependencies:
+    "@carecloud/cleave.js" "^1.4.1"
     "@material-ui/core" "1.3.0"
     "@material-ui/icons" "1.1.0"
     ag-grid "^15.0.0"
     ag-grid-enterprise "^15.0.0"
     ag-grid-react "^15.0.0"
     classnames "^2.2.5"
-    cleave.js "^1.3.7"
     moment "^2.20.1"
     prop-types "15.6.0"
     react-color "^2.13.8"
@@ -1652,10 +1656,6 @@ class-utils@^0.3.5:
 classnames@^2.2.4, classnames@^2.2.5:
   version "2.2.5"
   resolved "https://registry.yarnpkg.com/classnames/-/classnames-2.2.5.tgz#fb3801d453467649ef3603c7d61a02bd129bde6d"
-
-cleave.js@^1.3.7:
-  version "1.3.7"
-  resolved "https://registry.yarnpkg.com/cleave.js/-/cleave.js-1.3.7.tgz#0c49d60745ba4bef66db32a936e75d7b88c65404"
 
 cli-cursor@^1.0.2:
   version "1.0.2"
